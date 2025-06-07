@@ -1,0 +1,39 @@
+/* body {font-family: "Lato", sans-serif;} */
+
+
+#addbutton {
+  background-color: #b8bd3c;
+  border-radius: 50%;
+  border: none;
+}
+
+/* .arenatab {
+  background-color: #555;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 17px;
+  width: 25%;
+} */
+
+/* 
+.arenatab:hover {
+  background-color: #777;
+} */
+
+/* .arenascreen {
+  color: white;
+  display: none;
+  padding: 50px;
+  text-align: center;
+} */
+
+
+/* Style each tab content individually */
+/* #London {background-color:red;}
+#Paris {background-color:green;}
+#Tokyo {background-color:blue;}
+#Oslo {background-color:orange;} */

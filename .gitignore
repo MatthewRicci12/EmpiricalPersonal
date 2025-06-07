@@ -1,0 +1,6 @@
+sandbox/
+%22/
+src-tauri/target/
+node_modules
+.DS_Store
+dist
