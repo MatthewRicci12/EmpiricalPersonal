@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Trial from './Trial.tsx';
 import Stack from '@mui/material/Stack';
+import AddArenaDialog from '../Dialogs.tsx';
 import { useState } from "react";
 
 export interface arenaScreenData {
@@ -17,7 +18,16 @@ interface ArenaTabsProps {
   data: arenaScreenData[],
   addTabHandler: () => void
 }
-function ArenaTabs({clickHandler, whichArenaSelected, data, addTabHandler} : ArenaTabsProps) {
+function ArenaTabs({clickHandler, whichArenaSelected, data} : ArenaTabsProps) {
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const arenaScreensArray = data.map(({index, trialDataArray}) => 
     <ArenaScreen isDisplayed={index === whichArenaSelected} trialDataArray={trialDataArray}></ArenaScreen>
@@ -41,10 +51,15 @@ function ArenaTabs({clickHandler, whichArenaSelected, data, addTabHandler} : Are
       </Box>
       <Button
         sx={{}}
-        onClick={addTabHandler}
+        onClick={handleClickOpen}
         >
         <AddIcon></AddIcon>
       </Button>
+      <AddArenaDialog 
+      open={open}
+      onClose={handleClose}
+      >
+      </AddArenaDialog>
       {tabsArray}
     </>
   );
