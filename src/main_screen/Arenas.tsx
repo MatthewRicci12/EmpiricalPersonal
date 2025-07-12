@@ -1,69 +1,73 @@
 import Box from '@mui/system/Box';
-import { useState } from "react";
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
+import Trial from './Trial.tsx';
+import Stack from '@mui/material/Stack';
+import { useState } from "react";
 
-function ArenaTabs() {
+export interface arenaScreenData {
+    index: number,
+    trialDataArray: boolean[]
+};
 
-  function handleClick(curIndex: number) {
-    setArenaSelected(curIndex);
-  }
 
-  function addTab() {
-    setNumTabs(numTabs+1);
-  }
+interface ArenaTabsProps {
+  clickHandler: (index: number) => void,
+  whichArenaSelected: number,
+  data: arenaScreenData[],
+  addTabHandler: () => void
+}
+function ArenaTabs({clickHandler, whichArenaSelected, data, addTabHandler} : ArenaTabsProps) {
 
-  const [whichArenaSelected, setArenaSelected] = useState<number>(0);
-  const [numTabs, setNumTabs] = useState<number>(0);
-
-  let indices: number[] = [];
-
-  for (let i = 0; i < numTabs+1; ++i) {
-    indices = indices.concat(i);
-  }
-  console.log(indices);
-
-  const arenaScreensArray = indices.map((index) => 
-    <ArenaScreen isDisplayed={index === whichArenaSelected} index={index}></ArenaScreen>
+  const arenaScreensArray = data.map(({index, trialDataArray}) => 
+    <ArenaScreen isDisplayed={index === whichArenaSelected} trialDataArray={trialDataArray}></ArenaScreen>
   );
+  console.log(whichArenaSelected);
+  console.log(data);
 
-  const tabsArray = indices.slice(1).map((index) =>
-    <ArenaTab clickHandler={handleClick} index={index}></ArenaTab>
+  const tabsArray = data.map(({index}) =>
+    <ArenaTab clickHandler={clickHandler} index={index}></ArenaTab>
   );
 
   return (
-    <Box 
-    sx={{whiteSpace: 'pre'}}>
-      {arenaScreensArray}
+    <>
+      <Box 
+      sx={{
+        height: '90%',
+        whiteSpace: 'pre'
+      }}>
+        {arenaScreensArray}
 
+      </Box>
       <Button
-      sx={{}}
-      onClick={addTab}
-      >
-      <AddIcon></AddIcon>
+        sx={{}}
+        onClick={addTabHandler}
+        >
+        <AddIcon></AddIcon>
       </Button>
-
       {tabsArray}
-    </Box>
+    </>
   );
 }
 
 
 interface ArenaScreenProps {
   isDisplayed: Boolean,
-  index: number
+  trialDataArray: boolean[]
 }
-export function ArenaScreen({isDisplayed, index} : ArenaScreenProps) {
+function ArenaScreen({isDisplayed, trialDataArray} : ArenaScreenProps) {
+
+  const trials = trialDataArray.map((success) =>
+    <Trial success={success}></Trial>
+  );
+
   return (
-    <Box 
+    <Stack spacing={2} 
     sx={{
-      display: isDisplayed ? 'block' : 'none',
-      height: '80vh', // So that the scrollbar doesn't get in the way of the tabs.
-      fontFamily: '"Lato", sans-serif',
+      display: isDisplayed ? 'block' : 'none'
     }}>
-      <h1>{`This is tab ${index}`}</h1>
-      <p>Yes, it is!</p>
-    </Box>
+      {trials}
+    </Stack>
 
   );
 }
@@ -72,13 +76,13 @@ interface ArenaTabProps {
   clickHandler: (index: number) => void,
   index: number
 }
-export function ArenaTab ({clickHandler, index}: ArenaTabProps) { // how 2 isDisplayed
+function ArenaTab ({clickHandler, index}: ArenaTabProps) { // how 2 isDisplayed
   return (
       <Button
       sx={{}}
       onClick={() => clickHandler(index)}
       >
-        {`Tab ${index}`}
+        {`Tab ${index+1}`}
       </Button>
   );
 }

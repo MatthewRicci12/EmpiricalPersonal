@@ -1,11 +1,9 @@
-import TopBar from './main_screen/TopBar.tsx';
-import ArenaTabs from './main_screen/Arenas.tsx';
+import MainScreen from './main_screen/MainScreen.tsx';
 
 function App() {
   return (
     <div>
-      <TopBar></TopBar>
-      <ArenaTabs></ArenaTabs>
+      <MainScreen></MainScreen>
     </div>
   );
 }

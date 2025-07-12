@@ -3,16 +3,17 @@ import Stack from '@mui/material/Stack';
 import Container from '@mui/system/Container';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-
+import Typography from '@mui/material/Typography';
 
 interface TopBarProps {
-
+  addTrialHandler: () => void
 }
-export function TopBar({}: TopBarProps) {
+export function TopBar({addTrialHandler} : TopBarProps) {
 
   return(
     <Stack
     direction="row"
+    alignItems="center"
     >
       <Container>
         <Button>
@@ -24,11 +25,14 @@ export function TopBar({}: TopBarProps) {
       </Container>
 
       <Container>
-        <h6>+ Add Trial</h6>
+        <Button onClick={addTrialHandler}>
+        <AddIcon></AddIcon>
+        </Button>
+        Add Trial
       </Container>
 
       <Container>
-        <h6>Settings</h6>
+        <Typography align="right">Settings</Typography>
       </Container>
 
     </Stack>
