@@ -8,12 +8,22 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
+import { useState } from "react";
 
 interface AddArenaDialogProps {
     open: boolean,
     onClose: () => void;
 }
 function AddArenaDialog({open, onClose}: AddArenaDialogProps) {
+  const [value, setValue] = useState("");
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  }
+
+  const addArenaFormSubmit = () => {
+    console.log(value);
+  }
 
   return (
     <Dialog 
@@ -38,7 +48,8 @@ function AddArenaDialog({open, onClose}: AddArenaDialogProps) {
             >
             <CloseIcon />
             </IconButton>
-                <TextField id="outlined-basic" label="Arena Title" variant="outlined" sx={{
+                <TextField id="outlined-basic" label="Arena Title" variant="outlined" value={value} onChange={handleInput} 
+                sx={{
                     paddingBottom: '10px'
                 }}/>
                 <Typography sx={{
@@ -56,7 +67,7 @@ function AddArenaDialog({open, onClose}: AddArenaDialogProps) {
                 }}>
                     Stuff
                 </Box>
-                <Button variant="contained">Submit</Button>
+                <Button variant="contained" onClick={addArenaFormSubmit}>Submit</Button>
         </Box>
     </Dialog>
   );
