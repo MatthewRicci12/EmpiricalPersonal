@@ -3,8 +3,58 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Trial from './Trial.tsx';
 import Stack from '@mui/material/Stack';
-import AddArenaDialog from '../Dialogs.tsx';
+import DialogSkeleton from '../Dialogs.tsx';
 import { useState } from "react";
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import DialogTitle from '@mui/material/DialogTitle';
+import RemoveIcon from '@mui/icons-material/Remove';
+
+
+interface AddArenaDialogProps {
+}
+function AddArenaDialog() {
+  const [value, setValue] = useState("");
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  }
+
+  const addArenaFormSubmit = () => {
+    console.log(value);
+  }
+
+  return (
+    <>
+    <DialogTitle>Add New Arena</DialogTitle>
+        <Box
+        sx={{
+            height: '500px',
+            width: '500px'
+        }}>
+            <TextField id="outlined-basic" label="Arena Title" variant="outlined" value={value} onChange={handleInput} 
+            sx={{
+                paddingBottom: '10px'
+            }}></TextField>
+            <Typography sx={{
+                fontSize: "1.5em"
+            }}>
+                Factors
+            </Typography>
+            <Button>Save Preset</Button><Button>Load Preset</Button><Button><AddIcon></AddIcon></Button><Button><RemoveIcon></RemoveIcon></Button>
+            <Box sx={{
+                borderStyle: 'solid',
+                borderWidth: '1px',
+                borderColor: 'gray',
+                margin: '3px',
+                height: '300px'
+            }}>
+            </Box>
+            <Button variant="contained" onClick={addArenaFormSubmit}>Submit</Button>
+        </Box>
+    </>
+  );
+}
 
 export interface arenaScreenData {
     index: number,
@@ -55,11 +105,12 @@ function ArenaTabs({clickHandler, whichArenaSelected, data} : ArenaTabsProps) {
         >
         <AddIcon></AddIcon>
       </Button>
-      <AddArenaDialog 
+      <DialogSkeleton
+      children={<AddArenaDialog/>}
       open={open}
       onClose={handleClose}
       >
-      </AddArenaDialog>
+      </DialogSkeleton>
       {tabsArray}
     </>
   );
