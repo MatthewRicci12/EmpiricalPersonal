@@ -64,7 +64,7 @@ function AddArenaDialog({open, onClose}: AddArenaDialogProps) {
                     borderColor: 'gray',
                     margin: '3px',
                     height: '300px'
-                }}>
+                }}>500px
                     Stuff
                 </Box>
                 <Button variant="contained" onClick={addArenaFormSubmit}>Submit</Button>
