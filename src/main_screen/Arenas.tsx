@@ -60,8 +60,6 @@ export interface arenaScreenData {
     index: number,
     trialDataArray: boolean[]
 };
-
-
 interface ArenaTabsProps {
   clickHandler: (index: number) => void,
   whichArenaSelected: number,

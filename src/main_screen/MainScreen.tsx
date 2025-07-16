@@ -2,6 +2,11 @@ import TopBar from './TopBar.tsx';
 import ArenaTabs from './Arenas.tsx';
 import {arenaScreenData} from './Arenas.tsx';
 import { useState } from "react";
+import DialogSkeleton from '../Dialogs.tsx';
+import DialogTitle from '@mui/material/DialogTitle';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+
 
 
 function MainScreen() {
