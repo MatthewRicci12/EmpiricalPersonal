@@ -12,8 +12,9 @@ import RemoveIcon from '@mui/icons-material/Remove';
 
 
 interface AddArenaDialogProps {
+  addTabHandler: () => void
 }
-function AddArenaDialog() {
+function AddArenaDialog({addTabHandler} : AddArenaDialogProps) {
   const [value, setValue] = useState("");
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +51,7 @@ function AddArenaDialog() {
                 height: '300px'
             }}>
             </Box>
-            <Button variant="contained" onClick={addArenaFormSubmit}>Submit</Button>
+            <Button variant="contained" onClick={addTabHandler}>Submit</Button>
         </Box>
     </>
   );
@@ -66,7 +67,7 @@ interface ArenaTabsProps {
   data: arenaScreenData[],
   addTabHandler: () => void
 }
-function ArenaTabs({clickHandler, whichArenaSelected, data} : ArenaTabsProps) {
+function ArenaTabs({clickHandler, whichArenaSelected, data, addTabHandler} : ArenaTabsProps) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -104,7 +105,7 @@ function ArenaTabs({clickHandler, whichArenaSelected, data} : ArenaTabsProps) {
         <AddIcon></AddIcon>
       </Button>
       <DialogSkeleton
-      children={<AddArenaDialog/>}
+      children={<AddArenaDialog addTabHandler={addTabHandler}/>}
       open={open}
       onClose={handleClose}
       >

@@ -35,7 +35,6 @@ interface TopBarProps {
   addTrialHandler: () => void
 }
 export function TopBar({addTrialHandler} : TopBarProps) {
-  const [value, setValue] = useState("");
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
