@@ -34,24 +34,30 @@ function MainScreen() {
     setOpen(false);
   };
 
-  const handleClickSubmit = (tabName: string) => { // Triggered by Dialog submit button
+  const handleAddArena = (tabName: string) => { // Triggered by Dialog submit button
     setTabDataArray(tabDataArray.concat({title: tabName, index: tabDataArray.length}));
-    setArenaScreenDataArray(arenaScreenDataArray.concat({trialData: []}))
+    setArenaScreenDataArray(arenaScreenDataArray.concat({trialData: []}));
+    setOpen(false);
   };
 
   const handleClickTab = (index: number) => { //Triggered by clicking a tab
     setWhichArenaSelected(index);
   };
 
-  //TODO
   const handleAddTrial = (trialTitle: string) => {
-    arenaScreenDataArray[whichArenaSelected]
+    let arenaScreenDataArrayCopied = [...arenaScreenDataArray]; //new ram
+    arenaScreenDataArrayCopied[whichArenaSelected].trialData =
+      arenaScreenDataArrayCopied[whichArenaSelected].trialData.concat(trialTitle);
+    setArenaScreenDataArray(arenaScreenDataArrayCopied);
+    setOpen(false);
   }
 
-  const displayedArenaScreenData = arenaScreenDataArray[whichArenaSelected];
-  const displayedArenaScreen = <ArenaScreen trialData={displayedArenaScreenData.trialData}></ArenaScreen>
+  let displayedArenaScreenData = arenaScreenDataArray[whichArenaSelected];
+  const displayedArenaScreen = arenaScreenDataArray.length ? 
+    <ArenaScreen trialData={displayedArenaScreenData.trialData}></ArenaScreen> : <></>;
 
-  const tabs = tabDataArray.map(({title, index}) => <ArenaTab title={title} handleClickTab={handleClickTab} index={index}></ArenaTab>);
+  const tabs = tabDataArray.map(({title, index}) => 
+    <ArenaTab title={title} handleClickTab={handleClickTab} index={index}></ArenaTab>);
 
   return (
     <>
@@ -73,7 +79,7 @@ function MainScreen() {
       </Button>
 
       <DialogSkeleton
-      children={<AddArenaDialog handleClickSubmit={handleClickSubmit}/>}
+      children={<AddArenaDialog handleAddArena={handleAddArena}/>}
       open={open}
       onClose={handleClose}
       >
@@ -85,9 +91,9 @@ function MainScreen() {
 }
 
 interface AddArenaDialogProps {
-  handleClickSubmit: (tabName: string) => void
+  handleAddArena: (tabName: string) => void
 }
-function AddArenaDialog({handleClickSubmit} : AddArenaDialogProps) {
+function AddArenaDialog({handleAddArena} : AddArenaDialogProps) {
   const [value, setValue] = useState(""); //Value of input which changes on screen
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => { //Reacts to you entering
@@ -120,7 +126,7 @@ function AddArenaDialog({handleClickSubmit} : AddArenaDialogProps) {
                 height: '300px'
             }}>
             </Box>
-            <Button variant="contained" onClick={() => handleClickSubmit(value)}>Submit</Button>
+            <Button variant="contained" onClick={() => handleAddArena(value)}>Submit</Button>
         </Box>
     </>
   );

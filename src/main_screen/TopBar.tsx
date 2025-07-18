@@ -53,10 +53,7 @@ export function TopBar({handleAddTrial}: TopBarProps) {
     >
       <Container>
         <Button>
-          <AddIcon
-            sx={{
-            }}>
-          </AddIcon>
+          File
         </Button>
       </Container>
 
