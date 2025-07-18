@@ -10,9 +10,9 @@ import { useState } from "react";
 import DialogSkeleton from '../Dialogs.tsx';
 
 interface AddTrialDialogProps {
-  addTrialHandler: () => void
+  handleAddTrial: (trialTitle: string) => void
 }
-function AddTrialDialog({addTrialHandler} : AddTrialDialogProps) {
+function AddTrialDialog({handleAddTrial} : AddTrialDialogProps) {
   const [value, setValue] = useState("");
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,15 +26,15 @@ function AddTrialDialog({addTrialHandler} : AddTrialDialogProps) {
                 sx={{
                     paddingBottom: '10px'
                 }}></TextField></Typography>
-    <Button variant="contained" onClick={addTrialHandler}>Submit</Button>
+    <Button variant="contained" onClick={() => handleAddTrial(value)}>Submit</Button>
     </>
   );
 }
 
 interface TopBarProps {
-  addTrialHandler: () => void
+  handleAddTrial: (trialTitle: string) => void
 }
-export function TopBar({addTrialHandler} : TopBarProps) {
+export function TopBar({handleAddTrial}: TopBarProps) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -65,7 +65,7 @@ export function TopBar({addTrialHandler} : TopBarProps) {
         <AddIcon></AddIcon>
         </Button>
           <DialogSkeleton
-          children={<AddTrialDialog addTrialHandler={addTrialHandler} />}
+          children={<AddTrialDialog handleAddTrial={handleAddTrial}></AddTrialDialog>}
           open={open}
           onClose={handleClose}
           >

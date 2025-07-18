@@ -28,7 +28,7 @@ const TrialFailure = styled('button')({
     color: 'white'
   };
 
-  const trialNameStyle = {
+  const trialTitleStyle = {
     fontSize: '2em',
     color: '#000000',
     fontFamily: 'Red Hat Display',
@@ -44,20 +44,15 @@ const TrialFailure = styled('button')({
 
 //QUESTION: Is this where these styles should go? Or global?
 interface TrialProps {
-    success: boolean
+    trialTitle: string
 }
-function Trial({success}: TrialProps) {
-
-
-
-  const whichButton = success ? <TrialSuccess><CheckIcon sx={imgSx}></CheckIcon></TrialSuccess> 
-                              : <TrialFailure><CloseIcon sx={imgSx}></CloseIcon></TrialFailure>;
+function Trial({trialTitle}: TrialProps) {
 
 
   //TODO: Is a stack of a stack really the best way to do this?
   return (
       <Stack direction="row">
-      {whichButton}<Typography sx={trialNameStyle}>hi</Typography><Typography sx={skepTextStyle}>hello</Typography>
+      <TrialSuccess><CheckIcon sx={imgSx}></CheckIcon></TrialSuccess> <Typography sx={trialTitleStyle}>{trialTitle}</Typography><Typography sx={skepTextStyle}>hello</Typography>
       </Stack>
   );
 }
