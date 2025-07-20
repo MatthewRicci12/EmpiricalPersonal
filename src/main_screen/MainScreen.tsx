@@ -127,14 +127,7 @@ function AddArenaDialog({handleAddArena} : AddArenaDialogProps) {
                 Factors
             </Typography>
             <Button>Save Preset</Button><Button>Load Preset</Button><Button><AddIcon></AddIcon></Button><Button><RemoveIcon></RemoveIcon></Button>
-            <Box sx={{
-                borderStyle: 'solid',
-                borderWidth: '1px',
-                borderColor: 'gray',
-                margin: '3px',
-                height: '300px'
-            }}>
-            </Box>
+            <TextField id=" outlined-multiline-flexible" multiline rows={4} disabled sx={{width: '100%'}}></TextField>
             <Button variant="contained" onClick={() => handleAddArena(value)}>Submit</Button>
         </Box>
     </>

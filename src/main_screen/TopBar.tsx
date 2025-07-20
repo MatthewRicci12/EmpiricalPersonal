@@ -8,7 +8,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import { useState } from "react";
 import DialogSkeleton from '../Dialogs.tsx';
-
+import RemoveIcon from '@mui/icons-material/Remove';
+import Box from '@mui/system/Box';
 
 export interface addTrialDialogData {
   trialTitle: string,
@@ -62,9 +63,13 @@ function AddTrialDialog({handleAddTrial} : AddTrialDialogProps) {
     <Typography>What a success looks like</Typography>
     <TextField  id=" outlined-multiline-flexible" multiline rows={4} value={valueSuccess} onChange={handleInputSuccess}></TextField>
 
-    {/* What a failure looks like*/}
+    {/* What a failure looks like */}
     <Typography>What a failure looks like</Typography>
     <TextField id=" outlined-multiline-flexible" multiline rows={4} value={valueFailure} onChange={handleInputFailure} ></TextField>
+    
+    {/* Individual Factors \*/}
+    <Typography>Individual Factors <Button><AddIcon></AddIcon></Button><Button><RemoveIcon></RemoveIcon></Button></Typography>
+    <TextField id=" outlined-multiline-flexible" multiline rows={4} disabled></TextField>
 
     {/* Additional notes */}
     <Typography>Additional notes</Typography>
