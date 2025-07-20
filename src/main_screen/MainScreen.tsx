@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
 import RemoveIcon from '@mui/icons-material/Remove';
 import TopBar from './TopBar.tsx';
+import { addTrialDialogData }  from './TopBar.tsx';
+
 
 interface tabData {
   title: string,
@@ -44,10 +46,17 @@ function MainScreen() {
     setWhichArenaSelected(index);
   };
 
-  const handleAddTrial = (trialTitle: string) => {
+  const handleAddTrial = (addTrialDialogData: addTrialDialogData) => {
+    if (arenaScreenDataArray.length == 0) return;
+
+    console.log(addTrialDialogData.successString);
+    console.log(addTrialDialogData.failureString);
+    console.log(addTrialDialogData.additionalNotesString);
+
+    const trialTitle = addTrialDialogData.trialTitle;
     let arenaScreenDataArrayCopied = [...arenaScreenDataArray]; //new ram
-    arenaScreenDataArrayCopied[whichArenaSelected].trialData =
-      arenaScreenDataArrayCopied[whichArenaSelected].trialData.concat(trialTitle);
+    arenaScreenDataArrayCopied[whichArenaSelected].trialData = 
+    arenaScreenDataArrayCopied[whichArenaSelected].trialData.concat(trialTitle);
     setArenaScreenDataArray(arenaScreenDataArrayCopied);
     setOpen(false);
   }

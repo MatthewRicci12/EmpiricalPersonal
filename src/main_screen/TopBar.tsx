@@ -9,30 +9,82 @@ import TextField from '@mui/material/TextField';
 import { useState } from "react";
 import DialogSkeleton from '../Dialogs.tsx';
 
+
+export interface addTrialDialogData {
+  trialTitle: string,
+  successString: string,
+  failureString: string,
+  additionalNotesString: string
+}
+
 interface AddTrialDialogProps {
-  handleAddTrial: (trialTitle: string) => void
+  handleAddTrial: (addTrialDialogData: addTrialDialogData) => void
 }
 function AddTrialDialog({handleAddTrial} : AddTrialDialogProps) {
-  const [value, setValue] = useState("");
+  const [valueTrialName, setValueTrialName] = useState("");
+  const [valueSuccess, setValueSuccess] = useState("");
+  const [valueFailure, setValueFailure] = useState("");
+  const [valueAdditionalNotes, setValueAdditionalNotes] = useState("");
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+
+  let addTrialDialogData: addTrialDialogData = {} as addTrialDialogData;
+
+
+  const handleInputTrialName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValueTrialName(e.target.value);
   }
 
+  const handleInputSuccess = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValueSuccess(e.target.value);
+  }
+
+  const handleInputFailure= (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValueFailure(e.target.value);
+  }
+
+  const handleInputAdditionalNotes= (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValueAdditionalNotes(e.target.value);
+  }
+
+  // outlined-multiline-flexible multiline maxRows={4}
   return (
     <>
     <DialogTitle>Add New Arena</DialogTitle>
-    <Typography>Trial name: <TextField id="outlined-basic" variant="outlined" value={value} onChange={handleInput} 
+
+
+    {/* Input for trial's name */}
+    <Typography>Trial name: <TextField id="outlined-basic" variant="outlined" value={valueTrialName} onChange={handleInputTrialName} 
                 sx={{
                     paddingBottom: '10px'
                 }}></TextField></Typography>
-    <Button variant="contained" onClick={() => handleAddTrial(value)}>Submit</Button>
+
+    {/* What a success looks like */}
+    <Typography>What a success looks like</Typography>
+    <TextField  id=" outlined-multiline-flexible" multiline rows={4} value={valueSuccess} onChange={handleInputSuccess}></TextField>
+
+    {/* What a failure looks like*/}
+    <Typography>What a failure looks like</Typography>
+    <TextField id=" outlined-multiline-flexible" multiline rows={4} value={valueFailure} onChange={handleInputFailure} ></TextField>
+
+    {/* Additional notes */}
+    <Typography>Additional notes</Typography>
+    <TextField id=" outlined-multiline-flexible" multiline rows={4} value={valueAdditionalNotes} onChange={handleInputAdditionalNotes} ></TextField>
+
+    {/* BOTTOM SUBMIT BUTTON */}
+    <Button variant="contained" onClick={() => {
+      //##############################################################HERE
+      addTrialDialogData.trialTitle = valueTrialName;
+      addTrialDialogData.successString = valueSuccess;
+      addTrialDialogData.failureString = valueFailure;
+      addTrialDialogData.additionalNotesString = valueAdditionalNotes;
+      handleAddTrial(addTrialDialogData);
+    }}>Submit</Button>
     </>
   );
 }
 
 interface TopBarProps {
-  handleAddTrial: (trialTitle: string) => void
+  handleAddTrial: (addTrialDialogData: addTrialDialogData) => void
 }
 export function TopBar({handleAddTrial}: TopBarProps) {
   const [open, setOpen] = useState(false);
