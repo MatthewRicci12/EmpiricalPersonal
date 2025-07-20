@@ -19,9 +19,10 @@ export interface addTrialDialogData {
 }
 
 interface AddTrialDialogProps {
-  handleAddTrial: (addTrialDialogData: addTrialDialogData) => void
+  handleAddTrial: (addTrialDialogData: addTrialDialogData) => void,
+  handleClose: () => void
 }
-function AddTrialDialog({handleAddTrial} : AddTrialDialogProps) {
+function AddTrialDialog({handleAddTrial, handleClose} : AddTrialDialogProps) {
   const [valueTrialName, setValueTrialName] = useState("");
   const [valueSuccess, setValueSuccess] = useState("");
   const [valueFailure, setValueFailure] = useState("");
@@ -54,10 +55,11 @@ function AddTrialDialog({handleAddTrial} : AddTrialDialogProps) {
 
 
     {/* Input for trial's name */}
-    <Typography>Trial name: <TextField id="outlined-basic" variant="outlined" value={valueTrialName} onChange={handleInputTrialName} 
+    <Typography>Trial name:</Typography>
+    <TextField id="outlined-basic" variant="outlined" value={valueTrialName} onChange={handleInputTrialName} 
                 sx={{
                     paddingBottom: '10px'
-                }}></TextField></Typography>
+                }}></TextField>
 
     {/* What a success looks like */}
     <Typography>What a success looks like</Typography>
@@ -82,6 +84,7 @@ function AddTrialDialog({handleAddTrial} : AddTrialDialogProps) {
       addTrialDialogData.successString = valueSuccess;
       addTrialDialogData.failureString = valueFailure;
       addTrialDialogData.additionalNotesString = valueAdditionalNotes;
+      handleClose();
       handleAddTrial(addTrialDialogData);
     }}>Submit</Button>
     </>
@@ -119,7 +122,7 @@ export function TopBar({handleAddTrial}: TopBarProps) {
         <AddIcon></AddIcon>
         </Button>
           <DialogSkeleton
-          children={<AddTrialDialog handleAddTrial={handleAddTrial}></AddTrialDialog>}
+          children={<AddTrialDialog handleAddTrial={handleAddTrial} handleClose={handleClose}></AddTrialDialog>}
           open={open}
           onClose={handleClose}
           >

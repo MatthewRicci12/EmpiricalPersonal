@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Trial from './Trial.tsx';
 import Stack from '@mui/material/Stack';
 import DialogSkeleton from '../Dialogs.tsx';
-import { useState } from "react";
+import { useState, useRef } from "react";
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -27,6 +27,7 @@ function MainScreen() {
   const [tabDataArray, setTabDataArray] = useState<tabData[]>([]); //visible tabs
   const [arenaScreenDataArray, setArenaScreenDataArray] = useState<arenaScreenData[]>([]); //STORED arenaScreenData. ref()
   const [whichArenaSelected, setWhichArenaSelected] = useState<number>(0); //WHICH arena shown/tab selected
+  const id = useRef<number>(0);
 
   const handleClickOpen = () => { //Triggered by add Tab button
     setOpen(true);
@@ -39,7 +40,6 @@ function MainScreen() {
   const handleAddArena = (tabName: string) => { // Triggered by Dialog submit button
     setTabDataArray(tabDataArray.concat({title: tabName, index: tabDataArray.length}));
     setArenaScreenDataArray(arenaScreenDataArray.concat({trialData: []}));
-    setOpen(false);
   };
 
   const handleClickTab = (index: number) => { //Triggered by clicking a tab
@@ -58,7 +58,6 @@ function MainScreen() {
     arenaScreenDataArrayCopied[whichArenaSelected].trialData = 
     arenaScreenDataArrayCopied[whichArenaSelected].trialData.concat(trialTitle);
     setArenaScreenDataArray(arenaScreenDataArrayCopied);
-    setOpen(false);
   }
 
   let displayedArenaScreenData = arenaScreenDataArray[whichArenaSelected];
@@ -66,7 +65,7 @@ function MainScreen() {
     <ArenaScreen trialData={displayedArenaScreenData.trialData}></ArenaScreen> : <></>;
 
   const tabs = tabDataArray.map(({title, index}) => 
-    <ArenaTab title={title} handleClickTab={handleClickTab} index={index}></ArenaTab>);
+    <ArenaTab title={title} handleClickTab={handleClickTab} index={index} key={id.current++}></ArenaTab>);
 
   return (
     <>
@@ -88,7 +87,7 @@ function MainScreen() {
       </Button>
 
       <DialogSkeleton
-      children={<AddArenaDialog handleAddArena={handleAddArena}/>}
+      children={<AddArenaDialog handleAddArena={handleAddArena} handleClose={handleClose}/>}
       open={open}
       onClose={handleClose}
       >
@@ -100,9 +99,10 @@ function MainScreen() {
 }
 
 interface AddArenaDialogProps {
-  handleAddArena: (tabName: string) => void
+  handleAddArena: (tabName: string) => void,
+  handleClose: () => void
 }
-function AddArenaDialog({handleAddArena} : AddArenaDialogProps) {
+function AddArenaDialog({handleAddArena, handleClose} : AddArenaDialogProps) {
   const [value, setValue] = useState(""); //Value of input which changes on screen
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => { //Reacts to you entering
@@ -128,7 +128,7 @@ function AddArenaDialog({handleAddArena} : AddArenaDialogProps) {
             </Typography>
             <Button>Save Preset</Button><Button>Load Preset</Button><Button><AddIcon></AddIcon></Button><Button><RemoveIcon></RemoveIcon></Button>
             <TextField id=" outlined-multiline-flexible" multiline rows={4} disabled sx={{width: '100%'}}></TextField>
-            <Button variant="contained" onClick={() => handleAddArena(value)}>Submit</Button>
+            <Button variant="contained" onClick={() => {handleClose(); handleAddArena(value);}}>Submit</Button>
         </Box>
     </>
   );
@@ -140,9 +140,10 @@ interface ArenaScreenProps {
   trialData: string[]
 }
 function ArenaScreen({trialData} : ArenaScreenProps) {
+  const id = useRef<number>(0);
 
   const trials = trialData.map((title) =>
-    <Trial trialTitle={title}></Trial>
+    <Trial trialTitle={title} key={id.current++}></Trial>
   );
 
   return (
@@ -156,7 +157,7 @@ function ArenaScreen({trialData} : ArenaScreenProps) {
 interface ArenaTabProps {
   title: string,
   handleClickTab: (title: number) => void, //
-  index: number // To be able to tell parent which index to change to
+  index: number, // To be able to tell parent which index to change to
 }
 function ArenaTab ({title, handleClickTab, index}: ArenaTabProps) { // how 2 isDisplayed
   return (

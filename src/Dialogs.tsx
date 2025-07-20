@@ -1,7 +1,7 @@
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 
 interface DynamicTextFieldProps {
 
