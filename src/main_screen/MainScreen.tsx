@@ -62,7 +62,7 @@ function MainScreen() {
   const displayedArenaScreen = <ArenaScreen trialData={trialData}></ArenaScreen>;
 
   const tabs = tabDataArray.map(({title, index}) => 
-    <ArenaTab title={title} handleClickTab={handleClickTab} index={index} key={id.current++}></ArenaTab>);
+    <ArenaTab title={title} handleClickTab={handleClickTab} index={index} selected={index === whichArenaSelected} key={id.current++}></ArenaTab>);
 
   return (
     <>
@@ -156,11 +156,18 @@ interface ArenaTabProps {
   title: string,
   handleClickTab: (title: number) => void, //
   index: number, // To be able to tell parent which index to change to
+  selected: boolean
 }
-function ArenaTab ({title, handleClickTab, index}: ArenaTabProps) { // how 2 isDisplayed
+function ArenaTab ({title, handleClickTab, index, selected}: ArenaTabProps) { // how 2 isDisplayed
+
+  const selectedSx = {
+    backgroundColor: 'blue',
+    color: 'white'
+  };
+
   return (
       <Button
-      sx={{}}
+      sx={selected ? selectedSx : {}}
       onClick={() => handleClickTab(index)}
       >
         {title}
