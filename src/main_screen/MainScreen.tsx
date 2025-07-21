@@ -27,7 +27,7 @@ function MainScreen() {
   const [tabDataArray, setTabDataArray] = useState<tabData[]>([]); //visible tabs
   const [arenaScreenDataArray, setArenaScreenDataArray] = useState<arenaScreenData[]>([]); //STORED arenaScreenData. ref()
   const [whichArenaSelected, setWhichArenaSelected] = useState<number>(0); //WHICH arena shown/tab selected
-  const id = useRef<number>(0);
+  const id = useRef<number>(0); //Key ID to keep React happy
 
   const handleClickOpen = () => { //Triggered by add Tab button
     setOpen(true);
@@ -46,23 +46,18 @@ function MainScreen() {
     setWhichArenaSelected(index);
   };
 
-  const handleAddTrial = (addTrialDialogData: addTrialDialogData) => {
+  const handleAddTrial = (addTrialDialogData: addTrialDialogData) => { //Triggered by trial add button
     if (arenaScreenDataArray.length == 0) return;
-
-    console.log(addTrialDialogData.successString);
-    console.log(addTrialDialogData.failureString);
-    console.log(addTrialDialogData.additionalNotesString);
-
     const trialTitle = addTrialDialogData.trialTitle;
     let arenaScreenDataArrayCopied = [...arenaScreenDataArray]; //new ram
-    arenaScreenDataArrayCopied[whichArenaSelected].trialData = 
+    arenaScreenDataArrayCopied[whichArenaSelected].trialData =     // How to shorten this?
     arenaScreenDataArrayCopied[whichArenaSelected].trialData.concat(trialTitle);
     setArenaScreenDataArray(arenaScreenDataArrayCopied);
   }
 
   let displayedArenaScreenData = arenaScreenDataArray[whichArenaSelected];
-  const displayedArenaScreen = arenaScreenDataArray.length ? 
-    <ArenaScreen trialData={displayedArenaScreenData.trialData}></ArenaScreen> : <></>;
+  const trialData = arenaScreenDataArray.length ? displayedArenaScreenData.trialData : [];
+  const displayedArenaScreen = <ArenaScreen trialData={trialData}></ArenaScreen>;
 
   const tabs = tabDataArray.map(({title, index}) => 
     <ArenaTab title={title} handleClickTab={handleClickTab} index={index} key={id.current++}></ArenaTab>);
@@ -147,10 +142,11 @@ function ArenaScreen({trialData} : ArenaScreenProps) {
   );
 
   return (
-    <Stack spacing={2}>
-      {trials}
-    </Stack>
-
+    <Box sx={{height: '80vh'}}>
+      <Stack spacing={2}>
+        {trials}
+      </Stack>
+    </Box>
   );
 }
 
