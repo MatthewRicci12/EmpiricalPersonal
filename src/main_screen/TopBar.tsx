@@ -11,6 +11,8 @@ import DialogSkeleton from '../Dialogs.tsx';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Box from '@mui/system/Box';
 
+const MAX_TRIAL_NAME_LENGTH = 17;
+
 export interface addTrialDialogData {
   trialTitle: string,
   successString: string,
@@ -33,7 +35,7 @@ function AddTrialDialog({handleAddTrial, handleClose} : AddTrialDialogProps) {
 
 
   const handleInputTrialName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValueTrialName(e.target.value);
+    if (e.target.value.length < MAX_TRIAL_NAME_LENGTH) setValueTrialName(e.target.value);
   }
 
   const handleInputSuccess = (e: React.ChangeEvent<HTMLInputElement>) => {

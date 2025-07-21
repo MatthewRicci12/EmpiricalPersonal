@@ -12,6 +12,8 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import TopBar from './TopBar.tsx';
 import { addTrialDialogData }  from './TopBar.tsx';
 
+const MAX_ARENA_NAME_LENGTH = 9;
+
 
 interface tabData {
   title: string,
@@ -101,7 +103,7 @@ function AddArenaDialog({handleAddArena, handleClose} : AddArenaDialogProps) {
   const [value, setValue] = useState(""); //Value of input which changes on screen
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => { //Reacts to you entering
-    setValue(e.target.value);
+    if (e.target.value.length < MAX_ARENA_NAME_LENGTH) setValue(e.target.value);
   }
 
   return (
