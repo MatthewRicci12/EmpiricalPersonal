@@ -30,6 +30,7 @@ function MainScreen() {
   const [arenaScreenDataArray, setArenaScreenDataArray] = useState<arenaScreenData[]>([]); //STORED arenaScreenData. ref()
   const [whichArenaSelected, setWhichArenaSelected] = useState<number>(0); //WHICH arena shown/tab selected
   const id = useRef<number>(0); //Key ID to keep React happy
+  const arenaScreenKey = useRef<number>(0); //Key ID to reset ArenaScreen state
 
   const handleClickOpen = () => { //Triggered by add Tab button
     setOpen(true);
@@ -59,7 +60,7 @@ function MainScreen() {
 
   let displayedArenaScreenData = arenaScreenDataArray[whichArenaSelected];
   const trialData = arenaScreenDataArray.length ? displayedArenaScreenData.trialData : [];
-  const displayedArenaScreen = <ArenaScreen trialData={trialData}></ArenaScreen>;
+  const displayedArenaScreen = <ArenaScreen trialData={trialData} key={arenaScreenKey.current++}></ArenaScreen>;
 
   const tabs = tabDataArray.map(({title, index}) => 
     <ArenaTab title={title} handleClickTab={handleClickTab} index={index} selected={index === whichArenaSelected} key={id.current++}></ArenaTab>);
@@ -138,10 +139,19 @@ interface ArenaScreenProps {
 }
 function ArenaScreen({trialData} : ArenaScreenProps) {
   const id = useRef<number>(0);
+  const [whichTrialSelected, setTrialSelected] = useState<number>(-1);
 
-  const trials = trialData.map((title) =>
-    <Trial trialTitle={title} key={id.current++}></Trial>
+  const handleClickTrial = (index: number) => {
+    setTrialSelected(index);
+  }
+
+  let index = 0;
+  const trials = trialData.map((title) => {
+    return <Trial trialTitle={title} key={id.current++} handleClickTrial={handleClickTrial} index={index} 
+    selected={whichTrialSelected === index++}></Trial>}
   );
+  console.log(`Which trial selected: ${whichTrialSelected}`);
+  console.log(`Index after map: ${index}`);
 
   return (
     <Box sx={{height: '80vh'}}>

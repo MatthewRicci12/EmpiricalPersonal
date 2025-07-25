@@ -4,6 +4,8 @@ import { styled } from '@mui/system';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import Stack from '@mui/material/Stack';
+import { useState } from "react";
+
 
 const ButtonStyle = {
     borderRadius: '10px',
@@ -44,14 +46,16 @@ const TrialFailure = styled('button')({
 
 //QUESTION: Is this where these styles should go? Or global?
 interface TrialProps {
-    trialTitle: string
+    trialTitle: string,
+    selected: boolean,
+    handleClickTrial: (index: number) => void,
+    index: number
 }
-function Trial({trialTitle}: TrialProps) {
-
+function Trial({trialTitle, selected, handleClickTrial, index}: TrialProps) {
 
   //TODO: Is a stack of a stack really the best way to do this?
   return (
-      <Stack direction="row">
+      <Stack direction="row" sx={{backgroundColor: selected ? 'cyan': 'none'}} onClick={() => handleClickTrial(index)}>
       <TrialSuccess><CheckIcon sx={imgSx}></CheckIcon></TrialSuccess> <Typography sx={trialTitleStyle}>{trialTitle}</Typography><Typography sx={skepTextStyle}>hello</Typography>
       </Stack>
   );
