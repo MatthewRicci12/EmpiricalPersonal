@@ -16,8 +16,7 @@ const MAX_ARENA_NAME_LENGTH = 9;
 
 
 interface tabData {
-  title: string,
-  index: number
+  title: string
 }
 
 interface arenaScreenData {
@@ -41,7 +40,7 @@ function MainScreen() {
   };
 
   const handleAddArena = (tabName: string) => { // Triggered by Dialog submit button
-    setTabDataArray(tabDataArray.concat({title: tabName, index: tabDataArray.length}));
+    setTabDataArray(tabDataArray.concat({title: tabName}));
     setArenaScreenDataArray(arenaScreenDataArray.concat({trialData: []}));
   };
 
@@ -62,8 +61,9 @@ function MainScreen() {
   const trialData = arenaScreenDataArray.length ? displayedArenaScreenData.trialData : [];
   const displayedArenaScreen = <ArenaScreen trialData={trialData} key={arenaScreenKey.current++}></ArenaScreen>;
 
-  const tabs = tabDataArray.map(({title, index}) => 
-    <ArenaTab title={title} handleClickTab={handleClickTab} index={index} selected={index === whichArenaSelected} key={id.current++}></ArenaTab>);
+  let index = 0;
+  const tabs = tabDataArray.map(({title}) => 
+    <ArenaTab title={title} handleClickTab={handleClickTab} index={index} selected={index++ === whichArenaSelected} key={id.current++}></ArenaTab>);
 
   return (
     <>
