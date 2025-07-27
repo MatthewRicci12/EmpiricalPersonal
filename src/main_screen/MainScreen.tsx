@@ -1,35 +1,32 @@
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import Trial from './Trial.tsx';
-import Stack from '@mui/material/Stack';
 import DialogSkeleton from '../Dialogs.tsx';
-import { useState, useRef } from "react";
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import DialogTitle from '@mui/material/DialogTitle';
-import RemoveIcon from '@mui/icons-material/Remove';
-import TopBar from './TopBar.tsx';
-import { addTrialDialogData }  from './TopBar.tsx';
+import { useState } from "react";
+import { AddArenaDialog } from './AddArenaDialog';
+import { ArenaScreen } from './ArenaScreen';
+import { ArenaTab } from './ArenaTab';
+import { AddTrialDialogData } from './AddTrialDialog.tsx';
 
-const MAX_ARENA_NAME_LENGTH = 9;
+export const MAX_ARENA_NAME_LENGTH = 9;
 
+export type TrialData = Record<string, AddTrialDialogData>
+export type ArenaData = Record<string, TrialData>
 
-interface tabData {
-  title: string
+// I generally have this in every component, even if there are no props
+interface Props {
+
 }
 
-interface arenaScreenData {
-  trialData: string[]
-}
-
-function MainScreen() {
+const MainScreen: React.FC<Props> = () => {
   const [open, setOpen] = useState(false); //dialog pop up or not
-  const [tabDataArray, setTabDataArray] = useState<tabData[]>([]); //visible tabs
-  const [arenaScreenDataArray, setArenaScreenDataArray] = useState<arenaScreenData[]>([]); //STORED arenaScreenData. ref()
-  const [whichArenaSelected, setWhichArenaSelected] = useState<number>(0); //WHICH arena shown/tab selected
-  const id = useRef<number>(0); //Key ID to keep React happy
-  const arenaScreenKey = useRef<number>(0); //Key ID to reset ArenaScreen state
+  const [tabOrder, setTabOrder] = useState<string[]>([]); //visible tabs
+  const [whichArenaSelected, setWhichArenaSelected] = useState<string>(""); //WHICH arena shown/tab selected
+
+  // I would handle the state like this.
+  // With data being stored in an Object (called Maps in most languages), since that's easy to access
+  // Order would be stored in a separate array of the keys
+  const [arenaData, arenaDataSet] = useState<ArenaData>({})
 
   const handleClickOpen = () => { //Triggered by add Tab button
     setOpen(true);
@@ -40,149 +37,75 @@ function MainScreen() {
   };
 
   const handleAddArena = (tabName: string) => { // Triggered by Dialog submit button
-    setTabDataArray(tabDataArray.concat({title: tabName}));
-    setArenaScreenDataArray(arenaScreenDataArray.concat({trialData: []}));
+    // I'm pretty sure concat functions the same, but this is how I normally write the same thing
+    setTabOrder([...tabOrder, tabName]);
+    if (tabName in arenaData) {
+      // Proper error handling would come in here, or some kind of better handling of this
+      console.error("Tab with that name already exists! (Some kind of UUID should be used as keys if that's supposed ot be allowed.)")
+    }
+    const newArenaData = {
+      ...arenaData,
+      [tabName]: arenaData[tabName] || {}, // avoid overwriting when it already exists - if arenaData[tabName] is null, this assigns {}
+    }
+    arenaDataSet(newArenaData)
   };
 
-  const handleClickTab = (index: number) => { //Triggered by clicking a tab
-    setWhichArenaSelected(index);
+  /**
+   * This is a common technique in functional programming, called "higher order functions".
+   * Functions that return functions is a useful tool.
+   * It often means you don't have to pass as much context down
+   * In this case it means that the ArenaTab wouldn't need to know it's own title for the handler to work properly
+   */
+  const handleClickTab = (title: string): React.MouseEventHandler<HTMLButtonElement> => (e) => { //Triggered by clicking a tab
+    e.stopPropagation()
+    setWhichArenaSelected(title);
   };
 
-  const handleAddTrial = (addTrialDialogData: addTrialDialogData) => { //Triggered by trial add button
-    if (arenaScreenDataArray.length == 0) return;
+  const handleAddTrial = (addTrialDialogData: AddTrialDialogData) => { //Triggered by trial add button
     const trialTitle = addTrialDialogData.trialTitle;
-    let arenaScreenDataArrayCopied = [...arenaScreenDataArray]; //new ram
-    arenaScreenDataArrayCopied[whichArenaSelected].trialData =     // How to shorten this?
-    arenaScreenDataArrayCopied[whichArenaSelected].trialData.concat(trialTitle);
-    setArenaScreenDataArray(arenaScreenDataArrayCopied);
+
+    const newTrialData = {
+        ...arenaData[whichArenaSelected],
+        [trialTitle]: addTrialDialogData,
+      }
+
+    const newArenaData = {
+      ...arenaData,
+      [whichArenaSelected]: newTrialData,
+    }
+    arenaDataSet(newArenaData)
   }
-
-  let displayedArenaScreenData = arenaScreenDataArray[whichArenaSelected];
-  const trialData = arenaScreenDataArray.length ? displayedArenaScreenData.trialData : [];
-  const displayedArenaScreen = <ArenaScreen trialData={trialData} key={arenaScreenKey.current++}></ArenaScreen>;
-
-  let index = 0;
-  const tabs = tabDataArray.map(({title}) => 
-    <ArenaTab title={title} handleClickTab={handleClickTab} index={index} selected={index++ === whichArenaSelected} key={id.current++}></ArenaTab>);
-
+  const trialData = arenaData[whichArenaSelected] ?? {}
+  
   return (
     <>
-      <TopBar handleAddTrial={handleAddTrial}></TopBar>
-      <Box 
-      sx={{
-        height: '90%',
-        whiteSpace: 'pre'
-      }}>
-
-        {displayedArenaScreen}
-
+      <Box
+        sx={{
+          height: '90%',
+          whiteSpace: 'pre'
+        }}>
+        <ArenaScreen trialData={trialData} key={whichArenaSelected} handleAddTrial={handleAddTrial} />;
       </Box>
       <Button
         sx={{}}
         onClick={handleClickOpen}
-        >
-        <AddIcon></AddIcon>
+      >
+        <AddIcon />
       </Button>
 
       <DialogSkeleton
-      children={<AddArenaDialog handleAddArena={handleAddArena} handleClose={handleClose}/>}
-      open={open}
-      onClose={handleClose}
+        open={open}
+        onClose={handleClose}
       >
+        {/* "children"  as a prop refers to anything that shows up between the opening and close tag */}
+        <AddArenaDialog handleAddArena={handleAddArena} handleClose={handleClose} />
       </DialogSkeleton>
-      
-      {tabs}
+
+      {tabOrder.map((title, index) =>
+        <ArenaTab title={title} handleClickTab={handleClickTab(title)} selected={title === whichArenaSelected} key={`${title}-${index}`} />)}
     </>
   );
 }
 
-interface AddArenaDialogProps {
-  handleAddArena: (tabName: string) => void,
-  handleClose: () => void
-}
-function AddArenaDialog({handleAddArena, handleClose} : AddArenaDialogProps) {
-  const [value, setValue] = useState(""); //Value of input which changes on screen
-
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => { //Reacts to you entering
-    if (e.target.value.length < MAX_ARENA_NAME_LENGTH) setValue(e.target.value);
-  }
-
-  return (
-    <>
-    <DialogTitle>Add New Arena</DialogTitle>
-        <Box
-        sx={{
-            height: '500px',
-            width: '500px'
-        }}>
-            <TextField id="outlined-basic" label="Arena Title" variant="outlined" value={value} onChange={handleInput} 
-            sx={{
-                paddingBottom: '10px'
-            }}></TextField>
-            <Typography sx={{
-                fontSize: "1.5em"
-            }}>
-                Factors
-            </Typography>
-            <Button>Save Preset</Button><Button>Load Preset</Button><Button><AddIcon></AddIcon></Button><Button><RemoveIcon></RemoveIcon></Button>
-            <TextField id=" outlined-multiline-flexible" multiline rows={4} disabled sx={{width: '100%'}}></TextField>
-            <Button variant="contained" onClick={() => {handleClose(); handleAddArena(value);}}>Submit</Button>
-        </Box>
-    </>
-  );
-}
-
-
-
-interface ArenaScreenProps {
-  trialData: string[]
-}
-function ArenaScreen({trialData} : ArenaScreenProps) {
-  const id = useRef<number>(0);
-  const [whichTrialSelected, setTrialSelected] = useState<number>(-1);
-
-  const handleClickTrial = (index: number) => {
-    setTrialSelected(index);
-  }
-
-  let index = 0;
-  const trials = trialData.map((title) => {
-    return <Trial trialTitle={title} key={id.current++} handleClickTrial={handleClickTrial} index={index} 
-    selected={whichTrialSelected === index++}></Trial>}
-  );
-  console.log(`Which trial selected: ${whichTrialSelected}`);
-  console.log(`Index after map: ${index}`);
-
-  return (
-    <Box sx={{height: '80vh'}}>
-      <Stack spacing={2}>
-        {trials}
-      </Stack>
-    </Box>
-  );
-}
-
-interface ArenaTabProps {
-  title: string,
-  handleClickTab: (title: number) => void, //
-  index: number, // To be able to tell parent which index to change to
-  selected: boolean
-}
-function ArenaTab ({title, handleClickTab, index, selected}: ArenaTabProps) { // how 2 isDisplayed
-
-  const selectedSx = {
-    backgroundColor: 'blue',
-    color: 'white'
-  };
-
-  return (
-      <Button
-      sx={selected ? selectedSx : {}}
-      onClick={() => handleClickTab(index)}
-      >
-        {title}
-      </Button>
-  );
-}
 
 export default MainScreen;

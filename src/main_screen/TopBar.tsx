@@ -4,99 +4,15 @@ import Container from '@mui/system/Container';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
-import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
 import { useState } from "react";
 import DialogSkeleton from '../Dialogs.tsx';
-import RemoveIcon from '@mui/icons-material/Remove';
-import Box from '@mui/system/Box';
+import AddTrialDialog, { AddTrialDialogData } from './AddTrialDialog.tsx';
 
-const MAX_TRIAL_NAME_LENGTH = 17;
-
-export interface addTrialDialogData {
-  trialTitle: string,
-  successString: string,
-  failureString: string,
-  additionalNotesString: string
-}
-
-interface AddTrialDialogProps {
-  handleAddTrial: (addTrialDialogData: addTrialDialogData) => void,
-  handleClose: () => void
-}
-function AddTrialDialog({handleAddTrial, handleClose} : AddTrialDialogProps) {
-  const [valueTrialName, setValueTrialName] = useState("");
-  const [valueSuccess, setValueSuccess] = useState("");
-  const [valueFailure, setValueFailure] = useState("");
-  const [valueAdditionalNotes, setValueAdditionalNotes] = useState("");
-
-
-  let addTrialDialogData: addTrialDialogData = {} as addTrialDialogData;
-
-
-  const handleInputTrialName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length < MAX_TRIAL_NAME_LENGTH) setValueTrialName(e.target.value);
-  }
-
-  const handleInputSuccess = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValueSuccess(e.target.value);
-  }
-
-  const handleInputFailure= (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValueFailure(e.target.value);
-  }
-
-  const handleInputAdditionalNotes= (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValueAdditionalNotes(e.target.value);
-  }
-
-  // outlined-multiline-flexible multiline maxRows={4}
-  return (
-    <>
-    <DialogTitle>Add New Arena</DialogTitle>
-
-
-    {/* Input for trial's name */}
-    <Typography>Trial name:</Typography>
-    <TextField id="outlined-basic" variant="outlined" value={valueTrialName} onChange={handleInputTrialName} 
-                sx={{
-                    paddingBottom: '10px'
-                }}></TextField>
-
-    {/* What a success looks like */}
-    <Typography>What a success looks like</Typography>
-    <TextField  id=" outlined-multiline-flexible" multiline rows={4} value={valueSuccess} onChange={handleInputSuccess}></TextField>
-
-    {/* What a failure looks like */}
-    <Typography>What a failure looks like</Typography>
-    <TextField id=" outlined-multiline-flexible" multiline rows={4} value={valueFailure} onChange={handleInputFailure} ></TextField>
-    
-    {/* Individual Factors \*/}
-    <Typography>Individual Factors <Button><AddIcon></AddIcon></Button><Button><RemoveIcon></RemoveIcon></Button></Typography>
-    <TextField id=" outlined-multiline-flexible" multiline rows={4} disabled></TextField>
-
-    {/* Additional notes */}
-    <Typography>Additional notes</Typography>
-    <TextField id=" outlined-multiline-flexible" multiline rows={4} value={valueAdditionalNotes} onChange={handleInputAdditionalNotes} ></TextField>
-
-    {/* BOTTOM SUBMIT BUTTON */}
-    <Button variant="contained" onClick={() => {
-      //##############################################################HERE
-      addTrialDialogData.trialTitle = valueTrialName;
-      addTrialDialogData.successString = valueSuccess;
-      addTrialDialogData.failureString = valueFailure;
-      addTrialDialogData.additionalNotesString = valueAdditionalNotes;
-      handleClose();
-      handleAddTrial(addTrialDialogData);
-    }}>Submit</Button>
-    </>
-  );
-}
 
 interface TopBarProps {
-  handleAddTrial: (addTrialDialogData: addTrialDialogData) => void
+  handleAddTrial: (addTrialDialogData: AddTrialDialogData) => void
 }
-export function TopBar({handleAddTrial}: TopBarProps) {
+export const TopBar: React.FC<TopBarProps> = ({handleAddTrial}) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -124,7 +40,7 @@ export function TopBar({handleAddTrial}: TopBarProps) {
         <AddIcon></AddIcon>
         </Button>
           <DialogSkeleton
-          children={<AddTrialDialog handleAddTrial={handleAddTrial} handleClose={handleClose}></AddTrialDialog>}
+          children={<AddTrialDialog handleAddTrial={handleAddTrial} handleClose={handleClose} />}
           open={open}
           onClose={handleClose}
           >
