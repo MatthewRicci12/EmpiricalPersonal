@@ -1,4 +1,4 @@
-import MainScreen from './main_screen/MainScreen.tsx';
+import MainScreen from './MainScreen/MainScreen.tsx';
 
 function App() {
   return (

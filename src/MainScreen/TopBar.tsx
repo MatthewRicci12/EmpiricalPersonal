@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import { useState } from "react";
-import DialogSkeleton from '../Dialogs.tsx';
+import DialogSkeleton from '../Dialogs/Dialogs.tsx';
 import AddTrialDialog, { AddTrialDialogData } from './AddTrialDialog.tsx';
 
 

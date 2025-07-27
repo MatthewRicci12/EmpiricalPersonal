@@ -1,11 +1,11 @@
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import DialogSkeleton from '../Dialogs.tsx';
+import DialogSkeleton from '../Dialogs/Dialogs.tsx';
 import { useState } from "react";
-import { AddArenaDialog } from './AddArenaDialog';
-import { ArenaScreen } from './ArenaScreen';
-import { ArenaTab } from './ArenaTab';
+import { AddArenaDialog } from './AddArenaDialog.tsx';
+import { ArenaScreen } from './ArenaScreen.tsx';
+import { ArenaTab } from './ArenaTab.tsx';
 import { AddTrialDialogData } from './AddTrialDialog.tsx';
 
 export const MAX_ARENA_NAME_LENGTH = 9;
