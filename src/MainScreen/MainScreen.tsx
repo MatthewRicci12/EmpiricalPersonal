@@ -37,15 +37,14 @@ const MainScreen: React.FC<Props> = () => {
   };
 
   const handleAddArena = (tabName: string) => { // Triggered by Dialog submit button
-    // I'm pretty sure concat functions the same, but this is how I normally write the same thing
     setTabOrder([...tabOrder, tabName]);
     if (tabName in arenaData) {
-      // Proper error handling would come in here, or some kind of better handling of this
       console.error("Tab with that name already exists! (Some kind of UUID should be used as keys if that's supposed ot be allowed.)")
+      return;
     }
     const newArenaData = {
       ...arenaData,
-      [tabName]: arenaData[tabName] || {}, // avoid overwriting when it already exists - if arenaData[tabName] is null, this assigns {}
+      [tabName]: arenaData[tabName] || {},
     }
     arenaDataSet(newArenaData)
   };
