@@ -18,12 +18,12 @@ export interface AddTrialDialogData {
 }
 
 
-interface AddTrialDialogProps {
+interface Props {
   handleAddTrial: (addTrialDialogData: AddTrialDialogData) => void,
   handleClose: () => void
 }
 
-export const AddTrialDialog: React.FC<AddTrialDialogProps> = ({ handleAddTrial, handleClose }: AddTrialDialogProps) => {
+export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose }) => {
   const [valueTrialName, setValueTrialName] = useState("");
   const [valueSuccess, setValueSuccess] = useState("");
   const [valueFailure, setValueFailure] = useState("");

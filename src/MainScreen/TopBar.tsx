@@ -9,10 +9,10 @@ import DialogSkeleton from '../Dialogs/Dialogs.tsx';
 import AddTrialDialog, { AddTrialDialogData } from './AddTrialDialog.tsx';
 
 
-interface TopBarProps {
+interface Props {
   handleAddTrial: (addTrialDialogData: AddTrialDialogData) => void
 }
-export const TopBar: React.FC<TopBarProps> = ({handleAddTrial}) => {
+export const TopBar: React.FC<Props> = ({handleAddTrial}) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {

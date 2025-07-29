@@ -5,12 +5,12 @@ import TopBar from "./TopBar";
 import { TrialData } from "./MainScreen";
 import { AddTrialDialogData } from "./AddTrialDialog";
 
-interface ArenaScreenProps {
+interface Props {
   trialData: TrialData
   handleAddTrial: (newTrialData: AddTrialDialogData) => void
 }
 
-export const ArenaScreen: React.FC<ArenaScreenProps> = ({ trialData, handleAddTrial }) => {
+export const ArenaScreen: React.FC<Props> = ({ trialData, handleAddTrial }) => {
   const [whichTrialSelected, setTrialSelected] = useState<keyof TrialData>("");
 
   const handleClickTrial = (title: keyof TrialData) => {
@@ -18,10 +18,10 @@ export const ArenaScreen: React.FC<ArenaScreenProps> = ({ trialData, handleAddTr
   }
 
   // Parameters for array.map are (singleItem, index?, fullArray?)
-  const trials = Object.keys(trialData).map((title) => {
-    return <Trial trialTitle={title} key={title} handleClickTrial={handleClickTrial}
+  const trials = Object.keys(trialData).map((title) => (
+    <Trial trialTitle={title} key={title} handleClickTrial={handleClickTrial}
       selected={whichTrialSelected === title} />
-  }
+  )
   );
   console.log(`Which trial selected: ${whichTrialSelected}`);
   console.log(`Index after map: ${trialData.length}`);

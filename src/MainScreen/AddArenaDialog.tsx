@@ -8,12 +8,11 @@ import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 
-interface AddArenaDialogProps {
+interface Props {
   handleAddArena: (tabName: string) => void,
   handleClose: () => void
 }
-
-export const AddArenaDialog: React.FC<AddArenaDialogProps> = ({ handleAddArena, handleClose }) => {
+export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleClose }) => {
   const [value, setValue] = useState(""); //Value of input which changes on screen
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => { //Reacts to you entering

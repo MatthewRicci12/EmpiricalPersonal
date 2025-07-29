@@ -3,25 +3,19 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 
-interface DynamicTextFieldProps {
-
-}
-function DynamicTextField() {
-}
-
-interface DialogSkeletonProps {
+interface Props {
     children: React.ReactNode,
     open: boolean,
     onClose: () => void;
 }
-function DialogSkeleton(props: DialogSkeletonProps) {
+const DialogSkeleton: React.FC<Props> = ({children, open, onClose}) => {
     
     return (
       <Dialog 
-      open={props.open}>
+      open={open}>
         <IconButton
             aria-label="close"
-            onClick={props.onClose}
+            onClick={onClose}
             sx={(theme) => ({
                 position: 'absolute',
                 right: 8,
@@ -31,7 +25,7 @@ function DialogSkeleton(props: DialogSkeletonProps) {
             >
             <CloseIcon/>
         </IconButton>
-        {props.children}
+        {children}
       </Dialog>
     );
 

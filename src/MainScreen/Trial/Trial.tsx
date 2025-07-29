@@ -38,12 +38,12 @@ const imgSx = {
 // (note: .module.css files need to be imported in the tsx, but they will not have colliding selector names if you use the same one in multiple files)
 // I've used tailwind and the sx type of styling, but the ways I ended up using that always felt like css except with worse IDE support, so I just generally write standard CSS now
 
-interface TrialProps {
+interface Props {
   trialTitle: string,
   selected: boolean,
   handleClickTrial: (title: string) => void,
 }
-const Trial: React.FC<TrialProps> = ({ trialTitle, selected, handleClickTrial }) => {
+const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial }) => {
 
   return (
     <Stack direction="row" sx={{ backgroundColor: selected ? 'cyan' : 'none' }} onClick={() => handleClickTrial(trialTitle)}>
