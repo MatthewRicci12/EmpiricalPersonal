@@ -28,7 +28,6 @@ export const ArenaScreen: React.FC<Props> = ({ trialData, handleAddTrial }) => {
 
   return (
     <>
-      {/* Since trials belong to arenas, I would do as much handling of them as possible within the arenas */}
       <TopBar handleAddTrial={handleAddTrial} />
       <Box sx={{ height: '80vh' }}>
         <Stack spacing={2}>

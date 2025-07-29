@@ -8,8 +8,6 @@ import AddIcon from '@mui/icons-material/Add';
 
 const MAX_TRIAL_NAME_LENGTH = 17;
 
-// I use the convention of type names being capitalized.
-// Older TS convention includes starting interface names with an I (like IAddTrialDialogData)
 export interface AddTrialDialogData {
   trialTitle: string,
   successString: string,
@@ -29,19 +27,18 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
   const [valueFailure, setValueFailure] = useState("");
   const [valueAdditionalNotes, setValueAdditionalNotes] = useState("");
 
-  const handleInputTrialName = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputTrialName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.value.length < MAX_TRIAL_NAME_LENGTH) setValueTrialName(e.target.value);
   }
 
-  const handleInputSuccess = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputSuccess: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setValueSuccess(e.target.value);
   }
 
-  const handleInputFailure = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputFailure: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setValueFailure(e.target.value);
   }
 
-  // I always prefer to type the function itself rather than it's params, but it's definitely not wrong to do otherwise
   const handleInputAdditionalNotes: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setValueAdditionalNotes(e.target.value);
   }
@@ -58,7 +55,7 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
     handleAddTrial(newData);
   }
 
-  // outlined-multiline-flexible multiline maxRows={4}
+
   return (
     <>
       <DialogTitle>Add New Arena</DialogTitle>

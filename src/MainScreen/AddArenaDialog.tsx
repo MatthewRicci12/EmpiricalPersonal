@@ -19,9 +19,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleClose })
     if (e.target.value.length < MAX_ARENA_NAME_LENGTH) setValue(e.target.value);
   }
 
-  // I prefer not declaring event handlers inline in the JSX if it includes 2 function calls like this one does
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    // this is often needed for button handlers in browser, to the point where I included it in every event handler
     e.stopPropagation()
     
     handleClose()

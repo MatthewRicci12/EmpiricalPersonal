@@ -4,7 +4,6 @@ import { styled } from '@mui/system';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import Stack from '@mui/material/Stack';
-//import styles from './Trial.module.css'
 import * as styles from './styles.tsx'
 
 interface Props {

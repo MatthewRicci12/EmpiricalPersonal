@@ -37,13 +37,13 @@ export const TopBar: React.FC<Props> = ({handleAddTrial}) => {
 
       <Container>
         <Button onClick={handleClickOpen}>
-        <AddIcon></AddIcon>
+        <AddIcon/>
         </Button>
           <DialogSkeleton
-          children={<AddTrialDialog handleAddTrial={handleAddTrial} handleClose={handleClose} />}
           open={open}
           onClose={handleClose}
           >
+          <AddTrialDialog handleAddTrial={handleAddTrial} handleClose={handleClose} />
           </DialogSkeleton>
         Add Trial
       </Container>

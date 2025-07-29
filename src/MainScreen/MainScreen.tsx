@@ -13,7 +13,6 @@ export const MAX_ARENA_NAME_LENGTH = 9;
 export type TrialData = Record<string, AddTrialDialogData>
 export type ArenaData = Record<string, TrialData>
 
-// I generally have this in every component, even if there are no props
 interface Props {
 
 }
@@ -23,9 +22,6 @@ const MainScreen: React.FC<Props> = () => {
   const [tabOrder, setTabOrder] = useState<string[]>([]); //visible tabs
   const [whichArenaSelected, setWhichArenaSelected] = useState<string>(""); //WHICH arena shown/tab selected
 
-  // I would handle the state like this.
-  // With data being stored in an Object (called Maps in most languages), since that's easy to access
-  // Order would be stored in a separate array of the keys
   const [arenaData, arenaDataSet] = useState<ArenaData>({})
 
   const handleClickOpen = () => { //Triggered by add Tab button
@@ -44,17 +40,11 @@ const MainScreen: React.FC<Props> = () => {
     }
     const newArenaData = {
       ...arenaData,
-      [tabName]: arenaData[tabName] || {},
+      [tabName]: arenaData[tabName] || {}, // avoid overwriting when it already exists - if arenaData[tabName] is null, this assigns {}
     }
     arenaDataSet(newArenaData)
   };
 
-  /**
-   * This is a common technique in functional programming, called "higher order functions".
-   * Functions that return functions is a useful tool.
-   * It often means you don't have to pass as much context down
-   * In this case it means that the ArenaTab wouldn't need to know it's own title for the handler to work properly
-   */
   const handleClickTab = (title: string): React.MouseEventHandler<HTMLButtonElement> => (e) => { //Triggered by clicking a tab
     e.stopPropagation()
     setWhichArenaSelected(title);
@@ -96,7 +86,6 @@ const MainScreen: React.FC<Props> = () => {
         open={open}
         onClose={handleClose}
       >
-        {/* "children"  as a prop refers to anything that shows up between the opening and close tag */}
         <AddArenaDialog handleAddArena={handleAddArena} handleClose={handleClose} />
       </DialogSkeleton>
 
