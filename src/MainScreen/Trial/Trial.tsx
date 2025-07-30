@@ -9,12 +9,12 @@ import * as styles from './styles.tsx'
 interface Props {
   trialTitle: string,
   selected: boolean,
-  handleClickTrial: (title: string) => void,
+  handleClickTrial: React.MouseEventHandler<HTMLDivElement>,
 }
 const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial }) => {
 
   return (
-    <Stack direction="row" sx={{ backgroundColor: selected ? 'cyan' : 'none' }} onClick={() => handleClickTrial(trialTitle)}>
+    <Stack direction="row" sx={{ backgroundColor: selected ? 'cyan' : 'none' }} onClick={handleClickTrial}>
       <styles.TrialSuccess>
         <CheckIcon sx={styles.imgSx} />
       </styles.TrialSuccess>

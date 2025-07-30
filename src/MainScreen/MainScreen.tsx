@@ -73,7 +73,7 @@ const MainScreen: React.FC<Props> = () => {
           height: '90%',
           whiteSpace: 'pre'
         }}>
-        <ArenaScreen trialData={trialData} key={whichArenaSelected} handleAddTrial={handleAddTrial} />;
+        <ArenaScreen trialData={trialData} key={whichArenaSelected} handleAddTrial={handleAddTrial} />
       </Box>
       <Button
         sx={{}}

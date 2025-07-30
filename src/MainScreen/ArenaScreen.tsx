@@ -13,13 +13,19 @@ interface Props {
 export const ArenaScreen: React.FC<Props> = ({ trialData, handleAddTrial }) => {
   const [whichTrialSelected, setTrialSelected] = useState<keyof TrialData>("");
 
-  const handleClickTrial = (title: keyof TrialData) => {
-    setTrialSelected(title);
+  const handleClickTrial = (title: string): React.MouseEventHandler<HTMLDivElement> => (e) => {
+    e.stopPropagation()
+    whichTrialSelected === title ? setTrialSelected("") : setTrialSelected(title);
+    // if (whichTrialSelected === title) {
+    //   setTrialSelected("");
+    // }
+    // setTrialSelected(title);
   }
+
 
   // Parameters for array.map are (singleItem, index?, fullArray?)
   const trials = Object.keys(trialData).map((title) => (
-    <Trial trialTitle={title} key={title} handleClickTrial={handleClickTrial}
+    <Trial trialTitle={title} key={title} handleClickTrial={handleClickTrial(title)}
       selected={whichTrialSelected === title} />
   )
   );
