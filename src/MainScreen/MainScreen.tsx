@@ -1,9 +1,9 @@
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import DialogSkeleton from '../Dialogs/Dialogs.tsx';
+import DialogSkeleton from '../DialogSkeleton/DialogSkeleton.tsx';
 import { useState } from "react";
-import { AddArenaDialog } from './AddArenaDialog.tsx';
+import { AddArenaDialog } from '../AddArenaDialog/AddArenaDialog.tsx';
 import { ArenaScreen } from './ArenaScreen.tsx';
 import { ArenaTab } from './ArenaTab.tsx';
 import { AddTrialDialogData } from './AddTrialDialog.tsx';
@@ -16,19 +16,18 @@ export type ArenaData = Record<string, TrialData>
 interface Props {
 
 }
-
 const MainScreen: React.FC<Props> = () => {
   const [open, setOpen] = useState(false); //dialog pop up or not
-  const [tabOrder, setTabOrder] = useState<string[]>([]); //visible tabs
-  const [whichArenaSelected, setWhichArenaSelected] = useState<string>(""); //WHICH arena shown/tab selected
+  const [tabOrder, setTabOrder] = useState<(keyof ArenaData)[]>([]); //visible tabs
+  const [whichArenaSelected, setWhichArenaSelected] = useState<keyof ArenaData>(""); //WHICH arena shown/tab selected
 
   const [arenaData, arenaDataSet] = useState<ArenaData>({})
 
-  const handleClickOpen = () => { //Triggered by add Tab button
+  const handleOpenArenaDialog = () => { //Triggered by add Tab button
     setOpen(true);
   };
 
-  const handleClose = () => { //Triggered by Dialog x
+  const handleCloseArenaDialog = () => { //Triggered by Dialog x
     setOpen(false);
   };
 
@@ -75,18 +74,18 @@ const MainScreen: React.FC<Props> = () => {
         }}>
         <ArenaScreen trialData={trialData} key={whichArenaSelected} handleAddTrial={handleAddTrial} />
       </Box>
+
+      {/* Button to add a new Arena */}
       <Button
         sx={{}}
-        onClick={handleClickOpen}
-      >
+        onClick={handleOpenArenaDialog}>
         <AddIcon />
       </Button>
-
       <DialogSkeleton
         open={open}
-        onClose={handleClose}
+        onClose={handleCloseArenaDialog}
       >
-        <AddArenaDialog handleAddArena={handleAddArena} handleClose={handleClose} />
+        <AddArenaDialog handleAddArena={handleAddArena} handleCloseArenaDialog={handleCloseArenaDialog} />
       </DialogSkeleton>
 
       {tabOrder.map((title, index) =>
