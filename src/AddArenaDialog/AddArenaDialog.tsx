@@ -2,18 +2,30 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { MAX_ARENA_NAME_LENGTH } from './MainScreen';
+import { MAX_ARENA_NAME_LENGTH } from '../MainScreen/MainScreen';
 import { useState } from 'react';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
+import DialogSkeleton from '../DialogSkeleton/DialogSkeleton.tsx';
+import LoadPresetDialog from './LoadPresetDialog.tsx';
 
 interface Props {
   handleAddArena: (tabName: string) => void,
-  handleClose: () => void
+  handleCloseArenaDialog: () => void
 }
-export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleClose }) => {
+export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseArenaDialog }) => {
+  const [open, setOpen] = useState(false); //dialog pop up or not
   const [value, setValue] = useState(""); //Value of input which changes on screen
+
+  const handleOpenPresetDialog = () => { //Triggered by add Tab button
+    setOpen(true);
+  };
+
+  const handleClosePresetDialog = () => { //Triggered by Dialog x
+    setOpen(false);
+  };
+
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => { //Reacts to you entering
     if (e.target.value.length < MAX_ARENA_NAME_LENGTH) setValue(e.target.value);
@@ -22,7 +34,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleClose })
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation()
     
-    handleClose()
+    handleCloseArenaDialog()
     handleAddArena(value)
   }
 
@@ -45,7 +57,20 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleClose })
         </Typography>
         {/* Much easier to read when things are not on the same line*/}
         <Button>Save Preset</Button>
-        <Button>Load Preset</Button>
+
+        <Button onClick={handleOpenPresetDialog}>Load Preset</Button>
+        {/* Preset Dialog */}
+        <DialogSkeleton
+        open={open}
+        onClose={handleClosePresetDialog}
+        >
+          <LoadPresetDialog
+          handleClosePresetDialog={handleClosePresetDialog}
+          ></LoadPresetDialog>
+        </DialogSkeleton>
+
+
+
         <Button>
           <AddIcon />
         </Button>

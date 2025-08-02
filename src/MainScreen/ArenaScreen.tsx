@@ -16,10 +16,6 @@ export const ArenaScreen: React.FC<Props> = ({ trialData, handleAddTrial }) => {
   const handleClickTrial = (title: string): React.MouseEventHandler<HTMLDivElement> => (e) => {
     e.stopPropagation()
     whichTrialSelected === title ? setTrialSelected("") : setTrialSelected(title);
-    // if (whichTrialSelected === title) {
-    //   setTrialSelected("");
-    // }
-    // setTrialSelected(title);
   }
 
 
