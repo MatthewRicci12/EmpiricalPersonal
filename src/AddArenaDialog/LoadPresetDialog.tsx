@@ -10,8 +10,8 @@ interface Props {
   handleClosePresetDialog: () => void
 }
 export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog}) => {
-  const [presetData, setPresetData] = useState<PresetData>({'Preset 1' : {'Weather' : 27}});
-  const [presetOrder, setPresetOrder] = useState<(keyof PresetData)[]>(['Preset 1']); //visible tabs
+  const [presetData, setPresetData] = useState<PresetData>({});
+  const [presetOrder, setPresetOrder] = useState<(keyof PresetData)[]>([]); //visible tabs
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
@@ -26,7 +26,7 @@ export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog}) => 
           height: '500px',
           width: '500px'
         }}>
-          {presetOrder.map((presetTitle) => <Preset title={presetTitle} factorData={presetData[presetTitle]}/>)}
+          {presetOrder.map((presetTitle) => <Preset title={presetTitle}/>)}
         </Box>
     </>
   );

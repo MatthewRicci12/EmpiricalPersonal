@@ -6,13 +6,12 @@ import FactorListDialog from './FactorListDialog.tsx';
 
 export type PresetData = Record<string, FactorData>
 interface Props {
-    title: string,
-    factorData: FactorData
+    title: string
 }
 export const Preset: React.FC<Props> = ({title}) => {
   const [open, setOpen] = useState(false); //dialog pop up or not
-  const [factorData, setFactorData] = useState({'Weather' : 27});
-  const [factorOrder, setFactorOrder] = useState(['Weather']);
+  const [factorData, setFactorData] = useState({});
+  const [factorOrder, setFactorOrder] = useState([]);
   
   const handleOpenPresetDialog = () => { //Triggered by add Tab button
     setOpen(true);
