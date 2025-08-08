@@ -12,6 +12,7 @@ import LoadPresetDialog from './LoadPresetDialog.tsx';
 import AddFactorDialog from './AddFactorDialog.tsx';
 import { FactorData } from './Factor.tsx';
 import Preset, { PresetData } from './Preset.tsx';
+import SavePresetDialog from './SavePresetDialog.tsx';
 
 interface Props {
   handleAddArena: (tabName: string) => void,
@@ -20,9 +21,13 @@ interface Props {
 export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseArenaDialog }) => {
   const [openPresetDialog, setOpenPresetDialog] = useState(false); //dialog pop up or not
   const [openAddFactorDialog, setOpenAddFactorDialog] = useState(false); //dialog pop up or not
+  const [openSavePresetDialog, setOpenSavePresetDialog] = useState(false); //dialog pop up or not
+
   const [value, setValue] = useState(""); //Value of input which changes on screen
   const [factorData, setFactorData] = useState<FactorData>({});
   const [factorOrder, setFactorOrder] = useState<(keyof FactorData)[]>([]);
+  const [presetData, setPresetData] = useState<PresetData>({});
+  const [presetOrder, setPresetOrder] = useState<(keyof PresetData)[]>([]);
 
   const handleOpenPresetDialog = () => { //Triggered by add Tab button
     setOpenPresetDialog(true);
@@ -38,6 +43,14 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
 
   const handleCloseAddFactorDialog = () => { //Triggered by Dialog x
     setOpenAddFactorDialog(false);
+  };
+
+  const handleOpenSavePresetDialog = () => { //Triggered by Dialog x
+    setOpenSavePresetDialog(true);
+  };
+
+  const handleCloseSavePresetDialog = () => { //Triggered by Dialog x
+    setOpenSavePresetDialog(false);
   };
 
 
@@ -70,14 +83,25 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
 
   const handleRemoveFactor: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation()
-    
+
 
   }
+// export interface PresetData {
+//   presetTitle: string,
+//   factorData: FactorData,
+//   factorOrder: (keyof FactorData)[]
+// }
 
-  const handleSavePreset: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation()
-    
-    
+  // const [presetData, setPresetData] = useState<PresetData>({} as PresetData);
+  // const [presetOrder, setPresetOrder] = useState<string[]>([]);
+  const handleSavePreset = (presetName: string) => {
+    setPresetOrder([...presetOrder, presetName]);
+
+    const newPresetData = {
+      ...presetData,
+      [presetName]: {factorData: factorData, factorOrder: factorOrder}
+    }
+    setPresetData(newPresetData);
   }
 
 
@@ -99,7 +123,18 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
           Factors
         </Typography>
         {/* Save Preset */}
-        <Button onClick={handleSavePreset}>Save Preset</Button>
+        <Button onClick={handleOpenSavePresetDialog}>Save Preset</Button>
+        <DialogSkeleton
+        open={openSavePresetDialog}
+        onClose={handleCloseSavePresetDialog}  
+        >
+          <SavePresetDialog
+          handleCloseSavePresetDialog={handleCloseSavePresetDialog}
+          handleSavePreset={handleSavePreset}
+          >
+
+          </SavePresetDialog>
+        </DialogSkeleton>
 
         {/* Load Preset */}
         <Button onClick={handleOpenPresetDialog}>Load Preset</Button>
@@ -109,6 +144,8 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
         >
           <LoadPresetDialog
           handleClosePresetDialog={handleClosePresetDialog}
+          presetData={presetData}
+          presetOrder={presetOrder}
           ></LoadPresetDialog>
         </DialogSkeleton>
 

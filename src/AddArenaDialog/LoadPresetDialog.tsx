@@ -7,11 +7,11 @@ import Button from '@mui/material/Button';
 import {FactorData} from './Factor.tsx';
 
 interface Props {
-  handleClosePresetDialog: () => void
+  handleClosePresetDialog: () => void,
+  presetData: PresetData,
+  presetOrder: (keyof PresetData)[]
 }
-export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog}) => {
-  const [presetData, setPresetData] = useState<PresetData>({});
-  const [presetOrder, setPresetOrder] = useState<(keyof PresetData)[]>([]); //visible tabs
+export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, presetData, presetOrder}) => {
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
@@ -26,7 +26,8 @@ export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog}) => 
           height: '500px',
           width: '500px'
         }}>
-          {presetOrder.map((presetTitle) => <Preset title={presetTitle}/>)}
+          {presetOrder.map((presetTitle) => <Preset title={presetTitle} factorData={presetData[presetTitle].factorData} 
+            factorOrder={presetData[presetTitle].factorOrder}/>)}
         </Box>
     </>
   );

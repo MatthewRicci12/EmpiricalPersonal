@@ -4,14 +4,15 @@ import Button from '@mui/material/Button';
 import DialogSkeleton from '../DialogSkeleton/DialogSkeleton.tsx';
 import FactorListDialog from './FactorListDialog.tsx';
 
-export type PresetData = Record<string, FactorData>
+export type PresetData = Record<string, {factorData: FactorData, factorOrder: (keyof FactorData)[]}>;
+
 interface Props {
-    title: string
+    title: string,
+    factorData: FactorData,
+    factorOrder: (keyof FactorData)[]
 }
-export const Preset: React.FC<Props> = ({title}) => {
+export const Preset: React.FC<Props> = ({title, factorData, factorOrder}) => {
   const [open, setOpen] = useState(false); //dialog pop up or not
-  const [factorData, setFactorData] = useState({});
-  const [factorOrder, setFactorOrder] = useState([]);
   
   const handleOpenPresetDialog = () => { //Triggered by add Tab button
     setOpen(true);
