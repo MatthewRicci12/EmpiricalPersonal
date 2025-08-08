@@ -19,8 +19,8 @@ export const FactorListDialog: React.FC<Props> = ({factorData, factorOrder}) => 
     height: '500px',
     width: '500px'
     }}></Box>
-    {factorOrder.map((factorTitle) =>
-      <Factor title={factorTitle} weight={factorData[factorTitle]}></Factor>
+    {factorOrder.map((factorTitle, index) =>
+      <Factor title={factorTitle} weight={factorData[factorTitle]} key={`${factorTitle}-${index}`}></Factor>
     )}
     </>
   );

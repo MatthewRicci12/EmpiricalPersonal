@@ -13,6 +13,7 @@ import AddFactorDialog from './AddFactorDialog.tsx';
 import { FactorData } from './Factor.tsx';
 import Preset, { PresetData } from './Preset.tsx';
 import SavePresetDialog from './SavePresetDialog.tsx';
+import Factor from './Factor.tsx';
 
 interface Props {
   handleAddArena: (tabName: string) => void,
@@ -28,6 +29,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
   const [factorOrder, setFactorOrder] = useState<(keyof FactorData)[]>([]);
   const [presetData, setPresetData] = useState<PresetData>({});
   const [presetOrder, setPresetOrder] = useState<(keyof PresetData)[]>([]);
+  const [whichFactorSelected, setWhichFactorSelected] = useState<(keyof FactorData)>("");
 
   const handleOpenPresetDialog = () => { //Triggered by add Tab button
     setOpenPresetDialog(true);
@@ -66,15 +68,18 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
     handleAddArena(value)
   }
 
-  //export type PresetData = Record<string, FactorData>
-  //export type FactorData = Record<string, number>;
+  const handleClickFactor = (factorName: string): React.MouseEventHandler<HTMLDivElement> => (e) => { //Triggered by clicking a tab
+    e.stopPropagation()
+    whichFactorSelected === factorName ? setWhichFactorSelected("") : setWhichFactorSelected(factorName);
+  };
+
 
   const handleAddFactor = (factorName: string, weight: number) => {
     setFactorOrder([...factorOrder, factorName]);
 
     const newFactorData = {
       ...factorData,
-      [factorName]: weight, // avoid overwriting when it already exists - if arenaData[tabName] is null, this assigns {}
+      [factorName]: weight,
     }
     setFactorData(newFactorData)
     
@@ -82,18 +87,16 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
   }
 
   const handleRemoveFactor: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation()
+    e.stopPropagation();
 
+    console.log(`presetOrder and presetData before: ${factorOrder} : ${factorData}`);
+    setFactorOrder(factorOrder.filter(presetName => presetName != whichFactorSelected));
+    const { [whichFactorSelected]: _, ...newFactorData} = factorData;
+    setFactorData(newFactorData);
+    console.log(`presetOrder and presetData before: ${factorOrder} : ${factorData}`);
 
   }
-// export interface PresetData {
-//   presetTitle: string,
-//   factorData: FactorData,
-//   factorOrder: (keyof FactorData)[]
-// }
 
-  // const [presetData, setPresetData] = useState<PresetData>({} as PresetData);
-  // const [presetOrder, setPresetOrder] = useState<string[]>([]);
   const handleSavePreset = (presetName: string) => {
     setPresetOrder([...presetOrder, presetName]);
 
@@ -169,9 +172,11 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
         </Button>
         {/* If an HTML or JSX tag doesn't have anything between the open and close tag, they can be self closing (the opening tag ends with />) */}
         <Box sx={{ width: '100%', height:'200px', outlineStyle: 'solid', outlineWidth: '1px', marginBottom: '2px'}}>
+
         {factorOrder.map((factorName, index) =>
         <>
-        <Typography align="left">{factorName}   {factorData[factorName]}</Typography>
+        <Factor title={factorName} weight={factorData[factorName]} selected={whichFactorSelected === factorName} 
+          handleClickFactor={handleClickFactor(factorName)} key={`${factorName}-${index}`}></Factor>
         </>
         )}
         </Box>

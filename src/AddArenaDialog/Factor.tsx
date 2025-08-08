@@ -5,11 +5,13 @@ export type FactorData = Record<string, number>;
 
 interface Props {
     title: string,
-    weight: number
+    weight: number,
+    selected?: boolean,
+    handleClickFactor?: React.MouseEventHandler<HTMLDivElement>
 }
-export const LoadPresetDialog: React.FC<Props> = ({title, weight}) => {
+export const LoadPresetDialog: React.FC<Props> = ({title, weight, selected, handleClickFactor}) => {
   return (
-    <Typography>{`${title}: ${weight}`}</Typography>
+    <Typography onClick={handleClickFactor} sx={{ backgroundColor: selected ? 'cyan' : 'none' }}>{`${title}: ${weight}`}</Typography>
   );
 }
 

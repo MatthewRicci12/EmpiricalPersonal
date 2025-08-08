@@ -20,13 +20,11 @@ export const ArenaScreen: React.FC<Props> = ({ trialData, handleAddTrial }) => {
 
 
   // Parameters for array.map are (singleItem, index?, fullArray?)
-  const trials = Object.keys(trialData).map((title) => (
-    <Trial trialTitle={title} key={title} handleClickTrial={handleClickTrial(title)}
-      selected={whichTrialSelected === title} />
+  const trials = Object.keys(trialData).map((title, index) => (
+    <Trial trialTitle={title} handleClickTrial={handleClickTrial(title)}
+      selected={whichTrialSelected === title} key={`${title}-${index}`}/>
   )
   );
-  console.log(`Which trial selected: ${whichTrialSelected}`);
-  console.log(`Index after map: ${trialData.length}`);
 
   return (
     <>

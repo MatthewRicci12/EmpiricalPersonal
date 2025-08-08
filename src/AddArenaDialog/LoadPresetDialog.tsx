@@ -26,8 +26,8 @@ export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, pres
           height: '500px',
           width: '500px'
         }}>
-          {presetOrder.map((presetTitle) => <Preset title={presetTitle} factorData={presetData[presetTitle].factorData} 
-            factorOrder={presetData[presetTitle].factorOrder}/>)}
+          {presetOrder.map((presetTitle, index) => <Preset title={presetTitle} factorData={presetData[presetTitle].factorData} 
+            factorOrder={presetData[presetTitle].factorOrder} key={`${presetTitle}-${index}`}/>)}
         </Box>
     </>
   );
