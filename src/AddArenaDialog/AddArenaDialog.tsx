@@ -107,6 +107,11 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
     setPresetData(newPresetData);
   }
 
+  const handleLoadPreset = (factorData: FactorData, factorOrder: (keyof FactorData)[]) => {
+    setFactorData(factorData);
+    setFactorOrder(factorOrder);
+  }
+
 
   return (
     <>
@@ -149,6 +154,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
           handleClosePresetDialog={handleClosePresetDialog}
           presetData={presetData}
           presetOrder={presetOrder}
+          handleLoadPreset={handleLoadPreset}
           ></LoadPresetDialog>
         </DialogSkeleton>
 

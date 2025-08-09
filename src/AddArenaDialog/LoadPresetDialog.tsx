@@ -9,14 +9,23 @@ import {FactorData} from './Factor.tsx';
 interface Props {
   handleClosePresetDialog: () => void,
   presetData: PresetData,
-  presetOrder: (keyof PresetData)[]
+  presetOrder: (keyof PresetData)[],
+  handleLoadPreset: (factorData: FactorData, factorOrder: (keyof FactorData)[]) => void
 }
-export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, presetData, presetOrder}) => {
+export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, presetData, presetOrder, handleLoadPreset}) => {
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     handleClosePresetDialog();
   }
+
+  const handleClickPreset = (factorData: FactorData, factorOrder: (keyof FactorData)[]): React.MouseEventHandler<HTMLButtonElement> => (e) => { //Triggered by clicking a tab
+    e.stopPropagation();
+    handleClosePresetDialog();
+    handleLoadPreset(factorData, factorOrder);
+  };
+
+  
 //key={`${presetTitle}-${index}`}
   return (
     <>
@@ -27,7 +36,9 @@ export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, pres
           width: '500px'
         }}>
           {presetOrder.map((presetTitle, index) => <Preset title={presetTitle} factorData={presetData[presetTitle].factorData} 
-            factorOrder={presetData[presetTitle].factorOrder} key={`${presetTitle}-${index}`}/>)}
+            factorOrder={presetData[presetTitle].factorOrder} 
+            handleLoadPreset={handleClickPreset(presetData[presetTitle].factorData, presetData[presetTitle].factorOrder)} 
+            key={`${presetTitle}-${index}`}/>)}
         </Box>
     </>
   );
