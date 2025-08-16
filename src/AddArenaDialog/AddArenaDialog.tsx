@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import DialogSkeleton from '../DialogSkeleton/DialogSkeleton.tsx';
 import LoadPresetDialog from './LoadPresetDialog.tsx';
-import AddFactorDialog from './AddFactorDialog.tsx';
+import FactorDialog from './FactorDialog.tsx';
 import { FactorData } from './Factor.tsx';
 import Preset, { PresetData } from './Preset.tsx';
 import SavePresetDialog from './SavePresetDialog.tsx';
@@ -21,7 +21,8 @@ interface Props {
 }
 export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseArenaDialog }) => {
   const [openPresetDialog, setOpenPresetDialog] = useState(false); //dialog pop up or not
-  const [openAddFactorDialog, setOpenAddFactorDialog] = useState(false); //dialog pop up or not
+  const [openFactorDialog, setOpenFactorDialog] = useState(false); //dialog pop up or not
+  const [editFactorDialog, setEditFactorDialog] = useState(false);
   const [openSavePresetDialog, setOpenSavePresetDialog] = useState(false); //dialog pop up or not
 
   const [value, setValue] = useState(""); //Value of input which changes on screen
@@ -40,11 +41,12 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
   };
 
   const handleOpenFactorDialog = () => { //Triggered by Dialog x
-    setOpenAddFactorDialog(true);
+    setEditFactorDialog(false);
+    setOpenFactorDialog(true);
   };
 
-  const handleCloseAddFactorDialog = () => { //Triggered by Dialog x
-    setOpenAddFactorDialog(false);
+  const handleCloseFactorDialog = () => { //Triggered by Dialog x
+    setOpenFactorDialog(false);
   };
 
   const handleOpenSavePresetDialog = () => { //Triggered by Dialog x
@@ -81,20 +83,33 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
       ...factorData,
       [factorName]: weight,
     }
-    setFactorData(newFactorData)
-    
+    setFactorData(newFactorData);
+    console.log(`handleAddFactor: ${newFactorData[factorName]}`);
 
   }
 
+  const handleEditFactor = (factorName: string, newWeight: number) => {  //Triggered by clicking a tab
+    const newFactorData = {
+      ...factorData,
+      [factorName]: newWeight
+    }
+    setFactorData(newFactorData);
+    setWhichFactorSelected("");
+  };
+
+  const handleClickWeight = (factorName: string): React.MouseEventHandler<HTMLButtonElement> => (e) => {   //Triggered by clicking a tab
+      e.stopPropagation();
+      whichFactorSelected === factorName ? setWhichFactorSelected("") : setWhichFactorSelected(factorName);
+      setEditFactorDialog(true);
+      setOpenFactorDialog(true);
+  };
+
+
   const handleRemoveFactor: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
-
-    console.log(`presetOrder and presetData before: ${factorOrder} : ${factorData}`);
     setFactorOrder(factorOrder.filter(presetName => presetName != whichFactorSelected));
     const { [whichFactorSelected]: _, ...newFactorData} = factorData;
     setFactorData(newFactorData);
-    console.log(`presetOrder and presetData before: ${factorOrder} : ${factorData}`);
-
   }
 
   const handleSavePreset = (presetName: string) => {
@@ -163,27 +178,37 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
           <AddIcon/>
         </Button>
         <DialogSkeleton
-        open={openAddFactorDialog}
-        onClose={handleCloseAddFactorDialog}
+        open={openFactorDialog}
+        onClose={handleCloseFactorDialog}
         >
-          <AddFactorDialog
-          handleCloseAddFactorDialog={handleCloseAddFactorDialog}
+          <FactorDialog
+          handleCloseFactorDialog={handleCloseFactorDialog}
           handleAddFactor={handleAddFactor}
-          ></AddFactorDialog>
+          handleEditFactor={handleEditFactor}
+          edit={editFactorDialog}
+          givenFactorName={whichFactorSelected}
+          ></FactorDialog>
         </DialogSkeleton>
 
         {/* Remove Factor */}
         <Button onClick={handleRemoveFactor}>
           <RemoveIcon />
         </Button>
-        {/* If an HTML or JSX tag doesn't have anything between the open and close tag, they can be self closing (the opening tag ends with />) */}
+        
+        {/* List of Factors */}
         <Box sx={{ width: '100%', height:'200px', outlineStyle: 'solid', outlineWidth: '1px', marginBottom: '2px'}}>
 
-        {factorOrder.map((factorName, index) =>
-        <>
-        <Factor title={factorName} weight={factorData[factorName]} selected={whichFactorSelected === factorName} 
-          handleClickFactor={handleClickFactor(factorName)} key={`${factorName}-${index}`}></Factor>
-        </>
+        
+        {factorOrder.map((factorName, index) => {
+         console.log(`factorName: ${factorName}, factorData: ${factorData}, factorData[factorName]: ${factorData[factorName]}`);
+         return <Factor 
+          title={factorName} 
+          weight={factorData[factorName]} 
+          selected={whichFactorSelected === factorName} 
+          handleClickFactor={handleClickFactor(factorName)} 
+          handleClickWeight={handleClickWeight(factorName)}
+          key={`${factorName}-${index}`}
+          ></Factor>}
         )}
         </Box>
         <Button variant="contained" onClick={onButtonClick}>Submit</Button>

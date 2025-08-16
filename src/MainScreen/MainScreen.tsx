@@ -8,7 +8,7 @@ import { ArenaScreen } from './ArenaScreen.tsx';
 import { ArenaTab } from './ArenaTab.tsx';
 import { AddTrialDialogData } from './AddTrialDialog.tsx';
 
-export const MAX_ARENA_NAME_LENGTH = 9;
+export const MAX_ARENA_NAME_LENGTH = 32;
 
 export type TrialData = Record<string, AddTrialDialogData>
 export type ArenaData = Record<string, TrialData>

@@ -7,11 +7,14 @@ import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 
 interface Props {
-  handleCloseAddFactorDialog: () => void,
-  handleAddFactor: (factorName: string, weight: number) => void
+  handleCloseFactorDialog: () => void,
+  handleAddFactor: (factorName: string, weight: number) => void,
+  handleEditFactor: (factorName: string, weight: number) => void,
+  edit: boolean,
+  givenFactorName: string
 }
-export const AddFactorDialog: React.FC<Props> = ({handleCloseAddFactorDialog, handleAddFactor}) => {
-  const [factorName, setFactorName] = useState(""); //Value of input which changes on screen
+export const FactorDialog: React.FC<Props> = ({handleCloseFactorDialog, handleAddFactor, handleEditFactor, edit, givenFactorName=""}) => {
+  const [factorName, setFactorName] = useState(givenFactorName); //Value of input which changes on screen
   const [sliderValueMacro, setSliderValueMacro] = useState(0); //Value of input which changes on screen
   const [sliderValueMicro, setSliderValueMicro] = useState(0); //Value of input which changes on screen
 
@@ -20,18 +23,9 @@ export const AddFactorDialog: React.FC<Props> = ({handleCloseAddFactorDialog, ha
     setFactorName(e.target.value);
   }
 
-  const macroValue = (value: number, index: number): string => {
-    return "butt";
-  }
-
-  const microValue = (value: number, index: number): string => {
-    return "butt";
-  }
-
   const handleSliderChangeMacro = (e: Event, newValue: number) => {
     e.stopPropagation();
     setSliderValueMacro(newValue);
-    console.log(`Macro: ${sliderValueMacro}`);
   };
 
   const handleSliderChangeMicro = (e: Event, newValue: number) => {
@@ -41,25 +35,37 @@ export const AddFactorDialog: React.FC<Props> = ({handleCloseAddFactorDialog, ha
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
+
+    const sliderValue = sliderValueMacro + sliderValueMicro >= 100 ? 100 : sliderValueMacro + sliderValueMicro;
+
+    if (edit) {
+      handleCloseFactorDialog();
+      handleEditFactor(factorName, sliderValue);
+    } else {
+      handleCloseFactorDialog();
+      handleAddFactor(factorName, sliderValue);
+    }
     
-    handleCloseAddFactorDialog();
-    handleAddFactor(factorName, sliderValueMacro+sliderValueMicro);
   }
 
 
   return (
     <>
-      <DialogTitle>Add Factor</DialogTitle>
+      <DialogTitle>{edit ? "Edit" : "Add"} Factor</DialogTitle>
       <Box
         sx={{
           height: '500px',
           width: '800px'
         }}>
 
+          {edit ? 
+          <></> 
+          :
           <TextField id="outlined-basic" label="Factor Title" variant="outlined" value={factorName} onChange={handleInput}
-            sx={{
-              paddingBottom: '20px'
-            }}></TextField>
+          sx={{
+            paddingBottom: '20px'
+          }}>
+          </TextField>}
 
             <Typography sx={{fontSize: '2em'}}>Factor Weight: {
             sliderValueMacro + sliderValueMicro >= 100 ? 100 : sliderValueMacro + sliderValueMicro
@@ -69,16 +75,13 @@ export const AddFactorDialog: React.FC<Props> = ({handleCloseAddFactorDialog, ha
             <Slider
             sx={{margin: '20px', width: '80%'}}
             defaultValue={0}
-            //getAriaValueText={macroValue}
             valueLabelDisplay="on"
             shiftStep={10}
             step={10}
             marks
             min={0}
             max={100}
-            //value={typeof value === 'number' ? value : 0}
             onChange={handleSliderChangeMacro}
-            //aria-labelledby="input-slider"
             >
             </Slider>
 
@@ -86,7 +89,6 @@ export const AddFactorDialog: React.FC<Props> = ({handleCloseAddFactorDialog, ha
             <Slider
             sx={{margin: '20px', width: '80%'}}
             defaultValue={0}
-            //getAriaValueText={microValue}
             valueLabelDisplay="on"
             shiftStep={1}
             step={1}
@@ -94,14 +96,13 @@ export const AddFactorDialog: React.FC<Props> = ({handleCloseAddFactorDialog, ha
             min={0}
             max={9}
             onChange={handleSliderChangeMicro}
-            //aria-labelledby="input-slider"
             >
             </Slider>
-
+            <br></br>
             <Button variant="contained" onClick={onButtonClick}>Submit</Button>
         </Box>
     </>
   );
 }
 
-export default AddFactorDialog;
+export default FactorDialog;
