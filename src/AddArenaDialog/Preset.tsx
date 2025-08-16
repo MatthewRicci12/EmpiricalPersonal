@@ -3,6 +3,7 @@ import { FactorData } from './Factor.tsx';
 import Button from '@mui/material/Button';
 import DialogSkeleton from '../DialogSkeleton/DialogSkeleton.tsx';
 import FactorListDialog from './FactorListDialog.tsx';
+import PresetContextMenu from './PresetContextMenu.tsx';
 
 export type PresetData = Record<string, {factorData: FactorData, factorOrder: (keyof FactorData)[]}>;
 
@@ -16,13 +17,7 @@ export const Preset: React.FC<Props> = ({title, factorData, factorOrder, handleL
   const [open, setOpen] = useState(false); //dialog pop up or not
   
   const handleOpenPresetDialog : React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
-
-    if (e.type === 'click') {
-      handleLoadPreset(e);
-    } else if (e.type === 'contextmenu') {
-      setOpen(true);
-    }
+    handleLoadPreset(e);
     
   };
 
@@ -30,19 +25,27 @@ export const Preset: React.FC<Props> = ({title, factorData, factorOrder, handleL
     setOpen(false);
   };
 
+  const handleClickShowFactorList = () => {
+      setOpen(true);  
+  }
+
   return (
-  <>
-    <Button onClick={handleOpenPresetDialog} onContextMenu={handleOpenPresetDialog}>{title}</Button>
-    <DialogSkeleton
-    open={open}
-    onClose={handleCloseFactorListDialog}
-    >
-      <FactorListDialog
-      factorData={factorData}
-      factorOrder={factorOrder}
-      ></FactorListDialog>
-    </DialogSkeleton>
-  </>
+    <>
+      <PresetContextMenu
+        handleClickShowFactorList={handleClickShowFactorList}
+      >
+      <Button onClick={handleOpenPresetDialog}>{title}</Button>
+      </PresetContextMenu>
+      <DialogSkeleton
+      open={open}
+      onClose={handleCloseFactorListDialog}
+      >
+        <FactorListDialog
+        factorData={factorData}
+        factorOrder={factorOrder}
+        ></FactorListDialog>
+      </DialogSkeleton>
+    </>
   );
 }
 

@@ -25,7 +25,8 @@ export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, pres
     handleLoadPreset(factorData, factorOrder);
   };
 
-  
+
+
 //key={`${presetTitle}-${index}`}
   return (
     <>
