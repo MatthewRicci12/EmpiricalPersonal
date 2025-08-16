@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DialogSkeleton from '../DialogSkeleton/DialogSkeleton.tsx';
 import { useState } from "react";
 import { AddArenaDialog } from '../AddArenaDialog/AddArenaDialog.tsx';
-import { ArenaScreen } from './ArenaScreen.tsx';
+import { ArenaScreen } from './ArenaScreen/ArenaScreen.tsx';
 import { ArenaTab } from './ArenaTab.tsx';
 import { AddTrialDialogData } from './AddTrialDialog.tsx';
 

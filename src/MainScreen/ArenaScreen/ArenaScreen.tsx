@@ -1,9 +1,9 @@
 import { Box, Stack } from "@mui/system";
-import Trial from "./Trial/Trial";
+import Trial from "../Trial/Trial";
 import { useState } from "react";
-import TopBar from "./TopBar";
-import { TrialData } from "./MainScreen";
-import { AddTrialDialogData } from "./AddTrialDialog";
+import TopBar from "../TopBar";
+import { TrialData } from "../MainScreen";
+import { AddTrialDialogData } from "../AddTrialDialog";
 
 interface Props {
   trialData: TrialData

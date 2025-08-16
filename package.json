@@ -24,7 +24,8 @@
     "react-bootstrap": "^2.10.9",
     "react-dom": "^18.3.1",
     "sass": "^1.88.0",
-    "styled-components": "^6.1.19"
+    "styled-components": "^6.1.19",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.5.0",

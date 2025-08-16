@@ -14,7 +14,7 @@ export const trialTitleStyle = {
     marginLeft: '10px'
 }
 
-export const TrialStatusStyle = {
+export const ButtonStyle = {
   borderRadius: '10px',
   border: 'none',
   disabled: 'true',
@@ -22,33 +22,14 @@ export const TrialStatusStyle = {
 };
 
 export const TrialSuccess = styled('button')({
-  ...TrialStatusStyle,
+  ...ButtonStyle,
   backgroundColor: '#228b22'
 });
 
 export const TrialFailure = styled('button')({
-  ...TrialStatusStyle,
+  ...ButtonStyle,
   backgroundColor: '#ca1515'
 });
-
-// Sub-Trial Styles
-export const SubTrialStyle = {
-  disabled: 'true',
-  marginBottom: '5px',
-  width: '10px',
-  height: '10px'
-};
-
-export const SubTrialSuccess = styled('button')({
-  ...SubTrialStyle,
-  backgroundColor: '#228b22',
-});
-
-export const SubTrialFailure = styled('button')({
-  ...SubTrialStyle,
-  backgroundColor: '#ca1515'
-});
-
 
 export const imgSx = {
   height: '50px',

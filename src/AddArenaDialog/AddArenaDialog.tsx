@@ -14,7 +14,6 @@ import { FactorData } from './Factor.tsx';
 import Preset, { PresetData } from './Preset.tsx';
 import SavePresetDialog from './SavePresetDialog.tsx';
 import Factor from './Factor.tsx';
-import { createContext } from 'react';
 
 interface Props {
   handleAddArena: (tabName: string) => void,

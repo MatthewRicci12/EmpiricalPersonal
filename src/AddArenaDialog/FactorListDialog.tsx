@@ -11,16 +11,15 @@ interface Props {
 }
 export const FactorListDialog: React.FC<Props> = ({factorData, factorOrder}) => {
   return (
-    <>
     <Box
     sx={{
     height: '500px',
     width: '500px'
-    }}></Box>
+    }}>
     {factorOrder.map((factorTitle) =>
       <Typography>{`${factorTitle} ${factorData[factorTitle]}`}</Typography>
     )}
-    </>
+    </Box>
   );
 }
 
