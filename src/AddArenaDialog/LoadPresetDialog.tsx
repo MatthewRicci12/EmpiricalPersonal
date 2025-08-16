@@ -10,9 +10,10 @@ interface Props {
   handleClosePresetDialog: () => void,
   presetData: PresetData,
   presetOrder: (keyof PresetData)[],
-  handleLoadPreset: (factorData: FactorData, factorOrder: (keyof FactorData)[]) => void
+  handleLoadPreset: (factorData: FactorData, factorOrder: (keyof FactorData)[]) => void,
+  handleDeletePreset: (presetToBeDeleted: string) => void
 }
-export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, presetData, presetOrder, handleLoadPreset}) => {
+export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, presetData, presetOrder, handleLoadPreset, handleDeletePreset}) => {
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
@@ -36,9 +37,12 @@ export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, pres
           height: '500px',
           width: '500px'
         }}>
-          {presetOrder.map((presetTitle, index) => <Preset title={presetTitle} factorData={presetData[presetTitle].factorData} 
+          {presetOrder.map((presetTitle, index) => <Preset 
+            title={presetTitle} 
+            factorData={presetData[presetTitle].factorData} 
             factorOrder={presetData[presetTitle].factorOrder} 
             handleLoadPreset={handleClickPreset(presetData[presetTitle].factorData, presetData[presetTitle].factorOrder)} 
+            handleDeletePreset={handleDeletePreset}
             key={`${presetTitle}-${index}`}/>)}
         </Box>
     </>

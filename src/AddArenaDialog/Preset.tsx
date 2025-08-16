@@ -11,9 +11,10 @@ interface Props {
     title: string,
     factorData: FactorData,
     factorOrder: (keyof FactorData)[],
-    handleLoadPreset: React.MouseEventHandler<HTMLButtonElement>
+    handleLoadPreset: React.MouseEventHandler<HTMLButtonElement>,
+    handleDeletePreset: (presetToBeDeleted: string) => void
 }
-export const Preset: React.FC<Props> = ({title, factorData, factorOrder, handleLoadPreset}) => {
+export const Preset: React.FC<Props> = ({title, factorData, factorOrder, handleLoadPreset, handleDeletePreset}) => {
   const [open, setOpen] = useState(false); //dialog pop up or not
   
   const handleOpenPresetDialog : React.MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -32,7 +33,9 @@ export const Preset: React.FC<Props> = ({title, factorData, factorOrder, handleL
   return (
     <>
       <PresetContextMenu
+        presetTitle={title}
         handleClickShowFactorList={handleClickShowFactorList}
+        handleDeletePreset={handleDeletePreset}
       >
       <Button onClick={handleOpenPresetDialog}>{title}</Button>
       </PresetContextMenu>

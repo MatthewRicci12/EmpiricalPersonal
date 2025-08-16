@@ -14,6 +14,7 @@ import { FactorData } from './Factor.tsx';
 import Preset, { PresetData } from './Preset.tsx';
 import SavePresetDialog from './SavePresetDialog.tsx';
 import Factor from './Factor.tsx';
+import { createContext } from 'react';
 
 interface Props {
   handleAddArena: (tabName: string) => void,
@@ -32,8 +33,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
   const [presetOrder, setPresetOrder] = useState<(keyof PresetData)[]>([]);
   const [whichFactorSelected, setWhichFactorSelected] = useState<(keyof FactorData)>("");
 
-  const handleDeletePreset = (presetToBeDeleted: string): React.MouseEventHandler<HTMLDivElement> => (e) => { 
-    e.stopPropagation();
+  const handleDeletePreset = (presetToBeDeleted: string) => { 
     setPresetOrder(presetOrder.filter(presetName => presetName != presetToBeDeleted));
     const { [presetToBeDeleted]: _, ...newPresetData } = presetData;
     setPresetData(newPresetData);
@@ -177,6 +177,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
           presetData={presetData}
           presetOrder={presetOrder}
           handleLoadPreset={handleLoadPreset}
+          handleDeletePreset={handleDeletePreset}
           ></LoadPresetDialog>
         </DialogSkeleton>
 

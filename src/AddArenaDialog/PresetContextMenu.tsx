@@ -4,9 +4,11 @@ import MenuItem from '@mui/material/MenuItem';
 
 interface Props {
     children: React.ReactNode,
-    handleClickShowFactorList: () => void
+    presetTitle: string,
+    handleClickShowFactorList: () => void,
+    handleDeletePreset: (presetToBeDeleted: string) => void
 }
-export const PresetContextMenu: React.FC<Props> = ({children, handleClickShowFactorList}) => {
+export const PresetContextMenu: React.FC<Props> = ({children, presetTitle, handleClickShowFactorList, handleDeletePreset}) => {
  const [contextMenu, setContextMenu] = useState<{
     mouseX: number;
     mouseY: number;
@@ -42,6 +44,11 @@ export const PresetContextMenu: React.FC<Props> = ({children, handleClickShowFac
     setContextMenu(null);
   };
 
+
+  const handleClickDeletePreset = () => {
+    handleDeletePreset(presetTitle);
+  }
+
   return (
     <div onContextMenu={handleContextMenu} style={{ cursor: 'context-menu' }}>
       {children}
@@ -55,7 +62,7 @@ export const PresetContextMenu: React.FC<Props> = ({children, handleClickShowFac
             : undefined
         }
       >
-        <MenuItem onClick={handleClose}>Delete Preset</MenuItem>
+        <MenuItem onClick={handleClickDeletePreset}>Delete Preset</MenuItem>
         <MenuItem onClick={handleClickShowFactorList}>Show Factor List</MenuItem>
       </Menu>
     </div>

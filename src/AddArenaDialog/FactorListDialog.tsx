@@ -3,9 +3,7 @@ import Box from '@mui/system/Box';
 import { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Preset, {PresetData} from './Preset.tsx';
 import {FactorData} from './Factor.tsx';
-import Factor from './Factor.tsx';
 
 interface Props {
   factorData: FactorData,
@@ -20,7 +18,7 @@ export const FactorListDialog: React.FC<Props> = ({factorData, factorOrder}) => 
     width: '500px'
     }}></Box>
     {factorOrder.map((factorTitle) =>
-      {`${factorTitle} ${factorData[factorTitle]}`}
+      <Typography>{`${factorTitle} ${factorData[factorTitle]}`}</Typography>
     )}
     </>
   );
