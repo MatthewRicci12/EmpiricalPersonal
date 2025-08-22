@@ -1,38 +1,43 @@
 import { useState } from "react";
 import { styles } from "./styles.tsx";
 import DialogSkeleton from "../../DialogSkeleton/DialogSkeleton.tsx";
-import SubTrialInfoDialog from "./SubTrialInfoDialog.tsx";
+import ViewSubTrialInfoDialog from "./ViewSubTrialDialog.tsx";
 import CheckIcon from '@mui/icons-material/Check';
+import ViewSubTrialDialog from "./ViewSubTrialDialog.tsx";
 
-export type SubTrialData = Record<string, number>;
+export type SubTrialData = Record<string, [string, string]>;
 
 
 interface Props {
-    title: string
+    date: string,
+    data: string
 }
-const SubTrial: React.FC<Props> = () => {
-   const [openSubTrialInfoDialog, setOpenSubTrialInfoDialog] = useState(false);
+const SubTrial: React.FC<Props> = ({date, data}) => {
+   const [openViewSubTrialInfoDialog, setOpenViewSubTrialInfoDialog] = useState(false);
 
 
-  const handleOpenSubTrialDialog = () => { //Triggered by add Tab button
-    setOpenSubTrialInfoDialog(true);
+  const handleOpenViewSubTrialDialog = () => { //Triggered by add Tab button
+    setOpenViewSubTrialInfoDialog(true);
   };
 
-  const handleCloseSubTrialDialog = () => { //Triggered by Dialog x
-    setOpenSubTrialInfoDialog(false);
+  const handleCloseViewSubTrialDialog = () => { //Triggered by Dialog x
+    setOpenViewSubTrialInfoDialog(false);
   };
 
 
   return (
     <>
-        <styles.SubTrialSuccess onClick={handleOpenSubTrialDialog}>
+        <styles.SubTrialSuccess onClick={handleOpenViewSubTrialDialog}>
           <CheckIcon/>
         </styles.SubTrialSuccess>
         <DialogSkeleton
-        open={openSubTrialInfoDialog}
-        onClose={handleCloseSubTrialDialog}
+        open={openViewSubTrialInfoDialog}
+        onClose={handleCloseViewSubTrialDialog}
         >
-            <SubTrialInfoDialog/>
+            <ViewSubTrialDialog
+            date={date}
+            data={data}
+            />
         </DialogSkeleton>
     </>
   );

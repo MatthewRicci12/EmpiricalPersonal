@@ -9,10 +9,8 @@ import DialogSkeleton from "../../DialogSkeleton/DialogSkeleton.tsx";
 import SubTrialDialog from "./SubTrialDialog.tsx";
 import { useState } from "react";
 import SubTrial, { SubTrialData } from './SubTrial.tsx';
-import { v4 as uuidv4 } from 'uuid';
 import Button from '@mui/material/Button';
 import AddSubTrialDialog from './AddSubTrialDialog.tsx';
-//uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 
 interface Props {
   trialTitle: string,
@@ -43,13 +41,13 @@ const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial }) => {
     setOpenAddSubTrialDialog(false);
   };
 
-  const handleAddSubTrial = (subTrialTitle: string) => {
+  const handleAddSubTrial = (key: string, date: string, data: string) => {
     handleCloseAddSubTrialDialog();
-    setSubTrialOrder([...subTrialOrder, subTrialTitle]);
+    setSubTrialOrder([...subTrialOrder, key]);
 
     const newSubTrialData = {
       ...subTrialData,
-      [subTrialTitle]: 3
+      [key]: [date, data] as [string, string]
     }
 
     setSubTrialData(newSubTrialData);

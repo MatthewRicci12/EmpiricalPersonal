@@ -35,8 +35,6 @@ export const TrialFailure = styled('button')({
 export const SubTrialStyle = {
   disabled: 'true',
   marginBottom: '5px',
-  width: '10px',
-  height: '10px'
 };
 
 export const SubTrialSuccess = styled('button')({

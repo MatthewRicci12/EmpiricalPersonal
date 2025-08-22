@@ -4,6 +4,8 @@ import Box from '@mui/system/Box';
 import SubTrial, {SubTrialData} from "./SubTrial.tsx";
 import Typography from '@mui/material/Typography';
 
+const DATE_INDEX = 0;
+const DATA_INDEX = 1;
 
 interface Props {
   subTrialData: SubTrialData, 
@@ -11,10 +13,6 @@ interface Props {
 }
 
 export const SubTrialDialog: React.FC<Props> = ({subTrialData, subTrialOrder}) => {
-
-  const x = subTrialData;
-  const y = subTrialOrder;
-
   return (
     <Box
     sx={{
@@ -22,7 +20,9 @@ export const SubTrialDialog: React.FC<Props> = ({subTrialData, subTrialOrder}) =
     width: '600px',
     backgroundColor: '#66ccff'
     }}>
-      {subTrialOrder?.map( (subTrialTitle) => <SubTrial title={subTrialTitle}/>)}
+      {subTrialOrder?.map( (subTrialKey) => <SubTrial 
+      date={subTrialData[subTrialKey][DATE_INDEX]} 
+      data={subTrialData[subTrialKey][DATA_INDEX]}/>)}
 
     </Box>
   );
