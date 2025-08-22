@@ -2,6 +2,7 @@ import { useState } from "react";
 import { styles } from "./styles.tsx";
 import DialogSkeleton from "../../DialogSkeleton/DialogSkeleton.tsx";
 import SubTrialInfoDialog from "./SubTrialInfoDialog.tsx";
+import CheckIcon from '@mui/icons-material/Check';
 
 export type SubTrialData = Record<string, number>;
 
@@ -24,7 +25,9 @@ const SubTrial: React.FC<Props> = () => {
 
   return (
     <>
-        <styles.SubTrialSuccess onClick={handleOpenSubTrialDialog}/>
+        <styles.SubTrialSuccess onClick={handleOpenSubTrialDialog}>
+          <CheckIcon/>
+        </styles.SubTrialSuccess>
         <DialogSkeleton
         open={openSubTrialInfoDialog}
         onClose={handleCloseSubTrialDialog}

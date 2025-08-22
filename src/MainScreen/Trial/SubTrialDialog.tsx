@@ -1,16 +1,19 @@
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import Box from '@mui/system/Box';
-import SubTrial from "./SubTrial.tsx";
+import SubTrial, {SubTrialData} from "./SubTrial.tsx";
 import Typography from '@mui/material/Typography';
 
 
 interface Props {
+  subTrialData: SubTrialData, 
+  subTrialOrder: (keyof SubTrialData)[]
 }
 
-export const SubTrialDialog: React.FC<Props> = () => {
+export const SubTrialDialog: React.FC<Props> = ({subTrialData, subTrialOrder}) => {
 
-
+  const x = subTrialData;
+  const y = subTrialOrder;
 
   return (
     <Box
@@ -19,7 +22,8 @@ export const SubTrialDialog: React.FC<Props> = () => {
     width: '600px',
     backgroundColor: '#66ccff'
     }}>
-      <Typography>What're you looking at, FOO?</Typography>
+      {subTrialOrder?.map( (subTrialTitle) => <SubTrial title={subTrialTitle}/>)}
+
     </Box>
   );
 }

@@ -15,7 +15,7 @@ export const SubTrialInfoDialog: React.FC<Props> = () => {
     height: '500px',
     width: '500px'
     }}>
-      Getcho ass-
+      Content
     </Box>
   );
 }

@@ -10,6 +10,8 @@ import SubTrialDialog from "./SubTrialDialog.tsx";
 import { useState } from "react";
 import SubTrial, { SubTrialData } from './SubTrial.tsx';
 import { v4 as uuidv4 } from 'uuid';
+import Button from '@mui/material/Button';
+import AddSubTrialDialog from './AddSubTrialDialog.tsx';
 //uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 
 interface Props {
@@ -19,8 +21,9 @@ interface Props {
 }
 const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial }) => {
   const [openSubTrialDialog, setOpenSubTrialDialog] = useState(false);
-  const [subTrialData, setSubTrialData] = useState<SubTrialData>();
-  const [subTrialOrder,setSubTrialOrder] = useState<(keyof SubTrialData)[]>();
+  const [openAddSubTrialDialog, setOpenAddSubTrialDialog] = useState(false);
+  const [subTrialData, setSubTrialData] = useState<SubTrialData>({});
+  const [subTrialOrder,setSubTrialOrder] = useState<(keyof SubTrialData)[]>([]);
 
 
   const handleOpenSubTrialDialog = () => { //Triggered by add Tab button
@@ -30,6 +33,27 @@ const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial }) => {
   const handleCloseSubTrialDialog = () => { //Triggered by Dialog x
     setOpenSubTrialDialog(false);
   };
+
+
+  const handleOpenAddSubTrialDialog = () => { //Triggered by add Tab button
+    setOpenAddSubTrialDialog(true);
+  };
+
+  const handleCloseAddSubTrialDialog = () => { //Triggered by Dialog x
+    setOpenAddSubTrialDialog(false);
+  };
+
+  const handleAddSubTrial = (subTrialTitle: string) => {
+    handleCloseAddSubTrialDialog();
+    setSubTrialOrder([...subTrialOrder, subTrialTitle]);
+
+    const newSubTrialData = {
+      ...subTrialData,
+      [subTrialTitle]: 3
+    }
+
+    setSubTrialData(newSubTrialData);
+  }
 
   return (
     <>
@@ -43,12 +67,25 @@ const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial }) => {
         <Typography sx={styles.skepTextStyle}>
           hello
         </Typography>
+        <Button onClick={handleOpenAddSubTrialDialog}>Add Sub-Trial</Button>
       </Stack>
+      <DialogSkeleton
+      open={openAddSubTrialDialog}
+      onClose={handleCloseAddSubTrialDialog}
+      >
+        <AddSubTrialDialog
+        handleCloseAddSubTrialDialog={handleCloseAddSubTrialDialog}
+        handleAddSubTrial={handleAddSubTrial}
+        />
+      </DialogSkeleton>
       <DialogSkeleton
       open={openSubTrialDialog}
       onClose={handleCloseSubTrialDialog}
       >
-        <SubTrialDialog/>
+        <SubTrialDialog
+        subTrialData={subTrialData}
+        subTrialOrder={subTrialOrder}
+        />
       </DialogSkeleton>
     </>
 
