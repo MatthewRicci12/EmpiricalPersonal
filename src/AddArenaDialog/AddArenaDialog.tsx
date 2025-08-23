@@ -11,7 +11,7 @@ import DialogSkeleton from '../DialogSkeleton/DialogSkeleton.tsx';
 import LoadPresetDialog from './LoadPresetDialog.tsx';
 import FactorDialog from './FactorDialog.tsx';
 import { FactorData } from './Factor.tsx';
-import Preset, { PresetData } from './Preset.tsx';
+import { PresetData } from './Preset.tsx';
 import SavePresetDialog from './SavePresetDialog.tsx';
 import Factor from './Factor.tsx';
 
@@ -132,6 +132,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
     setFactorData(factorData);
     setFactorOrder(factorOrder);
   }
+  
 
 
   return (

@@ -7,6 +7,7 @@ import { AddArenaDialog } from '../AddArenaDialog/AddArenaDialog.tsx';
 import { ArenaScreen } from './ArenaScreen/ArenaScreen.tsx';
 import { ArenaTab } from './ArenaTab.tsx';
 import { AddTrialDialogData } from './AddTrialDialog.tsx';
+import TopBar from './TopBar.tsx';
 
 export const MAX_ARENA_NAME_LENGTH = 32;
 
@@ -17,18 +18,18 @@ interface Props {
 
 }
 const MainScreen: React.FC<Props> = () => {
-  const [open, setOpen] = useState(false); //dialog pop up or not
+  const [openAddArenaDialog, setOpenAddArenaDialog] = useState(false); //dialog pop up or not
   const [tabOrder, setTabOrder] = useState<(keyof ArenaData)[]>([]); //visible tabs
   const [whichArenaSelected, setWhichArenaSelected] = useState<keyof ArenaData>(""); //WHICH arena shown/tab selected
 
   const [arenaData, arenaDataSet] = useState<ArenaData>({})
 
   const handleOpenArenaDialog = () => { //Triggered by add Tab button
-    setOpen(true);
+    setOpenAddArenaDialog(true);
   };
 
   const handleCloseArenaDialog = () => { //Triggered by Dialog x
-    setOpen(false);
+    setOpenAddArenaDialog(false);
   };
 
   const handleAddArena = (tabName: string) => { // Triggered by Dialog submit button
@@ -67,12 +68,13 @@ const MainScreen: React.FC<Props> = () => {
   
   return (
     <>
+      <TopBar handleAddTrial={handleAddTrial} />
       <Box
         sx={{
           height: '90%',
           whiteSpace: 'pre'
         }}>
-        <ArenaScreen trialData={trialData} key={whichArenaSelected} handleAddTrial={handleAddTrial} />
+        <ArenaScreen trialData={trialData} key={whichArenaSelected}/>
       </Box>
 
       {/* Button to add a new Arena */}
@@ -82,7 +84,7 @@ const MainScreen: React.FC<Props> = () => {
         <AddIcon />
       </Button>
       <DialogSkeleton
-        open={open}
+        open={openAddArenaDialog}
         onClose={handleCloseArenaDialog}
       >
         <AddArenaDialog handleAddArena={handleAddArena} handleCloseArenaDialog={handleCloseArenaDialog} />

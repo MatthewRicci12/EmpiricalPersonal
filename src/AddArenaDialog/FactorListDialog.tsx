@@ -16,8 +16,8 @@ export const FactorListDialog: React.FC<Props> = ({factorData, factorOrder}) => 
     height: '500px',
     width: '500px'
     }}>
-    {factorOrder.map((factorTitle) =>
-      <Typography>{`${factorTitle} ${factorData[factorTitle]}`}</Typography>
+    {factorOrder.map((factorTitle, index) =>
+      <Typography key={`${factorTitle}-${index}`}>{`${factorTitle} ${factorData[factorTitle]}`}</Typography>
     )}
     </Box>
   );

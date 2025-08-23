@@ -22,7 +22,8 @@ export const SubTrialDialog: React.FC<Props> = ({subTrialData, subTrialOrder}) =
     }}>
       {subTrialOrder?.map( (subTrialKey) => <SubTrial 
       date={subTrialData[subTrialKey][DATE_INDEX]} 
-      data={subTrialData[subTrialKey][DATA_INDEX]}/>)}
+      data={subTrialData[subTrialKey][DATA_INDEX]}
+      key={subTrialKey}/>)}
 
     </Box>
   );

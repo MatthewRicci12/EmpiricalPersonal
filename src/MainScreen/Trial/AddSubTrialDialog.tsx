@@ -30,7 +30,7 @@ export const AddSubTrialDialog: React.FC<Props> = ({handleCloseAddSubTrialDialog
 
     handleCloseAddSubTrialDialog();
     if (subTrialDate !== null) {
-      handleAddSubTrial(uuidv4(), subTrialDate!.format('DD/MM/YYYY'), subTrialData);
+      handleAddSubTrial(uuidv4(), subTrialDate!.format('MM/DD/YYYY'), subTrialData);
     }
 
   }
@@ -48,10 +48,12 @@ export const AddSubTrialDialog: React.FC<Props> = ({handleCloseAddSubTrialDialog
     onChange={(newDate) => setSubTrialDate(newDate)}
     />
     </LocalizationProvider>
+    <br/>
     <TextField id="outlined-basic" label="Data" variant="outlined" value={subTrialData} onChange={handleInput}
     sx={{
     paddingBottom: '20px'
     }}></TextField>
+    <br/>
     <Button variant="contained" onClick={onButtonClick}>Submit</Button>
     </Box>
   );

@@ -7,10 +7,9 @@ import { AddTrialDialogData } from "../AddTrialDialog";
 
 interface Props {
   trialData: TrialData
-  handleAddTrial: (newTrialData: AddTrialDialogData) => void
 }
 
-export const ArenaScreen: React.FC<Props> = ({ trialData, handleAddTrial }) => {
+export const ArenaScreen: React.FC<Props> = ({ trialData}) => {
   const [whichTrialSelected, setTrialSelected] = useState<keyof TrialData>("");
 
   const handleClickTrial = (title: string): React.MouseEventHandler<HTMLDivElement> => (e) => {
@@ -28,7 +27,6 @@ export const ArenaScreen: React.FC<Props> = ({ trialData, handleAddTrial }) => {
 
   return (
     <>
-      <TopBar handleAddTrial={handleAddTrial} />
       <Box sx={{ height: '80vh' }}>
         <Stack spacing={2}>
           {trials}

@@ -3,8 +3,6 @@ import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
-import Typography from '@mui/material/Typography';
-import Slider from '@mui/material/Slider';
 
 interface Props {
   handleCloseSavePresetDialog: () => void,
@@ -38,7 +36,7 @@ export const SavePresetDialog: React.FC<Props> = ({handleCloseSavePresetDialog, 
           sx={{
             paddingBottom: '10px'
           }}></TextField>
-
+  
       <Button variant="contained" onClick={onButtonClick}>Submit</Button>
       </Box> 
     </>
