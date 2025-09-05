@@ -10,9 +10,10 @@ import AddTrialDialog, { AddTrialDialogData } from './AddTrialDialog.tsx';
 
 
 interface Props {
-  handleAddTrial: (addTrialDialogData: AddTrialDialogData) => void
+  handleAddTrial: (addTrialDialogData: AddTrialDialogData) => void,
+  handleOpenConclusionsPage: () => void
 }
-export const TopBar: React.FC<Props> = ({handleAddTrial}) => {
+export const TopBar: React.FC<Props> = ({handleAddTrial, handleOpenConclusionsPage}) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -36,16 +37,21 @@ export const TopBar: React.FC<Props> = ({handleAddTrial}) => {
       </Container>
 
       <Container>
-        <Button onClick={handleClickOpen}>
+        <Button onClick={handleClickOpen} sx={{display: "inline"}}>
         <AddIcon/>
         </Button>
+        Add Trial
           <DialogSkeleton
           open={open}
           onClose={handleClose}
           >
           <AddTrialDialog handleAddTrial={handleAddTrial} handleClose={handleClose} />
           </DialogSkeleton>
-        Add Trial
+      </Container>
+      <Container>
+        <Button onClick={handleOpenConclusionsPage}>
+          <Typography color="cyan">Conclusions</Typography>
+        </Button>
       </Container>
 
       <Container>
