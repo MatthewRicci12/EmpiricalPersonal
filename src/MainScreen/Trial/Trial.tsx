@@ -4,11 +4,46 @@ import CheckIcon from '@mui/icons-material/Check';
 import Stack from '@mui/material/Stack';
 import * as styles from './styles.tsx';
 import DialogSkeleton from "../../DialogSkeleton/DialogSkeleton.tsx";
-import SubTrialDialog from "./SubTrialDialog.tsx";
+import SubTrialDialog, { RESULT_INDEX } from "./SubTrialDialog.tsx";
 import { useState } from "react";
 import { Result, SubTrialData } from './SubTrial.tsx';
 import Button from '@mui/material/Button';
 import AddSubTrialDialog from './AddSubTrialDialog.tsx';
+import RemoveIcon from '@mui/icons-material/Remove';
+import CloseIcon from '@mui/icons-material/Close';
+
+
+function calculateTrialStatus(subTrialData: SubTrialData) {
+    if (Object.keys(subTrialData).length === 0) return <styles.TrialEmpty><CheckIcon sx={styles.imgSx}/></styles.TrialEmpty>
+
+    const counts = {
+      successCount: 0,
+      failureCount: 0
+    }
+
+    Object.keys(subTrialData).map( (key: string) => 
+      subTrialData[key][RESULT_INDEX] === Result.SUCCESS ? counts.successCount++ : counts.failureCount++);
+    
+    if (counts.successCount > counts.failureCount) {
+      return (
+        <styles.TrialSuccess>
+          <CheckIcon sx={styles.imgSx} />
+        </styles.TrialSuccess>
+      )
+    } else if (counts.failureCount > counts.successCount) {
+      return (
+        <styles.TrialFailure>
+          <CloseIcon sx={styles.imgSx} />
+        </styles.TrialFailure>        
+      )
+    } else {
+      return (
+        <styles.TrialNeutral>
+          <RemoveIcon sx={styles.imgSx} />
+        </styles.TrialNeutral>        
+      )
+    }
+}
 
 interface Props {
   trialTitle: string,
@@ -51,12 +86,12 @@ const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial }) => {
     setSubTrialData(newSubTrialData);
   }
 
+  const trialStatus = calculateTrialStatus(subTrialData);
+
   return (
     <>
       <Stack direction="row" sx={{ backgroundColor: selected ? 'cyan' : 'none' }} onClick={handleClickTrial} onDoubleClick={handleOpenSubTrialDialog}>
-        <styles.TrialSuccess>
-          <CheckIcon sx={styles.imgSx} />
-        </styles.TrialSuccess>
+        {trialStatus}
         <Typography sx={styles.trialTitleStyle}>
           {trialTitle}
         </Typography>
