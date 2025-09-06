@@ -5,10 +5,9 @@ import Typography from '@mui/material/Typography';
 import { TrialData } from "./MainScreen";
 
 interface Props {
-    handleClickBackButton: () => void,
-    trialData: TrialData
+    handleClickBackButton: () => void
 }
-const ConclusionScreen: React.FC<Props> = ({handleClickBackButton, trialData}) => {
+const ConclusionScreen: React.FC<Props> = ({handleClickBackButton}) => {
   
   const successTrials = <></>;
 

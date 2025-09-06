@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import { useState } from "react";
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
+import { SubTrialData } from "./Trial/SubTrial";
 
 const MAX_TRIAL_NAME_LENGTH = 17;
 
@@ -49,7 +50,7 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
       trialTitle: valueTrialName,
       successString: valueSuccess,
       failureString: valueFailure,
-      additionalNotesString: valueAdditionalNotes,
+      additionalNotesString: valueAdditionalNotes
     }
     handleClose();
     handleAddTrial(newData);

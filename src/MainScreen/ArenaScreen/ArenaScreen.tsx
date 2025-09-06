@@ -23,7 +23,7 @@ export const ArenaScreen: React.FC<Props> = ({ trialData}) => {
   const trials = Object.keys(trialData).map((title, index) => (
     <Trial trialTitle={title} handleClickTrial={handleClickTrial(title)}
       selected={whichTrialSelected === title} key={`${title}-${index}`}/>
-  )
+    )
   );
 
   return (

@@ -88,7 +88,7 @@ const MainScreen: React.FC<Props> = () => {
   
   return (
     displayConclusionsPage ?
-    <ConclusionScreen handleClickBackButton={handleClickBackButton} trialData={arenaData[whichArenaSelected]}/>
+    <ConclusionScreen handleClickBackButton={handleClickBackButton}/>
     :
     <>
      <TopBar handleAddTrial={handleAddTrial} handleOpenConclusionsPage={handleOpenConclusionsPage}/>
