@@ -35,6 +35,7 @@ export const TrialFailure = styled('button')({
 export const SubTrialStyle = {
   disabled: 'true',
   marginBottom: '5px',
+  marginRight: '5px'
 };
 
 export const SubTrialSuccess = styled('button')({
@@ -45,6 +46,11 @@ export const SubTrialSuccess = styled('button')({
 export const SubTrialFailure = styled('button')({
   ...SubTrialStyle,
   backgroundColor: '#ca1515'
+});
+
+export const SubTrialNeutral = styled('button')({
+  ...SubTrialStyle,
+  backgroundColor: '#97841aff',
 });
 
 

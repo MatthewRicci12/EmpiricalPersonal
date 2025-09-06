@@ -1,14 +1,12 @@
 
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/system';
 import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
 import Stack from '@mui/material/Stack';
 import * as styles from './styles.tsx';
 import DialogSkeleton from "../../DialogSkeleton/DialogSkeleton.tsx";
 import SubTrialDialog from "./SubTrialDialog.tsx";
 import { useState } from "react";
-import SubTrial, { SubTrialData } from './SubTrial.tsx';
+import { Result, SubTrialData } from './SubTrial.tsx';
 import Button from '@mui/material/Button';
 import AddSubTrialDialog from './AddSubTrialDialog.tsx';
 
@@ -41,13 +39,13 @@ const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial }) => {
     setOpenAddSubTrialDialog(false);
   };
 
-  const handleAddSubTrial = (key: string, date: string, data: string) => {
+  const handleAddSubTrial = (key: string, result: Result, date: string, data: string) => {
     handleCloseAddSubTrialDialog();
     setSubTrialOrder([...subTrialOrder, key]);
 
     const newSubTrialData = {
       ...subTrialData,
-      [key]: [date, data] as [string, string]
+      [key]: [result, date, data] as [Result, string, string]
     }
 
     setSubTrialData(newSubTrialData);

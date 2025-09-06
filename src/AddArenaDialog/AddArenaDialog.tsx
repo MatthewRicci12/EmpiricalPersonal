@@ -2,7 +2,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { MAX_ARENA_NAME_LENGTH } from '../MainScreen/ArenaControlScreen.tsx';
+import { MAX_ARENA_NAME_LENGTH } from '../MainScreen/MainScreen.tsx';
 import { useState } from 'react';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';

@@ -19,6 +19,7 @@ export const ArenaScreen: React.FC<Props> = ({ trialData}) => {
 
 
   // Parameters for array.map are (singleItem, index?, fullArray?)
+  //TODO: Order not enforced here.
   const trials = Object.keys(trialData).map((title, index) => (
     <Trial trialTitle={title} handleClickTrial={handleClickTrial(title)}
       selected={whichTrialSelected === title} key={`${title}-${index}`}/>
