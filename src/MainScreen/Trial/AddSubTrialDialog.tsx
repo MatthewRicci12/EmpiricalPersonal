@@ -17,11 +17,12 @@ import CloseIcon from '@mui/icons-material/Close';
 const selectedEffect = {boxShadow: "0px 0px 20px 5px #0ff"}
 
 interface Props {
+    trialTitle: string,
     handleCloseAddSubTrialDialog: () => void,
-    handleAddSubTrial: (key: string, result: Result, date: string, data: string) => void
+    handleAddSubTrial: (trialTitle: string, key: string, result: Result, date: string, data: string) => void
 }
 
-export const AddSubTrialDialog: React.FC<Props> = ({handleCloseAddSubTrialDialog, handleAddSubTrial}) => {
+export const AddSubTrialDialog: React.FC<Props> = ({trialTitle, handleCloseAddSubTrialDialog, handleAddSubTrial}) => {
 
   const [subTrialData, setSubTrialData] = useState(""); //Value of input which changes on screen
   const [subTrialDate, setSubTrialDate] = useState<Dayjs | null>(dayjs('')); //Value of input which changes on screen
@@ -38,7 +39,7 @@ export const AddSubTrialDialog: React.FC<Props> = ({handleCloseAddSubTrialDialog
 
     handleCloseAddSubTrialDialog();
     if (subTrialDate !== null) {
-      handleAddSubTrial(uuidv4(), result, subTrialDate!.format('MM/DD/YYYY'), subTrialData);
+      handleAddSubTrial(trialTitle, uuidv4(), result, subTrialDate!.format('MM/DD/YYYY'), subTrialData);
     }
 
   }

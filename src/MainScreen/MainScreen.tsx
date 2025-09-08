@@ -9,12 +9,15 @@ import { ArenaTab } from './ArenaTab.tsx';
 import { AddTrialDialogData } from './AddTrialDialog.tsx';
 import TopBar from './TopBar.tsx';
 import ConclusionScreen from './ConclusionScreen.tsx';
+import { Result } from './Trial/SubTrial.tsx';
 
 
 
 
 export const MAX_ARENA_NAME_LENGTH = 32;
 
+//SubTrialData: string is key. TrialData: trial Title.
+export type SubTrialData = Record<string, [Result, string, string]>;
 export type TrialData = Record<string, AddTrialDialogData>
 export type ArenaData = Record<string, TrialData>
 
@@ -81,15 +84,28 @@ const MainScreen: React.FC<Props> = () => {
     setDisplayConclusionsPage(false);
   };
 
+  const handleAddSubTrial = (trialTitle: string, key: string, result: Result, date: string, data: string) => {
+      let trialData = arenaData[whichArenaSelected];
+      let trialInnerData = trialData[trialTitle];
+      
+      trialInnerData.subTrialData = {...trialInnerData.subTrialData, [key] : [result, date, data]};
+      trialInnerData.subTrialOrder = [...trialInnerData.subTrialOrder, key]
+
+      const newArenaData = {
+        ...arenaData,
+        [whichArenaSelected]: trialData
+      }
+      
+      arenaDataSet(newArenaData);
+  }
+
   const trialData = arenaData[whichArenaSelected] ?? {}
 
 
   
   
   return (
-    displayConclusionsPage ?
-    <ConclusionScreen handleClickBackButton={handleClickBackButton}/>
-    :
+    !displayConclusionsPage ?
     <>
      <TopBar handleAddTrial={handleAddTrial} handleOpenConclusionsPage={handleOpenConclusionsPage}/>
       <Box
@@ -97,7 +113,7 @@ const MainScreen: React.FC<Props> = () => {
           height: '90%',
           whiteSpace: 'pre'
         }}>
-        <ArenaScreen trialData={trialData} key={whichArenaSelected}/>
+        <ArenaScreen trialData={trialData} key={whichArenaSelected} handleAddSubTrial={handleAddSubTrial}/>
       </Box>
 
       {/* Button to add a new Arena */}
@@ -115,6 +131,8 @@ const MainScreen: React.FC<Props> = () => {
       {tabOrder.map((title, index) =>
         <ArenaTab title={title} handleClickTab={handleClickTab(title)} selected={title === whichArenaSelected} key={`${title}-${index}`} />)}
     </>
+    :
+    <ConclusionScreen handleClickBackButton={handleClickBackButton}/>
   );
 }
 

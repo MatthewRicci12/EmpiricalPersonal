@@ -6,7 +6,6 @@ import CheckIcon from '@mui/icons-material/Check';
 import ViewSubTrialDialog from "./ViewSubTrialDialog.tsx";
 import CloseIcon from '@mui/icons-material/Close';
 
-export type SubTrialData = Record<string, [Result, string, string]>;
 
 export enum Result {
   SUCCESS,

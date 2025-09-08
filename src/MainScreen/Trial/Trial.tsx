@@ -6,11 +6,12 @@ import * as styles from './styles.tsx';
 import DialogSkeleton from "../../DialogSkeleton/DialogSkeleton.tsx";
 import SubTrialDialog, { RESULT_INDEX } from "./SubTrialDialog.tsx";
 import { useState } from "react";
-import { Result, SubTrialData } from './SubTrial.tsx';
+import { Result} from './SubTrial.tsx';
 import Button from '@mui/material/Button';
 import AddSubTrialDialog from './AddSubTrialDialog.tsx';
 import RemoveIcon from '@mui/icons-material/Remove';
 import CloseIcon from '@mui/icons-material/Close';
+import { SubTrialData } from '../MainScreen.tsx';
 
 
 function calculateTrialStatus(subTrialData: SubTrialData) {
@@ -49,12 +50,13 @@ interface Props {
   trialTitle: string,
   selected: boolean,
   handleClickTrial: React.MouseEventHandler<HTMLDivElement>,
+  handleAddSubTrial: (trialTitle: string, key: string, result: Result, date: string, data: string) => void,
+  subTrialData: SubTrialData,
+  subTrialOrder: (keyof SubTrialData)[]
 }
-const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial }) => {
+const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial, handleAddSubTrial, subTrialData, subTrialOrder }) => {
   const [openSubTrialDialog, setOpenSubTrialDialog] = useState(false);
   const [openAddSubTrialDialog, setOpenAddSubTrialDialog] = useState(false);
-  const [subTrialData, setSubTrialData] = useState<SubTrialData>({});
-  const [subTrialOrder,setSubTrialOrder] = useState<(keyof SubTrialData)[]>([]);
 
 
   const handleOpenSubTrialDialog = () => { //Triggered by add Tab button
@@ -74,17 +76,6 @@ const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial }) => {
     setOpenAddSubTrialDialog(false);
   };
 
-  const handleAddSubTrial = (key: string, result: Result, date: string, data: string) => {
-    handleCloseAddSubTrialDialog();
-    setSubTrialOrder([...subTrialOrder, key]);
-
-    const newSubTrialData = {
-      ...subTrialData,
-      [key]: [result, date, data] as [Result, string, string]
-    }
-
-    setSubTrialData(newSubTrialData);
-  }
 
   const trialStatus = calculateTrialStatus(subTrialData);
 
@@ -107,6 +98,7 @@ const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial }) => {
         <AddSubTrialDialog
         handleCloseAddSubTrialDialog={handleCloseAddSubTrialDialog}
         handleAddSubTrial={handleAddSubTrial}
+        trialTitle={trialTitle}
         />
       </DialogSkeleton>
       <DialogSkeleton

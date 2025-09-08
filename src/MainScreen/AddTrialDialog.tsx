@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { useState } from "react";
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
-import { SubTrialData } from "./Trial/SubTrial";
+import { SubTrialData } from "./MainScreen";
 
 const MAX_TRIAL_NAME_LENGTH = 17;
 
@@ -13,7 +13,9 @@ export interface AddTrialDialogData {
   trialTitle: string,
   successString: string,
   failureString: string,
-  additionalNotesString: string
+  additionalNotesString: string,
+  subTrialData: SubTrialData,
+  subTrialOrder: (keyof SubTrialData)[]
 }
 
 
@@ -50,7 +52,9 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
       trialTitle: valueTrialName,
       successString: valueSuccess,
       failureString: valueFailure,
-      additionalNotesString: valueAdditionalNotes
+      additionalNotesString: valueAdditionalNotes,
+      subTrialData: {},
+      subTrialOrder: []
     }
     handleClose();
     handleAddTrial(newData);

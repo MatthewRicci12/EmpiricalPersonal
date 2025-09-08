@@ -1,15 +1,15 @@
 import { Box, Stack } from "@mui/system";
 import Trial from "../Trial/Trial";
 import { useState } from "react";
-import TopBar from "../TopBar";
 import { TrialData } from "../MainScreen";
-import { AddTrialDialogData } from "../AddTrialDialog";
+import { Result } from "../Trial/SubTrial";
 
 interface Props {
-  trialData: TrialData
+  trialData: TrialData,
+  handleAddSubTrial: (trialTitle: string, key: string, result: Result, date: string, data: string) => void
 }
 
-export const ArenaScreen: React.FC<Props> = ({ trialData}) => {
+export const ArenaScreen: React.FC<Props> = ({ trialData, handleAddSubTrial }) => {
   const [whichTrialSelected, setTrialSelected] = useState<keyof TrialData>("");
 
   const handleClickTrial = (title: string): React.MouseEventHandler<HTMLDivElement> => (e) => {
@@ -22,7 +22,9 @@ export const ArenaScreen: React.FC<Props> = ({ trialData}) => {
   //TODO: Order not enforced here.
   const trials = Object.keys(trialData).map((title, index) => (
     <Trial trialTitle={title} handleClickTrial={handleClickTrial(title)}
-      selected={whichTrialSelected === title} key={`${title}-${index}`}/>
+      selected={whichTrialSelected === title} key={`${title}-${index}`}
+      handleAddSubTrial={handleAddSubTrial}
+      subTrialData={trialData[title].subTrialData} subTrialOrder={trialData[title].subTrialOrder}/>
     )
   );
 
