@@ -9,7 +9,9 @@ import CloseIcon from '@mui/icons-material/Close';
 
 export enum Result {
   SUCCESS,
-  FAILURE
+  FAILURE,
+  NEUTRAL,
+  EMPTY
 }
 
 interface Props {

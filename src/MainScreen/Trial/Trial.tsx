@@ -14,8 +14,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { SubTrialData } from '../MainScreen.tsx';
 
 
-function calculateTrialStatus(subTrialData: SubTrialData) {
-    if (Object.keys(subTrialData).length === 0) return <styles.TrialEmpty><CheckIcon sx={styles.imgSx}/></styles.TrialEmpty>
+export function calculateTrialStatus(subTrialData: SubTrialData) {
+    if (Object.keys(subTrialData).length === 0) return Result.EMPTY
 
     const counts = {
       successCount: 0,
@@ -26,23 +26,11 @@ function calculateTrialStatus(subTrialData: SubTrialData) {
       subTrialData[key][RESULT_INDEX] === Result.SUCCESS ? counts.successCount++ : counts.failureCount++);
     
     if (counts.successCount > counts.failureCount) {
-      return (
-        <styles.TrialSuccess>
-          <CheckIcon sx={styles.imgSx} />
-        </styles.TrialSuccess>
-      )
+      return Result.SUCCESS;
     } else if (counts.failureCount > counts.successCount) {
-      return (
-        <styles.TrialFailure>
-          <CloseIcon sx={styles.imgSx} />
-        </styles.TrialFailure>        
-      )
+      return Result.FAILURE;
     } else {
-      return (
-        <styles.TrialNeutral>
-          <RemoveIcon sx={styles.imgSx} />
-        </styles.TrialNeutral>        
-      )
+      return Result.NEUTRAL;
     }
 }
 
@@ -76,8 +64,32 @@ const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial, handle
     setOpenAddSubTrialDialog(false);
   };
 
+  let trialStatus;
 
-  const trialStatus = calculateTrialStatus(subTrialData);
+  switch (calculateTrialStatus(subTrialData)) {
+    case Result.SUCCESS:
+      trialStatus = 
+      <styles.TrialSuccess>
+        <CheckIcon sx={styles.imgSx} />
+      </styles.TrialSuccess>
+      break;
+    case Result.FAILURE:
+      trialStatus = 
+      <styles.TrialFailure>
+        <CloseIcon sx={styles.imgSx} />
+      </styles.TrialFailure>       
+      break;
+    case Result.NEUTRAL:
+      trialStatus = 
+      <styles.TrialNeutral>
+        <RemoveIcon sx={styles.imgSx} />
+      </styles.TrialNeutral>  
+      break;
+    case Result.EMPTY:
+      trialStatus =
+      <styles.TrialEmpty><CheckIcon sx={styles.imgSx}/></styles.TrialEmpty>
+      break;
+  }
 
   return (
     <>

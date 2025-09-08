@@ -33,13 +33,13 @@ export const TrialFailure = styled('button')({
 
 export const TrialNeutral = styled('button')({
   ...TrialStatusStyle,
-  backgroundColor: '#97841aff',
+  backgroundColor: '#97841aff'
 });
 
 export const TrialEmpty = styled('button')({
   ...TrialStatusStyle,
   outline: "1px black solid",
-  backgroundColor: '#ffffffff',
+  backgroundColor: '#ffffffff'
 });
 
 

@@ -44,7 +44,7 @@ const MainScreen: React.FC<Props> = () => {
   const handleAddArena = (tabName: string) => { // Triggered by Dialog submit button
     setTabOrder([...tabOrder, tabName]);
     if (tabName in arenaData) {
-      console.error("Tab with that name already exists! (Some kind of UUID should be used as keys if that's supposed ot be allowed.)")
+      console.error("Tab with that name already exists! (Some kind of UUID should be used as keys if that's supposed to be allowed.)")
       return;
     }
     const newArenaData = {
@@ -132,7 +132,8 @@ const MainScreen: React.FC<Props> = () => {
         <ArenaTab title={title} handleClickTab={handleClickTab(title)} selected={title === whichArenaSelected} key={`${title}-${index}`} />)}
     </>
     :
-    <ConclusionScreen handleClickBackButton={handleClickBackButton}/>
+    <ConclusionScreen handleClickBackButton={handleClickBackButton} 
+    trialData={arenaData[whichArenaSelected]}/>
   );
 }
 
