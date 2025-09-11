@@ -11,7 +11,7 @@ interface Props {
   handleAddFactor: (factorName: string, weight: number) => void,
   handleEditFactor: (factorName: string, weight: number) => void,
   edit: boolean,
-  givenFactorName: string
+  givenFactorName?: string
 }
 export const FactorDialog: React.FC<Props> = ({handleCloseFactorDialog, handleAddFactor, handleEditFactor, edit, givenFactorName=""}) => {
   const [factorName, setFactorName] = useState(givenFactorName); //Value of input which changes on screen
