@@ -10,13 +10,10 @@ import { AddTrialDialogData } from './AddTrialDialog.tsx';
 import TopBar from './TopBar.tsx';
 import ConclusionScreen from './ConclusionScreen.tsx';
 import { Result } from './Trial/SubTrial.tsx';
-
-
-
+import React from 'react';
 
 export const MAX_ARENA_NAME_LENGTH = 32;
 
-//SubTrialData: string is key. TrialData: trial Title.
 export type SubTrialData = Record<string, [Result, string, string]>;
 export type TrialData = Record<string, AddTrialDialogData>
 export type ArenaData = Record<string, TrialData>
@@ -28,10 +25,13 @@ interface Props {
 const MainScreen: React.FC<Props> = () => {
 
   const [openAddArenaDialog, setOpenAddArenaDialog] = useState(false); //dialog pop up or not
-  const [tabOrder, setTabOrder] = useState<(keyof ArenaData)[]>([]); //visible tabs
+  const [arenaOrder, setarenaOrder] = useState<(keyof ArenaData)[]>(["yo"]); //visible tabs
   const [whichArenaSelected, setWhichArenaSelected] = useState<keyof ArenaData>(""); //WHICH arena shown/tab selected
   const [displayConclusionsPage, setDisplayConclusionsPage] = useState<boolean>(false);
-  const [arenaData, arenaDataSet] = useState<ArenaData>({})
+  const [arenaData, setArenaData] = useState<ArenaData>({["yo"]: {}});
+  const [trialData, setTrialData] = useState<TrialData>({});
+  const [trialOrder, setTrialOrder] = useState<(keyof TrialData)[]>([]);
+  const [whichTrialSelected, setTrialSelected] = useState<keyof TrialData>("");
 
   const handleOpenArenaDialog = () => { //Triggered by add Tab button
     setOpenAddArenaDialog(true);
@@ -42,7 +42,7 @@ const MainScreen: React.FC<Props> = () => {
   };
 
   const handleAddArena = (tabName: string) => { // Triggered by Dialog submit button
-    setTabOrder([...tabOrder, tabName]);
+    setarenaOrder([...arenaOrder, tabName]);
     if (tabName in arenaData) {
       console.error("Tab with that name already exists! (Some kind of UUID should be used as keys if that's supposed to be allowed.)")
       return;
@@ -51,7 +51,7 @@ const MainScreen: React.FC<Props> = () => {
       ...arenaData,
       [tabName]: arenaData[tabName] || {}, // avoid overwriting when it already exists - if arenaData[tabName] is null, this assigns {}
     }
-    arenaDataSet(newArenaData)
+    setArenaData(newArenaData)
   };
 
   const handleClickTab = (title: string): React.MouseEventHandler<HTMLButtonElement> => (e) => { //Triggered by clicking a tab
@@ -62,18 +62,23 @@ const MainScreen: React.FC<Props> = () => {
   const handleAddTrial = (addTrialDialogData: AddTrialDialogData) => { //Triggered by trial add button
     const trialTitle = addTrialDialogData.trialTitle;
 
+    setTrialOrder([...trialOrder, trialTitle]);
+
     const newTrialData = {
-        ...arenaData[whichArenaSelected],
-        [trialTitle]: addTrialDialogData,
-      }
+      ...arenaData[whichArenaSelected],
+      [trialTitle]: addTrialDialogData
+    }
+
+
+    setTrialData(newTrialData);
 
     const newArenaData = {
       ...arenaData,
       [whichArenaSelected]: newTrialData,
     }
-    arenaDataSet(newArenaData)
-  }
 
+    setArenaData(newArenaData);
+  }
 
   const handleOpenConclusionsPage = () => { //Triggered by Dialog x
     setDisplayConclusionsPage(true);
@@ -96,24 +101,34 @@ const MainScreen: React.FC<Props> = () => {
         [whichArenaSelected]: trialData
       }
       
-      arenaDataSet(newArenaData);
+      setArenaData(newArenaData);
   }
 
-  const trialData = arenaData[whichArenaSelected] ?? {}
+  const handleRemoveTrial: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    setTrialOrder(trialOrder.filter(trialTitle => trialTitle != whichTrialSelected));
+    const { [whichTrialSelected]: _, ...newTrialData} = trialData;
+    setTrialData(newTrialData);
+  }
 
+  const handleClickTrial = (title: string): React.MouseEventHandler<HTMLDivElement> => (e) => {
+    e.stopPropagation();
+    whichTrialSelected === title ? setTrialSelected("") : setTrialSelected(title);
+  }
 
-  
-  
+  const curTrialData = arenaData[whichArenaSelected] ?? {}
+
   return (
     !displayConclusionsPage ?
     <>
-     <TopBar handleAddTrial={handleAddTrial} handleOpenConclusionsPage={handleOpenConclusionsPage}/>
+     <TopBar handleAddTrial={handleAddTrial} handleOpenConclusionsPage={handleOpenConclusionsPage} handleRemoveTrial={handleRemoveTrial}/>
       <Box
         sx={{
           height: '90%',
           whiteSpace: 'pre'
         }}>
-        <ArenaScreen trialData={trialData} key={whichArenaSelected} handleAddSubTrial={handleAddSubTrial}/>
+        <ArenaScreen trialData={curTrialData} trialOrder={trialOrder} key={whichArenaSelected} handleAddSubTrial={handleAddSubTrial}
+          whichTrialSelected={whichTrialSelected} handleClickTrial={handleClickTrial}/>
       </Box>
 
       {/* Button to add a new Arena */}
@@ -128,12 +143,13 @@ const MainScreen: React.FC<Props> = () => {
         <AddArenaDialog handleAddArena={handleAddArena} handleCloseArenaDialog={handleCloseArenaDialog} />
       </DialogSkeleton>
 
-      {tabOrder.map((title, index) =>
+      {arenaOrder.map((title, index) =>
         <ArenaTab title={title} handleClickTab={handleClickTab(title)} selected={title === whichArenaSelected} key={`${title}-${index}`} />)}
     </>
     :
-    <ConclusionScreen handleClickBackButton={handleClickBackButton} 
-    trialData={arenaData[whichArenaSelected]}/>
+    <ConclusionScreen 
+    handleClickBackButton={handleClickBackButton} 
+    trialData={curTrialData}/>
   );
 }
 

@@ -2,18 +2,17 @@
 import Stack from '@mui/material/Stack';
 import Container from '@mui/system/Container';
 import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
 import Typography from '@mui/material/Typography';
 import { useState } from "react";
 import DialogSkeleton from '../DialogSkeleton/DialogSkeleton.tsx';
 import AddTrialDialog, { AddTrialDialogData } from './AddTrialDialog.tsx';
 
-
 interface Props {
   handleAddTrial: (addTrialDialogData: AddTrialDialogData) => void,
-  handleOpenConclusionsPage: () => void
+  handleOpenConclusionsPage: () => void,
+  handleRemoveTrial: React.MouseEventHandler<HTMLButtonElement>,
 }
-export const TopBar: React.FC<Props> = ({handleAddTrial, handleOpenConclusionsPage}) => {
+export const TopBar: React.FC<Props> = ({handleAddTrial, handleOpenConclusionsPage, handleRemoveTrial}) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -29,6 +28,7 @@ export const TopBar: React.FC<Props> = ({handleAddTrial, handleOpenConclusionsPa
     <Stack
     direction="row"
     alignItems="center"
+    
     >
       <Container>
         <Button>
@@ -38,20 +38,20 @@ export const TopBar: React.FC<Props> = ({handleAddTrial, handleOpenConclusionsPa
 
       <Container>
         <Button onClick={handleClickOpen} sx={{display: "inline"}}>
-        <AddIcon/>
+        <Typography>Add Trial</Typography>
         </Button>
-        Add Trial
           <DialogSkeleton
           open={open}
-          onClose={handleClose}
-          >
+          onClose={handleClose}>
           <AddTrialDialog handleAddTrial={handleAddTrial} handleClose={handleClose} />
           </DialogSkeleton>
-      </Container>
-      <Container>
-        <Button onClick={handleOpenConclusionsPage}>
-          <Typography color="cyan">Conclusions</Typography>
+        <Button onClick={handleRemoveTrial}>
+          <Typography>Remove Trial</Typography>
         </Button>
+        <Button onClick={handleOpenConclusionsPage}>
+          <Typography>Conclusions</Typography>
+        </Button>
+
       </Container>
 
       <Container>
