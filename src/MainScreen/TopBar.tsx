@@ -11,12 +11,13 @@ interface Props {
   handleAddTrial: (addTrialDialogData: AddTrialDialogData) => void,
   handleOpenConclusionsPage: () => void,
   handleRemoveTrial: React.MouseEventHandler<HTMLButtonElement>,
+  whichArenaSelected: string
 }
-export const TopBar: React.FC<Props> = ({handleAddTrial, handleOpenConclusionsPage, handleRemoveTrial}) => {
+export const TopBar: React.FC<Props> = ({ handleAddTrial, handleOpenConclusionsPage, handleRemoveTrial, whichArenaSelected }) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    if (whichArenaSelected.length !== 0) setOpen(true);
   };
 
   const handleClose = () => {
@@ -27,9 +28,7 @@ export const TopBar: React.FC<Props> = ({handleAddTrial, handleOpenConclusionsPa
   return(
     <Stack
     direction="row"
-    alignItems="center"
-    
-    >
+    alignItems="center">
       <Container>
         <Button>
           File
@@ -37,6 +36,7 @@ export const TopBar: React.FC<Props> = ({handleAddTrial, handleOpenConclusionsPa
       </Container>
 
       <Container>
+        {/* Add Trial Button */}
         <Button onClick={handleClickOpen} sx={{display: "inline"}}>
         <Typography>Add Trial</Typography>
         </Button>
@@ -45,9 +45,11 @@ export const TopBar: React.FC<Props> = ({handleAddTrial, handleOpenConclusionsPa
           onClose={handleClose}>
           <AddTrialDialog handleAddTrial={handleAddTrial} handleClose={handleClose} />
           </DialogSkeleton>
+          {/* Remove Trial Button */}
         <Button onClick={handleRemoveTrial}>
           <Typography>Remove Trial</Typography>
         </Button>
+        {/* Conclusions Button */}
         <Button onClick={handleOpenConclusionsPage}>
           <Typography>Conclusions</Typography>
         </Button>

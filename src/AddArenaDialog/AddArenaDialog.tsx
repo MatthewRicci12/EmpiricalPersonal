@@ -72,8 +72,9 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation()
     
-    handleCloseArenaDialog()
-    handleAddArena(value)
+    handleCloseArenaDialog();
+    handleAddArena(value);
+    if (value.length > 0) handleAddArena(value);
   }
 
   const handleClickFactor = (factorName: string): React.MouseEventHandler<HTMLDivElement> => (e) => { //Triggered by clicking a tab

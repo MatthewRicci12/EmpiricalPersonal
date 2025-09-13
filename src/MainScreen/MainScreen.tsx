@@ -25,10 +25,10 @@ interface Props {
 const MainScreen: React.FC<Props> = () => {
 
   const [openAddArenaDialog, setOpenAddArenaDialog] = useState(false); //dialog pop up or not
-  const [arenaOrder, setarenaOrder] = useState<(keyof ArenaData)[]>(["yo"]); //visible tabs
+  const [arenaOrder, setarenaOrder] = useState<(keyof ArenaData)[]>([]); //visible tabs
   const [whichArenaSelected, setWhichArenaSelected] = useState<keyof ArenaData>(""); //WHICH arena shown/tab selected
   const [displayConclusionsPage, setDisplayConclusionsPage] = useState<boolean>(false);
-  const [arenaData, setArenaData] = useState<ArenaData>({["yo"]: {}});
+  const [arenaData, setArenaData] = useState<ArenaData>({});
   const [trialData, setTrialData] = useState<TrialData>({});
   const [trialOrder, setTrialOrder] = useState<(keyof TrialData)[]>([]);
   const [whichTrialSelected, setTrialSelected] = useState<keyof TrialData>("");
@@ -60,6 +60,8 @@ const MainScreen: React.FC<Props> = () => {
   };
 
   const handleAddTrial = (addTrialDialogData: AddTrialDialogData) => { //Triggered by trial add button
+    // Can't add trial if no arena selected.
+
     const trialTitle = addTrialDialogData.trialTitle;
 
     setTrialOrder([...trialOrder, trialTitle]);
@@ -121,7 +123,10 @@ const MainScreen: React.FC<Props> = () => {
   return (
     !displayConclusionsPage ?
     <>
-     <TopBar handleAddTrial={handleAddTrial} handleOpenConclusionsPage={handleOpenConclusionsPage} handleRemoveTrial={handleRemoveTrial}/>
+     <TopBar handleAddTrial={handleAddTrial} 
+     handleOpenConclusionsPage={handleOpenConclusionsPage} 
+     handleRemoveTrial={handleRemoveTrial}
+     whichArenaSelected={whichArenaSelected}/>
       <Box
         sx={{
           height: '90%',
