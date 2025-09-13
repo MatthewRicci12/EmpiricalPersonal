@@ -27,7 +27,7 @@ export const Preset: React.FC<Props> = ({title, factorData, factorOrder, handleL
   };
 
   const handleClickShowFactorList = () => {
-      setOpen(true);  
+    setOpen(true);  
   }
 
   return (
