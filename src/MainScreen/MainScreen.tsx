@@ -11,6 +11,7 @@ import TopBar from './TopBar.tsx';
 import ConclusionScreen from './ConclusionScreen.tsx';
 import { Result } from './Trial/SubTrial.tsx';
 import React from 'react';
+import ArenaTabContextMenu from './ArenaTabContextMenu.tsx';
 
 export const MAX_ARENA_NAME_LENGTH = 32;
 
@@ -25,15 +26,17 @@ interface Props {
 const MainScreen: React.FC<Props> = () => {
 
   const [openAddArenaDialog, setOpenAddArenaDialog] = useState(false); //dialog pop up or not
-  const [arenaOrder, setarenaOrder] = useState<(keyof ArenaData)[]>(["yo"]); //visible tabs
+  const [arenaOrder, setArenaOrder] = useState<(keyof ArenaData)[]>([]); //visible tabs
   const [whichArenaSelected, setWhichArenaSelected] = useState<keyof ArenaData>(""); //WHICH arena shown/tab selected
   const [displayConclusionsPage, setDisplayConclusionsPage] = useState<boolean>(false);
-  const [arenaData, setArenaData] = useState<ArenaData>({["yo"]: {}});
+  const [arenaData, setArenaData] = useState<ArenaData>({});
   const [trialData, setTrialData] = useState<TrialData>({});
   const [trialOrder, setTrialOrder] = useState<(keyof TrialData)[]>([]);
   const [whichTrialSelected, setTrialSelected] = useState<keyof TrialData>("");
+  const [editArenaDialog, setEditArenaDialog] = useState(false);
 
   const handleOpenArenaDialog = () => { //Triggered by add Tab button
+    setEditArenaDialog(false);
     setOpenAddArenaDialog(true);
   };
 
@@ -42,7 +45,7 @@ const MainScreen: React.FC<Props> = () => {
   };
 
   const handleAddArena = (tabName: string) => { // Triggered by Dialog submit button
-    setarenaOrder([...arenaOrder, tabName]);
+    setArenaOrder([...arenaOrder, tabName]);
     if (tabName in arenaData) {
       console.error("Tab with that name already exists! (Some kind of UUID should be used as keys if that's supposed to be allowed.)")
       return;
@@ -60,6 +63,8 @@ const MainScreen: React.FC<Props> = () => {
   };
 
   const handleAddTrial = (addTrialDialogData: AddTrialDialogData) => { //Triggered by trial add button
+    // Can't add trial if no arena selected.
+
     const trialTitle = addTrialDialogData.trialTitle;
 
     setTrialOrder([...trialOrder, trialTitle]);
@@ -116,12 +121,38 @@ const MainScreen: React.FC<Props> = () => {
     whichTrialSelected === title ? setTrialSelected("") : setTrialSelected(title);
   }
 
+  const handleEditArena = (curArenaName: string) => (newName: string) => {
+    let newArenaData = {...arenaData, [newName]: arenaData[curArenaName]};
+    delete newArenaData[curArenaName];
+
+    const newArenaOrder = arenaOrder.map((arenaTitle) => {
+      if (arenaTitle === curArenaName) {
+        return newName;
+      } else {
+        return arenaTitle;
+      }
+    });
+
+    setArenaData(newArenaData);
+    setArenaOrder(newArenaOrder);
+  }
+
+  const handleDeleteArena = (arenaTitle: string): React.MouseEventHandler<HTMLLIElement> => (e) => {
+    e.stopPropagation();
+    setArenaOrder(arenaOrder.filter(curArenaTitle => curArenaTitle != arenaTitle));
+    const { [arenaTitle]: _, ...newArenaData} = arenaData;
+    setArenaData(newArenaData);
+  }
+
   const curTrialData = arenaData[whichArenaSelected] ?? {}
 
   return (
     !displayConclusionsPage ?
     <>
-     <TopBar handleAddTrial={handleAddTrial} handleOpenConclusionsPage={handleOpenConclusionsPage} handleRemoveTrial={handleRemoveTrial}/>
+     <TopBar handleAddTrial={handleAddTrial} 
+     handleOpenConclusionsPage={handleOpenConclusionsPage} 
+     handleRemoveTrial={handleRemoveTrial}
+     whichArenaSelected={whichArenaSelected}/>
       <Box
         sx={{
           height: '90%',
@@ -140,11 +171,26 @@ const MainScreen: React.FC<Props> = () => {
         open={openAddArenaDialog}
         onClose={handleCloseArenaDialog}
       >
-        <AddArenaDialog handleAddArena={handleAddArena} handleCloseArenaDialog={handleCloseArenaDialog} />
+        <AddArenaDialog handleAddArena={handleAddArena} 
+        handleCloseArenaDialog={handleCloseArenaDialog} 
+        handleEditArena={handleEditArena(whichArenaSelected)}
+        edit={editArenaDialog}/>
       </DialogSkeleton>
 
-      {arenaOrder.map((title, index) =>
-        <ArenaTab title={title} handleClickTab={handleClickTab(title)} selected={title === whichArenaSelected} key={`${title}-${index}`} />)}
+      {/* Arena Tabs */}
+
+      {
+      arenaOrder.map((title, index) => {
+        return (
+      <ArenaTabContextMenu
+      setEditMode={() => { setEditArenaDialog(true); setOpenAddArenaDialog(true);} }
+      handleDeleteArena={handleDeleteArena(title)}>
+        <ArenaTab title={title} handleClickTab={handleClickTab(title)} selected={title === whichArenaSelected} key={`${title}-${index}`}/>
+                      </ArenaTabContextMenu>
+              );
+                                        })
+      }
+
     </>
     :
     <ConclusionScreen 

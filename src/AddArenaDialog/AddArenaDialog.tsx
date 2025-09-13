@@ -17,9 +17,11 @@ import Factor from './Factor.tsx';
 
 interface Props {
   handleAddArena: (tabName: string) => void,
-  handleCloseArenaDialog: () => void
+  handleCloseArenaDialog: () => void,
+  handleEditArena: (newName: string) =>  void
+  edit: boolean
 }
-export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseArenaDialog }) => {
+export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseArenaDialog, handleEditArena, edit }) => {
   const [openPresetDialog, setOpenPresetDialog] = useState(false); //dialog pop up or not
   const [openFactorDialog, setOpenFactorDialog] = useState(false); //dialog pop up or not
   const [editFactorDialog, setEditFactorDialog] = useState(false);
@@ -71,9 +73,19 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation()
+
+    if (edit) {
+      handleCloseArenaDialog();
+    e.stopPropagation();
+      handleEditArena(value);
+    } else {
+      handleCloseArenaDialog();
+      handleAddArena(value);
+      if (value.length > 0) handleAddArena(value);
+    }
     
-    handleCloseArenaDialog()
-    handleAddArena(value)
+    
+
   }
 
   const handleClickFactor = (factorName: string): React.MouseEventHandler<HTMLDivElement> => (e) => { //Triggered by clicking a tab
@@ -137,16 +149,20 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
 
   return (
     <>
-      <DialogTitle>Add New Arena</DialogTitle>
+      <DialogTitle>{edit ? "Edit" : "Add"} Arena</DialogTitle>
       <Box
         sx={{
           height: '500px',
           width: '500px'
         }}>
-        <TextField id="outlined-basic" label="Arena Title" variant="outlined" value={value} onChange={handleInput}
+
+
+          <TextField id="outlined-basic" label="Arena Title" variant="outlined" value={value} onChange={handleInput}
           sx={{
             paddingBottom: '10px'
           }}></TextField>
+
+
         <Typography sx={{
           fontSize: "1.5em"
         }}>
@@ -219,6 +235,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
           ></Factor>}
         )}
         </Box>
+        {/* Submit button */}
         <Button variant="contained" onClick={onButtonClick}>Submit</Button>
       </Box>
     </>
