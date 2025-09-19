@@ -97,6 +97,11 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
   const handleAddFactor = (factorName: string, weight: number) => {
     setFactorOrder([...factorOrder, factorName]);
 
+    if (factorName in factorOrder) {
+      console.error("Factor already exists.")
+      return;
+    }
+
     const newFactorData = {
       ...factorData,
       [factorName]: weight,
@@ -132,6 +137,11 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
 
   const handleSavePreset = (presetName: string) => {
     setPresetOrder([...presetOrder, presetName]);
+
+    if (presetName in presetOrder) {
+      console.error("Preset with that name already exists!")
+      return;
+    }
 
     const newPresetData = {
       ...presetData,

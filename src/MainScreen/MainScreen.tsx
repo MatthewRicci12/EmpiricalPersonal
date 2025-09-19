@@ -69,6 +69,11 @@ const MainScreen: React.FC<Props> = () => {
 
     setTrialOrder([...trialOrder, trialTitle]);
 
+    if (trialTitle in trialOrder) {
+      console.error("Trial with that title already exists!");
+      return;
+    }
+
     const newTrialData = {
       ...arenaData[whichArenaSelected],
       [trialTitle]: addTrialDialogData
@@ -98,8 +103,8 @@ const MainScreen: React.FC<Props> = () => {
       let trialData = arenaData[whichArenaSelected];
       let trialInnerData = trialData[trialTitle];
       
-      trialInnerData.subTrialData = {...trialInnerData.subTrialData, [key] : [result, date, data]};
       trialInnerData.subTrialOrder = [...trialInnerData.subTrialOrder, key]
+      trialInnerData.subTrialData = {...trialInnerData.subTrialData, [key] : [result, date, data]};
 
       const newArenaData = {
         ...arenaData,
