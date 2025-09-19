@@ -19,6 +19,8 @@ export const SavePresetDialog: React.FC<Props> = ({handleCloseSavePresetDialog, 
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
+
+    if (presetName.length === 0) return;
     
     handleCloseSavePresetDialog();
     handleSavePreset(presetName);

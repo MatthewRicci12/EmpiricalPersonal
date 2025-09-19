@@ -73,15 +73,14 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation()
+    if (value.length === 0) return;
 
     if (edit) {
       handleCloseArenaDialog();
-    e.stopPropagation();
       handleEditArena(value);
     } else {
       handleCloseArenaDialog();
       handleAddArena(value);
-      if (value.length > 0) handleAddArena(value);
     }
     
     

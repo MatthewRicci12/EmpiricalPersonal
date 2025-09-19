@@ -63,6 +63,9 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
 
   const onSubmitClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation()
+
+    if (valueTrialName.length === 0) return;
+
     const newData = {
       trialTitle: valueTrialName,
       successString: valueSuccess,
