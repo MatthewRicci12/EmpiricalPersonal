@@ -34,9 +34,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
   const [presetOrder, setPresetOrder] = useState<(keyof PresetData)[]>([]);
   const [whichFactorSelected, setWhichFactorSelected] = useState<(keyof FactorData)>("");
 
-
-
-  const handleDeletePreset = (presetToBeDeleted: string) => { 
+  const handleDeletePreset = (presetToBeDeleted: string): React.MouseEventHandler<HTMLLIElement> => (e) => {
     setPresetOrder(presetOrder.filter(presetName => presetName != presetToBeDeleted));
     const { [presetToBeDeleted]: _, ...newPresetData } = presetData;
     setPresetData(newPresetData);

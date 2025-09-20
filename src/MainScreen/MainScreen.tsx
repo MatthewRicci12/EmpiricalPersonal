@@ -12,6 +12,8 @@ import ConclusionScreen from './ConclusionScreen.tsx';
 import { Result } from './Trial/SubTrial.tsx';
 import React from 'react';
 import ArenaTabContextMenu from './ArenaTabContextMenu.tsx';
+import ContextMenuSkeleton from '../ContextMenuSkeleton/ContextMenuSkeleton.tsx';
+import MenuItem from '@mui/material/MenuItem';
 
 export const MAX_ARENA_NAME_LENGTH = 32;
 
@@ -184,20 +186,23 @@ const MainScreen: React.FC<Props> = () => {
         edit={editArenaDialog}/>
       </DialogSkeleton>
 
+
       {/* Arena Tabs */}
-
       {
-      arenaOrder.map((title, index) => {
-        return (
-      <ArenaTabContextMenu
-      setEditMode={() => { setEditArenaDialog(true); setOpenAddArenaDialog(true);} }
-      handleDeleteArena={handleDeleteArena(title)}>
-        <ArenaTab title={title} handleClickTab={handleClickTab(title)} selected={title === whichArenaSelected} key={`${title}-${index}`}/>
-                      </ArenaTabContextMenu>
-              );
-                                        })
+        arenaOrder.map((title, index) => {
+          return (
+            <ContextMenuSkeleton
+            menuItems={[
+              <MenuItem onClick={() => { setEditArenaDialog(true); setOpenAddArenaDialog(true);}}>Edit Arena</MenuItem>,
+              <MenuItem onClick={handleDeleteArena(title)}>Delete Arena</MenuItem> 
+            ]}
+            >
+              <ArenaTab title={title} handleClickTab={handleClickTab(title)} selected={title === whichArenaSelected} key={`${title}-${index}`}/>
+            </ContextMenuSkeleton>
+          )}
+        )
       }
-
+    
     </>
     :
     <ConclusionScreen 

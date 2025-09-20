@@ -11,7 +11,7 @@ interface Props {
   presetData: PresetData,
   presetOrder: (keyof PresetData)[],
   handleLoadPreset: (factorData: FactorData, factorOrder: (keyof FactorData)[]) => void,
-  handleDeletePreset: (presetToBeDeleted: string) => void
+  handleDeletePreset: (presetToBeDeleted: string) => React.MouseEventHandler<HTMLLIElement>
 }
 export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, presetData, presetOrder, handleLoadPreset, handleDeletePreset}) => {
 
@@ -42,7 +42,7 @@ export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, pres
             factorData={presetData[presetTitle].factorData} 
             factorOrder={presetData[presetTitle].factorOrder} 
             handleLoadPreset={handleClickPreset(presetData[presetTitle].factorData, presetData[presetTitle].factorOrder)} 
-            handleDeletePreset={handleDeletePreset}
+            handleDeletePreset={handleDeletePreset(presetTitle)}
             key={`${presetTitle}-${index}`}/>)}
         </Box>
     </>
