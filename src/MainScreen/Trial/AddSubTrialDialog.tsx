@@ -49,12 +49,22 @@ export const AddSubTrialDialog: React.FC<Props> = ({trialTitle, handleCloseAddSu
     setResultHasBeenSelected(true);
   }
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    console.log(`You pressed: ${e.key}`);
+    if (e.key === 'Enter') {
+      console.log("You pressed Enter!");
+      e.preventDefault();
+      onButtonClick(e as unknown as React.MouseEvent<HTMLButtonElement>);
+    }
+  }
+
   return (
     <Box
     sx={{
         height: '500px',
         width: '500px'
-    }}>
+    }}
+    onKeyDown={handleKeyPress}>
 
     <Typography display="inline">Result: </Typography>
     <styles.SubTrialSuccess onClick={() => handleClickResult(Result.SUCCESS)} sx={resultHasBeenSelected && result === Result.SUCCESS ? selectedEffect : {}}>

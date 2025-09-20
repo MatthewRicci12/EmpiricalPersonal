@@ -45,11 +45,13 @@ const MainScreen: React.FC<Props> = () => {
   };
 
   const handleAddArena = (tabName: string) => { // Triggered by Dialog submit button
-    setArenaOrder([...arenaOrder, tabName]);
     if (tabName in arenaData) {
       console.error("Tab with that name already exists! (Some kind of UUID should be used as keys if that's supposed to be allowed.)")
       return;
     }
+
+    setArenaOrder([...arenaOrder, tabName]);
+
     const newArenaData = {
       ...arenaData,
       [tabName]: arenaData[tabName] || {}, // avoid overwriting when it already exists - if arenaData[tabName] is null, this assigns {}

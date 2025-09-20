@@ -26,6 +26,15 @@ export const SavePresetDialog: React.FC<Props> = ({handleCloseSavePresetDialog, 
     handleSavePreset(presetName);
   }
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    console.log(`You pressed: ${e.key}`);
+    if (e.key === 'Enter') {
+      console.log("You pressed Enter!");
+      e.preventDefault();
+      onButtonClick(e as unknown as React.MouseEvent<HTMLButtonElement>);
+    }
+  }
+
   return (
     <>
       <DialogTitle>Save Preset</DialogTitle>
@@ -33,7 +42,8 @@ export const SavePresetDialog: React.FC<Props> = ({handleCloseSavePresetDialog, 
         sx={{
           height: '500px',
           width: '800px'
-        }}>
+        }}
+        onKeyDown={handleKeyPress}>
         <TextField id="outlined-basic" label="Preset Name" variant="outlined" value={presetName} onChange={handleInput}
           sx={{
             paddingBottom: '10px'
