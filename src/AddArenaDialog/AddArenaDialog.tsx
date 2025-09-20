@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { MAX_ARENA_NAME_LENGTH } from '../MainScreen/MainScreen.tsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
@@ -33,6 +33,8 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
   const [presetData, setPresetData] = useState<PresetData>({});
   const [presetOrder, setPresetOrder] = useState<(keyof PresetData)[]>([]);
   const [whichFactorSelected, setWhichFactorSelected] = useState<(keyof FactorData)>("");
+
+
 
   const handleDeletePreset = (presetToBeDeleted: string) => { 
     setPresetOrder(presetOrder.filter(presetName => presetName != presetToBeDeleted));
@@ -94,12 +96,14 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
 
 
   const handleAddFactor = (factorName: string, weight: number) => {
-    setFactorOrder([...factorOrder, factorName]);
+
 
     if (factorName in factorOrder) {
       console.error("Factor already exists.")
       return;
     }
+
+    setFactorOrder([...factorOrder, factorName]);
 
     const newFactorData = {
       ...factorData,
@@ -154,7 +158,14 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
     setFactorOrder(factorOrder);
   }
   
-
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    console.log(`You pressed: ${e.key}`);
+    if (e.key === 'Enter') {
+      console.log("You pressed Enter!");
+      e.preventDefault();
+      onButtonClick(e as unknown as React.MouseEvent<HTMLButtonElement>);
+    }
+  }
 
   return (
     <>
@@ -163,9 +174,8 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
         sx={{
           height: '500px',
           width: '500px'
-        }}>
-
-
+        }}
+        onKeyDown={handleKeyPress}>
           <TextField id="outlined-basic" label="Arena Title" variant="outlined" value={value} onChange={handleInput}
           sx={{
             paddingBottom: '10px'
@@ -181,7 +191,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
         <Button onClick={handleOpenSavePresetDialog}>Save Preset</Button>
         <DialogSkeleton
         open={openSavePresetDialog}
-        onClose={handleCloseSavePresetDialog}  
+        onClose={handleCloseSavePresetDialog}
         >
           <SavePresetDialog
           handleCloseSavePresetDialog={handleCloseSavePresetDialog}

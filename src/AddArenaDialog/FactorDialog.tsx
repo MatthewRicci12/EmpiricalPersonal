@@ -50,6 +50,14 @@ export const FactorDialog: React.FC<Props> = ({handleCloseFactorDialog, handleAd
     
   }
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    console.log(`You pressed: ${e.key}`);
+    if (e.key === 'Enter') {
+      console.log("You pressed Enter!");
+      e.preventDefault();
+      onButtonClick(e as unknown as React.MouseEvent<HTMLButtonElement>);
+    }
+  }
 
   return (
     <>
@@ -58,7 +66,8 @@ export const FactorDialog: React.FC<Props> = ({handleCloseFactorDialog, handleAd
         sx={{
           height: '500px',
           width: '800px'
-        }}>
+        }}
+        onKeyDown={handleKeyPress}>
 
           {edit ? 
           <></> 

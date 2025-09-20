@@ -61,7 +61,7 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
     setOpenAddIndivFactorDialog(false);
   }
 
-  const onSubmitClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+  const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation()
 
     if (valueTrialName.length === 0) return;
@@ -121,67 +121,80 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
     setOpenAddIndivFactorDialog(true);
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    console.log(`You pressed: ${e.key}`);
+    if (e.key === 'Enter') {
+      console.log("You pressed Enter!");
+      e.preventDefault();
+      onButtonClick(e as unknown as React.MouseEvent<HTMLButtonElement>);
+    }
+  }
 
   return (
     <>
       <DialogTitle>Add New Trial</DialogTitle>
 
+      <Box
+      sx={{
+      }}
+      onKeyDown={handleKeyPress}>
+        {/* Input for trial's name */}
+        <Typography>Trial name:</Typography>
+        <TextField id="outlined-basic" variant="outlined" value={valueTrialName} onChange={handleInputTrialName}
+          sx={{
+            paddingBottom: '10px' }} />
 
-      {/* Input for trial's name */}
-      <Typography>Trial name:</Typography>
-      <TextField id="outlined-basic" variant="outlined" value={valueTrialName} onChange={handleInputTrialName}
-        sx={{
-          paddingBottom: '10px' }} />
+        {/* What a success looks like */}
+        <Typography>What a success looks like</Typography>
+        <TextField id=" outlined-multiline-flexible" multiline rows={4} value={valueSuccess} onChange={handleInputSuccess} />
 
-      {/* What a success looks like */}
-      <Typography>What a success looks like</Typography>
-      <TextField id=" outlined-multiline-flexible" multiline rows={4} value={valueSuccess} onChange={handleInputSuccess} />
+        {/* What a failure looks like */}
+        <Typography>What a failure looks like</Typography>
+        <TextField id=" outlined-multiline-flexible" multiline rows={4} value={valueFailure} onChange={handleInputFailure} />
 
-      {/* What a failure looks like */}
-      <Typography>What a failure looks like</Typography>
-      <TextField id=" outlined-multiline-flexible" multiline rows={4} value={valueFailure} onChange={handleInputFailure} />
+        {/* Individual Factors \*/}
+        <Typography>
+          Individual Factors
+          <Button onClick={ handleOpenIndivFactorDialog }>
+            <AddIcon />
+          </Button>
+          <DialogSkeleton
+          open={openAddIndivFactorDialog}
+          onClose={handleClose}>
+            <FactorDialog
+            handleCloseFactorDialog={handleCloseIndivFactorDialog}
+            handleAddFactor={handleAddIndivFactor}
+            handleEditFactor={handleEditIndivFactor}
+            edit={editIndivFactorDialog}
+            givenFactorName={whichIndivFactorSelected}
+            />
+          </DialogSkeleton>
 
-      {/* Individual Factors \*/}
-      <Typography>
-        Individual Factors
-        <Button onClick={ handleOpenIndivFactorDialog }>
-          <AddIcon />
-        </Button>
-        <DialogSkeleton
-        open={openAddIndivFactorDialog}
-        onClose={handleClose}>
-          <FactorDialog
-          handleCloseFactorDialog={handleCloseIndivFactorDialog}
-          handleAddFactor={handleAddIndivFactor}
-          handleEditFactor={handleEditIndivFactor}
-          edit={editIndivFactorDialog}
-          givenFactorName={whichIndivFactorSelected}
-          />
-        </DialogSkeleton>
+          <Button onClick={handleRemoveFactor}>
+            <RemoveIcon />
+          </Button>
+        </Typography>
+        <Box sx={{ width: '100%', height:'200px', outlineStyle: 'solid', outlineWidth: '1px', marginBottom: '2px'}}>
+          {indivFactorOrder.map((indivFactorName, index) => {
+          return <Factor 
+            title={indivFactorName} 
+            weight={indivFactorData[indivFactorName]} 
+            selected={whichIndivFactorSelected === indivFactorName} 
+            handleClickFactor={handleClickFactor(indivFactorName)} 
+            handleClickWeight={handleClickWeight(indivFactorName)}
+            key={`${indivFactorName}-${index}`}
+            ></Factor>}
+          )}
+        </Box>
 
-        <Button onClick={handleRemoveFactor}>
-          <RemoveIcon />
-        </Button>
-      </Typography>
-      <Box sx={{ width: '100%', height:'200px', outlineStyle: 'solid', outlineWidth: '1px', marginBottom: '2px'}}>
-        {indivFactorOrder.map((indivFactorName, index) => {
-         return <Factor 
-          title={indivFactorName} 
-          weight={indivFactorData[indivFactorName]} 
-          selected={whichIndivFactorSelected === indivFactorName} 
-          handleClickFactor={handleClickFactor(indivFactorName)} 
-          handleClickWeight={handleClickWeight(indivFactorName)}
-          key={`${indivFactorName}-${index}`}
-          ></Factor>}
-        )}
+        {/* Additional notes */}
+        <Typography>Additional notes</Typography>
+        <TextField id=" outlined-multiline-flexible" multiline rows={4} value={valueAdditionalNotes} onChange={handleInputAdditionalNotes} />
+
+        {/* BOTTOM SUBMIT BUTTON */}
+        <Button variant="contained" onClick={onButtonClick}>Submit</Button>
       </Box>
-
-      {/* Additional notes */}
-      <Typography>Additional notes</Typography>
-      <TextField id=" outlined-multiline-flexible" multiline rows={4} value={valueAdditionalNotes} onChange={handleInputAdditionalNotes} />
-
-      {/* BOTTOM SUBMIT BUTTON */}
-      <Button variant="contained" onClick={onSubmitClick}>Submit</Button>
+      
     </>
   );
 }
