@@ -24,11 +24,13 @@ export const Preset: React.FC<Props> = ({title, factorData, factorOrder, handleL
     
   };
 
-  const handleCloseFactorListDialog = () => { //Triggered by Dialog x
+  const handleCloseFactorListDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { //Triggered by Dialog x
+    e.stopPropagation();
     setOpen(false);
   };
 
-  const handleClickShowFactorList = () => {
+  const handleClickShowFactorList: React.MouseEventHandler<HTMLLIElement> = (e) => {
+    e.stopPropagation();
     setOpen(true);  
   }
 

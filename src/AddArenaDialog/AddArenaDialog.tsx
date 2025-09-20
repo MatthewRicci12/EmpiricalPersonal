@@ -17,7 +17,7 @@ import Factor from './Factor.tsx';
 
 interface Props {
   handleAddArena: (tabName: string) => void,
-  handleCloseArenaDialog: () => void,
+  handleCloseArenaDialog: React.MouseEventHandler<HTMLButtonElement>,
   handleEditArena: (newName: string) =>  void
   edit: boolean
 }
@@ -40,27 +40,33 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
     setPresetData(newPresetData);
   }
 
-  const handleOpenPresetDialog = () => { //Triggered by add Tab button
+
+  const handleOpenPresetDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { 
+    e.stopPropagation();
     setOpenPresetDialog(true);
   };
 
-  const handleClosePresetDialog = () => { //Triggered by Dialog x
+  const handleClosePresetDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
     setOpenPresetDialog(false);
   };
 
-  const handleOpenFactorDialog = () => { //Triggered by Dialog x
+  const handleOpenFactorDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { //Triggered by Dialog x
+    e.stopPropagation();
     setEditFactorDialog(false);
     setOpenFactorDialog(true);
   };
 
+  // Subroutine of FactorDialog
   const handleCloseFactorDialog = () => { //Triggered by Dialog x
     setOpenFactorDialog(false);
   };
 
-  const handleOpenSavePresetDialog = () => { //Triggered by Dialog x
+  const handleOpenSavePresetDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {  //Triggered by Dialog x
     setOpenSavePresetDialog(true);
   };
 
+  // Subroutine of SavePresetDialog
   const handleCloseSavePresetDialog = () => { //Triggered by Dialog x
     setOpenSavePresetDialog(false);
   };
@@ -72,14 +78,13 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
   }
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation()
     if (value.length === 0) return;
 
     if (edit) {
-      handleCloseArenaDialog();
+      handleCloseArenaDialog(e);
       handleEditArena(value);
     } else {
-      handleCloseArenaDialog();
+      handleCloseArenaDialog(e);
       handleAddArena(value);
     }
     
@@ -93,6 +98,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
   };
 
 
+  // SUbroutine
   const handleAddFactor = (factorName: string, weight: number) => {
 
 
@@ -112,6 +118,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
 
   }
 
+  // Subroutine
   const handleEditFactor = (factorName: string, newWeight: number) => {  //Triggered by clicking a tab
     const newFactorData = {
       ...factorData,
@@ -151,6 +158,8 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
     setPresetData(newPresetData);
   }
 
+
+  // Subroutine of LoadPresetDialog
   const handleLoadPreset = (factorData: FactorData, factorOrder: (keyof FactorData)[]) => {
     setFactorData(factorData);
     setFactorOrder(factorOrder);

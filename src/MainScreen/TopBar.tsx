@@ -16,11 +16,13 @@ interface Props {
 export const TopBar: React.FC<Props> = ({ handleAddTrial, handleOpenConclusionsPage, handleRemoveTrial, whichArenaSelected }) => {
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
+  const handleClickOpen: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
     if (whichArenaSelected.length !== 0) setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
     setOpen(false);
   };
 

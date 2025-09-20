@@ -1,9 +1,5 @@
-import Button from "@mui/material/Button";
-import { useState } from "react";
 import Box from '@mui/system/Box';
-import SubTrial, {SubTrialData} from "./SubTrial.tsx";
 import Typography from '@mui/material/Typography';
-import TextField from "@mui/material/TextField";
 
 
 interface Props {

@@ -47,20 +47,24 @@ const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial, handle
   const [openAddSubTrialDialog, setOpenAddSubTrialDialog] = useState(false);
 
 
-  const handleOpenSubTrialDialog = () => { //Triggered by add Tab button
+  const handleOpenSubTrialDialog: React.MouseEventHandler<HTMLDivElement> = (e) => { //Triggered by add Tab button
+    e.stopPropagation();
     setOpenSubTrialDialog(true);
   };
 
-  const handleCloseSubTrialDialog = () => { //Triggered by Dialog x
+  const handleCloseSubTrialDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {//Triggered by Dialog x
+    e.stopPropagation();    
     setOpenSubTrialDialog(false);
   };
 
 
-  const handleOpenAddSubTrialDialog = () => { //Triggered by add Tab button
+  const handleOpenAddSubTrialDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { //Triggered by add Tab button
+    e.stopPropagation();    
     setOpenAddSubTrialDialog(true);
   };
 
-  const handleCloseAddSubTrialDialog = () => { //Triggered by Dialog x
+  const handleCloseAddSubTrialDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { //Triggered by Dialog x
+    e.stopPropagation();
     setOpenAddSubTrialDialog(false);
   };
 
