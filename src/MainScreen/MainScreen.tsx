@@ -37,16 +37,19 @@ const MainScreen: React.FC<Props> = () => {
   const [whichTrialSelected, setTrialSelected] = useState<keyof TrialData>("");
   const [editArenaDialog, setEditArenaDialog] = useState(false);
 
-  const handleOpenArenaDialog = () => { //Triggered by add Tab button
+  const handleOpenArenaDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { //Triggered by add Tab button
+    e.stopPropagation();
     setEditArenaDialog(false);
     setOpenAddArenaDialog(true);
   };
 
-  const handleCloseArenaDialog = () => { //Triggered by Dialog x
+  const handleCloseArenaDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { //Triggered by Dialog x
+    e.stopPropagation();
     setOpenAddArenaDialog(false);
   };
 
-  const handleAddArena = (tabName: string) => { // Triggered by Dialog submit button
+  // Subroutine of submit button handler in AddArenaDialog.
+  const handleAddArena = (tabName: string) => {
     if (tabName in arenaData) {
       console.error("Tab with that name already exists! (Some kind of UUID should be used as keys if that's supposed to be allowed.)")
       return;
@@ -56,17 +59,18 @@ const MainScreen: React.FC<Props> = () => {
 
     const newArenaData = {
       ...arenaData,
-      [tabName]: arenaData[tabName] || {}, // avoid overwriting when it already exists - if arenaData[tabName] is null, this assigns {}
+      [tabName]: arenaData[tabName] || {}, 
     }
     setArenaData(newArenaData)
   };
 
-  const handleClickTab = (title: string): React.MouseEventHandler<HTMLButtonElement> => (e) => { //Triggered by clicking a tab
+  const handleClickTab = (title: string): React.MouseEventHandler<HTMLButtonElement> => (e) => {
     e.stopPropagation()
     setWhichArenaSelected(title);
   };
 
-  const handleAddTrial = (addTrialDialogData: AddTrialDialogData) => { //Triggered by trial add button
+  // Subroutine of event handler in AddTrialDialog.
+  const handleAddTrial = (addTrialDialogData: AddTrialDialogData) => {
     // Can't add trial if no arena selected.
 
     const trialTitle = addTrialDialogData.trialTitle;
@@ -94,15 +98,17 @@ const MainScreen: React.FC<Props> = () => {
     setArenaData(newArenaData);
   }
 
+  // Subroutine
   const handleOpenConclusionsPage = () => { //Triggered by Dialog x
     setDisplayConclusionsPage(true);
   };
 
-
+  // Subroutine
   const handleClickBackButton = () => { //Triggered by Dialog x
     setDisplayConclusionsPage(false);
   };
 
+  // Subroutine of event handler in ArenaScreen.
   const handleAddSubTrial = (trialTitle: string, key: string, result: Result, date: string, data: string) => {
       let trialData = arenaData[whichArenaSelected];
       let trialInnerData = trialData[trialTitle];
@@ -130,6 +136,7 @@ const MainScreen: React.FC<Props> = () => {
     whichTrialSelected === title ? setTrialSelected("") : setTrialSelected(title);
   }
 
+  // Subroutine of submit button handler in AddArenaDialog when editing an arena.
   const handleEditArena = (curArenaName: string) => (newName: string) => {
     let newArenaData = {...arenaData, [newName]: arenaData[curArenaName]};
     delete newArenaData[curArenaName];

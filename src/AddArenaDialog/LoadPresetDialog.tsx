@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import {FactorData} from './Factor.tsx';
 
 interface Props {
-  handleClosePresetDialog: () => void,
+  handleClosePresetDialog: React.MouseEventHandler<HTMLButtonElement>,
   presetData: PresetData,
   presetOrder: (keyof PresetData)[],
   handleLoadPreset: (factorData: FactorData, factorOrder: (keyof FactorData)[]) => void,
@@ -16,13 +16,11 @@ interface Props {
 export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, presetData, presetOrder, handleLoadPreset, handleDeletePreset}) => {
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation();
-    handleClosePresetDialog();
+    handleClosePresetDialog(e);
   }
 
   const handleClickPreset = (factorData: FactorData, factorOrder: (keyof FactorData)[]): React.MouseEventHandler<HTMLButtonElement> => (e) => { //Triggered by clicking a tab
-    e.stopPropagation();
-    handleClosePresetDialog();
+    handleClosePresetDialog(e);
     handleLoadPreset(factorData, factorOrder);
   };
 

@@ -40,12 +40,12 @@ export const PresetContextMenu: React.FC<Props> = ({children, presetTitle, handl
     }
   };
 
-  const handleClose = () => {
+  const handleClose: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     setContextMenu(null);
   };
 
 
-  const handleClickDeletePreset = () => {
+  const handleClickDeletePreset: React.MouseEventHandler<HTMLLIElement> = (e) => {
     handleDeletePreset(presetTitle);
   }
 

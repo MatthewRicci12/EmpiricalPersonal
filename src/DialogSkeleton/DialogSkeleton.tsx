@@ -6,7 +6,7 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 interface Props {
     children: React.ReactNode,
     open: boolean,
-    onClose: () => void;
+    onClose: React.MouseEventHandler<HTMLButtonElement>
 }
 const DialogSkeleton: React.FC<Props> = ({children, open, onClose}) => {
     

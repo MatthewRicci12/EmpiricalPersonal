@@ -18,7 +18,7 @@ const selectedEffect = {boxShadow: "0px 0px 20px 5px #0ff"}
 
 interface Props {
     trialTitle: string,
-    handleCloseAddSubTrialDialog: () => void,
+    handleCloseAddSubTrialDialog: React.MouseEventHandler<HTMLButtonElement>,
     handleAddSubTrial: (trialTitle: string, key: string, result: Result, date: string, data: string) => void
 }
 
@@ -35,15 +35,14 @@ export const AddSubTrialDialog: React.FC<Props> = ({trialTitle, handleCloseAddSu
   }
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation();
-
-    handleCloseAddSubTrialDialog();
+    handleCloseAddSubTrialDialog(e);
     if (subTrialDate !== null) {
       handleAddSubTrial(trialTitle, uuidv4(), result, subTrialDate!.format('MM/DD/YYYY'), subTrialData);
     }
 
   }
 
+  // Subroutine 
   const handleClickResult = (success: Result) => {
     setResult(success);
     setResultHasBeenSelected(true);
@@ -67,10 +66,10 @@ export const AddSubTrialDialog: React.FC<Props> = ({trialTitle, handleCloseAddSu
     onKeyDown={handleKeyPress}>
 
     <Typography display="inline">Result: </Typography>
-    <styles.SubTrialSuccess onClick={() => handleClickResult(Result.SUCCESS)} sx={resultHasBeenSelected && result === Result.SUCCESS ? selectedEffect : {}}>
+    <styles.SubTrialSuccess onClick={(e) => {e.stopPropagation(); handleClickResult(Result.SUCCESS)}} sx={resultHasBeenSelected && result === Result.SUCCESS ? selectedEffect : {}}>
       <CheckIcon/>
     </styles.SubTrialSuccess>
-    <styles.SubTrialFailure onClick={() => handleClickResult(Result.FAILURE)} sx={resultHasBeenSelected && result === Result.FAILURE ? selectedEffect : {}}>
+    <styles.SubTrialFailure onClick={(e) => {e.stopPropagation(); ; handleClickResult(Result.FAILURE)}} sx={resultHasBeenSelected && result === Result.FAILURE ? selectedEffect : {}}>
       <CloseIcon/>
     </styles.SubTrialFailure>
 

@@ -23,11 +23,11 @@ const SubTrial: React.FC<Props> = ({result, date, data}) => {
    const [openViewSubTrialInfoDialog, setOpenViewSubTrialInfoDialog] = useState(false);
 
 
-  const handleOpenViewSubTrialDialog = () => { //Triggered by add Tab button
+  const handleOpenViewSubTrialDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {//Triggered by add Tab button
     setOpenViewSubTrialInfoDialog(true);
   };
 
-  const handleCloseViewSubTrialDialog = () => { //Triggered by Dialog x
+  const handleCloseViewSubTrialDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { //Triggered by Dialog x
     setOpenViewSubTrialInfoDialog(false);
   };
 
