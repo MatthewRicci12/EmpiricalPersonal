@@ -1,5 +1,9 @@
 import Box from '@mui/system/Box';
 import Typography from '@mui/material/Typography';
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/main
 
 interface Props {
     date: string,

@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 
 interface Props {
-  handleCloseFactorDialog: () => void,
+  handleCloseFactorDialog: React.MouseEventHandler<HTMLButtonElement>,
   handleAddFactor: (factorName: string, weight: number) => void,
   handleEditFactor: (factorName: string, weight: number) => void,
   edit: boolean,
@@ -34,17 +34,15 @@ export const FactorDialog: React.FC<Props> = ({handleCloseFactorDialog, handleAd
   };
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation();
-
     if (factorName.length  === 0) return;
 
     const sliderValue = sliderValueMacro + sliderValueMicro >= 100 ? 100 : sliderValueMacro + sliderValueMicro;
 
     if (edit) {
-      handleCloseFactorDialog();
+      handleCloseFactorDialog(e);
       handleEditFactor(factorName, sliderValue);
     } else {
-      handleCloseFactorDialog();
+      handleCloseFactorDialog(e);
       handleAddFactor(factorName, sliderValue);
     }
   };

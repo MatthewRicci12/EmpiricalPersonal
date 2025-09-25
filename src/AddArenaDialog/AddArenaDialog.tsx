@@ -17,7 +17,7 @@ import Factor from './Factor.tsx';
 
 interface Props {
   handleAddArena: (tabName: string) => void,
-  handleCloseArenaDialog: () => void,
+  handleCloseArenaDialog: React.MouseEventHandler<HTMLButtonElement>,
   handleEditArena: (newName: string) =>  void
   edit: boolean
 }
@@ -36,6 +36,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
   const [factorData, setFactorData] = useState<FactorData>({});
   const [factorOrder, setFactorOrder] = useState<(keyof FactorData)[]>([]);
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   const handleOpenPresetDialog = () => { //Triggered by add Tab button
 =======
@@ -55,32 +56,48 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
   const handleOpenPresetDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { 
     e.stopPropagation();
 >>>>>>> Stashed changes
+=======
+
+  const handleOpenPresetDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { 
+    e.stopPropagation();
+>>>>>>> refs/remotes/origin/main
     setOpenPresetDialog(true);
   };
 
-  const handleClosePresetDialog = () => { //Triggered by Dialog x
+  const handleClosePresetDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
     setOpenPresetDialog(false);
   };
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   const handleOpenFactorDialog = () => { //Triggered by Dialog x
 =======
   const handleOpenFactorDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
 >>>>>>> Stashed changes
+=======
+  const handleOpenFactorDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { //Triggered by Dialog x
+    e.stopPropagation();
+>>>>>>> refs/remotes/origin/main
     setEditFactorDialog(false);
     setOpenFactorDialog(true);
   };
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
+=======
+  // Subroutine of FactorDialog
+>>>>>>> refs/remotes/origin/main
   const handleCloseFactorDialog = () => { //Triggered by Dialog x
     setOpenFactorDialog(false);
   };
 
-  const handleOpenSavePresetDialog = () => { //Triggered by Dialog x
+  const handleOpenSavePresetDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {  //Triggered by Dialog x
     setOpenSavePresetDialog(true);
   };
 
+  // Subroutine of SavePresetDialog
   const handleCloseSavePresetDialog = () => { //Triggered by Dialog x
 =======
   // Subroutine of FactorDialog
@@ -104,15 +121,18 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
   };
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     e.stopPropagation()
+=======
+>>>>>>> refs/remotes/origin/main
     if (value.length === 0) return;
 
     if (edit) {
-      handleCloseArenaDialog();
+      handleCloseArenaDialog(e);
       handleEditArena(value);
     } else {
-      handleCloseArenaDialog();
+      handleCloseArenaDialog(e);
       handleAddArena(value);
     }
     
@@ -141,9 +161,13 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
 
 <<<<<<< Updated upstream
 
+<<<<<<< HEAD
 =======
   // Subroutine
 >>>>>>> Stashed changes
+=======
+  // SUbroutine
+>>>>>>> refs/remotes/origin/main
   const handleAddFactor = (factorName: string, weight: number) => {
     if (factorName in factorOrder) {
       console.error("Factor already exists.")
@@ -160,7 +184,13 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
     console.log(`handleAddFactor: ${newFactorData[factorName]}`);
   };
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
+=======
+  }
+
+  // Subroutine
+>>>>>>> refs/remotes/origin/main
   const handleEditFactor = (factorName: string, newWeight: number) => {  //Triggered by clicking a tab
 =======
   // Subroutine
@@ -204,10 +234,15 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
     setPresetData(newPresetData);
   }
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
   // Subroutine of LoadPresetDialog
 >>>>>>> Stashed changes
+=======
+
+  // Subroutine of LoadPresetDialog
+>>>>>>> refs/remotes/origin/main
   const handleLoadPreset = (factorData: FactorData, factorOrder: (keyof FactorData)[]) => {
     setFactorData(factorData);
     setFactorOrder(factorOrder);

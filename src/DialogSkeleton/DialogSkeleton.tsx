@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 interface Props {
     children: React.ReactNode,
     open: boolean,
-    onClose: () => void;
+    onClose: React.MouseEventHandler<HTMLButtonElement>
 }
 const DialogSkeleton: React.FC<Props> = ({children, open, onClose}) => {
     return (

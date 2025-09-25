@@ -37,7 +37,7 @@ export const ContextMenuSkeleton: React.FC<Props> = ({children, menuItems}) => {
     }
   };
 
-  const handleClose = () => {
+  const handleClose: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     setContextMenu(null);
   };
 

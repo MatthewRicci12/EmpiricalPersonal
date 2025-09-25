@@ -4,7 +4,7 @@ import Preset, { PresetData } from './Preset.tsx';
 import {FactorData} from './Factor.tsx';
 
 interface Props {
-  handleClosePresetDialog: () => void,
+  handleClosePresetDialog: React.MouseEventHandler<HTMLButtonElement>,
   presetData: PresetData,
   presetOrder: (keyof PresetData)[],
   handleLoadPreset: (factorData: FactorData, factorOrder: (keyof FactorData)[]) => void,
@@ -13,13 +13,17 @@ interface Props {
 export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, presetData, presetOrder, handleLoadPreset, handleDeletePreset}) => {
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+<<<<<<< HEAD
     e.stopPropagation();
     handleClosePresetDialog();
   };
+=======
+    handleClosePresetDialog(e);
+  }
+>>>>>>> refs/remotes/origin/main
 
   const handleClickPreset = (factorData: FactorData, factorOrder: (keyof FactorData)[]): React.MouseEventHandler<HTMLButtonElement> => (e) => { //Triggered by clicking a tab
-    e.stopPropagation();
-    handleClosePresetDialog();
+    handleClosePresetDialog(e);
     handleLoadPreset(factorData, factorOrder);
   };
 

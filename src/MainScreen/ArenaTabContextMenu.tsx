@@ -39,7 +39,8 @@ export const ArenaTabContextMenu: React.FC<Props> = ({children, setEditMode, han
     }
   };
 
-  const handleClose = () => {
+  const handleClose: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
     setContextMenu(null);
   };
 

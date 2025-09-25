@@ -24,7 +24,7 @@ export interface AddTrialDialogData {
 
 interface Props {
   handleAddTrial: (addTrialDialogData: AddTrialDialogData) => void,
-  handleClose: () => void
+  handleClose: React.MouseEventHandler<HTMLButtonElement>
 }
 export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose }) => {
   const [valueTrialName, setValueTrialName] = useState("");
@@ -42,27 +42,31 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
   const [openAddIndivFactorDialog, setOpenAddIndivFactorDialog] = useState(false);
 
   const handleInputTrialName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    e.stopPropagation();    
     if (e.target.value.length < MAX_TRIAL_NAME_LENGTH) setValueTrialName(e.target.value);
   };
 
   const handleInputSuccess: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    e.stopPropagation();    
     setValueSuccess(e.target.value);
   };
 
   const handleInputFailure: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    e.stopPropagation();    
     setValueFailure(e.target.value);
   };
 
   const handleInputAdditionalNotes: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    e.stopPropagation();    
     setValueAdditionalNotes(e.target.value);
   };
 
-  const handleCloseIndivFactorDialog = () => {
+  const handleCloseIndivFactorDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
     setOpenAddIndivFactorDialog(false);
   };
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation()
 
     if (valueTrialName.length === 0) return;
 
@@ -74,11 +78,16 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
       subTrialData: {},
       subTrialOrder: []
     }
+<<<<<<< HEAD
 
     handleClose();
+=======
+    handleClose(e);
+>>>>>>> refs/remotes/origin/main
     handleAddTrial(newData);
   };
 
+  // Subroutine of submit button handler in FactorDialog.
   const handleAddIndivFactor = (indivFactorName: string, weight: number) => {
     setIndivFactorOrder([...indivFactorOrder, indivFactorName]);
 
@@ -90,6 +99,7 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
     setIndivFactorData(newFactorData);
   };
 
+  // Subroutine of submit button handler in FactorDialog.
   const handleEditIndivFactor = (factorName: string, weight: number) => {
     const newFactorData = {
       ...indivFactorData,
@@ -121,7 +131,8 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
     setIndivFactorData(newIndivFactorData);
   };
 
-  const handleOpenIndivFactorDialog = () => { //Triggered by Dialog x
+  const handleOpenIndivFactorDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
     setEditIndivFactorDialog(false);
     setOpenAddIndivFactorDialog(true);
   };
