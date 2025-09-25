@@ -22,44 +22,44 @@ export interface AddTrialDialogData {
   subTrialOrder: (keyof SubTrialData)[]
 }
 
-
 interface Props {
   handleAddTrial: (addTrialDialogData: AddTrialDialogData) => void,
   handleClose: () => void
 }
-
 export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose }) => {
   const [valueTrialName, setValueTrialName] = useState("");
   const [valueSuccess, setValueSuccess] = useState("");
   const [valueFailure, setValueFailure] = useState("");
   const [valueAdditionalNotes, setValueAdditionalNotes] = useState("");
+
   const [whichIndivFactorSelected, setWhichIndivFactorSelected] = useState<(keyof FactorData)>("");
+
   const [indivFactorData, setIndivFactorData] = useState<FactorData>({});
   const [indivFactorOrder, setIndivFactorOrder] = useState<(keyof FactorData)[]>([]);
+
   const [editIndivFactorDialog, setEditIndivFactorDialog] = useState(false); 
 
   const [openAddIndivFactorDialog, setOpenAddIndivFactorDialog] = useState(false);
 
-
   const handleInputTrialName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.value.length < MAX_TRIAL_NAME_LENGTH) setValueTrialName(e.target.value);
-  }
+  };
 
   const handleInputSuccess: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setValueSuccess(e.target.value);
-  }
+  };
 
   const handleInputFailure: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setValueFailure(e.target.value);
-  }
+  };
 
   const handleInputAdditionalNotes: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setValueAdditionalNotes(e.target.value);
-  }
+  };
 
   const handleCloseIndivFactorDialog = () => {
     setOpenAddIndivFactorDialog(false);
-  }
+  };
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation()
@@ -74,9 +74,10 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
       subTrialData: {},
       subTrialOrder: []
     }
+
     handleClose();
     handleAddTrial(newData);
-  }
+  };
 
   const handleAddIndivFactor = (indivFactorName: string, weight: number) => {
     setIndivFactorOrder([...indivFactorOrder, indivFactorName]);
@@ -85,17 +86,19 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
       ...indivFactorData,
       [indivFactorName]: weight,
     }
+
     setIndivFactorData(newFactorData);
-  }
+  };
 
   const handleEditIndivFactor = (factorName: string, weight: number) => {
     const newFactorData = {
       ...indivFactorData,
       [factorName]: weight
     }
+
     setIndivFactorData(newFactorData);
     setWhichIndivFactorSelected("");
-  }
+  };
 
   const handleClickFactor = (factorName: string): React.MouseEventHandler<HTMLDivElement> => (e) => { //Triggered by clicking a tab
     e.stopPropagation()
@@ -112,9 +115,11 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
   const handleRemoveFactor: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     setIndivFactorOrder(indivFactorOrder.filter(presetName => presetName != whichIndivFactorSelected));
+
     const { [whichIndivFactorSelected]: _, ...newIndivFactorData} = indivFactorData;
+
     setIndivFactorData(newIndivFactorData);
-  }
+  };
 
   const handleOpenIndivFactorDialog = () => { //Triggered by Dialog x
     setEditIndivFactorDialog(false);
@@ -122,42 +127,56 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    console.log(`You pressed: ${e.key}`);
     if (e.key === 'Enter') {
       console.log("You pressed Enter!");
       e.preventDefault();
       onButtonClick(e as unknown as React.MouseEvent<HTMLButtonElement>);
     }
-  }
+  };
 
   return (
     <>
       <DialogTitle>Add New Trial</DialogTitle>
 
       <Box
-      sx={{
-      }}
       onKeyDown={handleKeyPress}>
+
         {/* Input for trial's name */}
         <Typography>Trial name:</Typography>
-        <TextField id="outlined-basic" variant="outlined" value={valueTrialName} onChange={handleInputTrialName}
+        <TextField 
+        id="outlined-basic" 
+        variant="outlined" 
+        value={valueTrialName} 
+        onChange={handleInputTrialName}
           sx={{
             paddingBottom: '10px' }} />
 
         {/* What a success looks like */}
         <Typography>What a success looks like</Typography>
-        <TextField id=" outlined-multiline-flexible" multiline rows={4} value={valueSuccess} onChange={handleInputSuccess} />
+        <TextField 
+        id=" outlined-multiline-flexible" 
+        multiline 
+        rows={4} 
+        value={valueSuccess} 
+        onChange={handleInputSuccess} />
 
         {/* What a failure looks like */}
         <Typography>What a failure looks like</Typography>
-        <TextField id=" outlined-multiline-flexible" multiline rows={4} value={valueFailure} onChange={handleInputFailure} />
+        <TextField 
+        id=" outlined-multiline-flexible" 
+        multiline 
+        rows={4} 
+        value={valueFailure} 
+        onChange={handleInputFailure} />
 
         {/* Individual Factors \*/}
         <Typography>
           Individual Factors
+
           <Button onClick={ handleOpenIndivFactorDialog }>
             <AddIcon />
           </Button>
+
           <DialogSkeleton
           open={openAddIndivFactorDialog}
           onClose={handleClose}>
@@ -166,15 +185,23 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
             handleAddFactor={handleAddIndivFactor}
             handleEditFactor={handleEditIndivFactor}
             edit={editIndivFactorDialog}
-            givenFactorName={whichIndivFactorSelected}
-            />
+            givenFactorName={whichIndivFactorSelected}/>
           </DialogSkeleton>
 
           <Button onClick={handleRemoveFactor}>
             <RemoveIcon />
           </Button>
+
         </Typography>
-        <Box sx={{ width: '100%', height:'200px', outlineStyle: 'solid', outlineWidth: '1px', marginBottom: '2px'}}>
+
+        <Box 
+        sx={{ 
+          width: '100%', 
+          height:'200px', 
+          outlineStyle: 'solid', 
+          outlineWidth: '1px', 
+          marginBottom: '2px'}}>
+
           {indivFactorOrder.map((indivFactorName, index) => {
           return <Factor 
             title={indivFactorName} 
@@ -182,14 +209,19 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
             selected={whichIndivFactorSelected === indivFactorName} 
             handleClickFactor={handleClickFactor(indivFactorName)} 
             handleClickWeight={handleClickWeight(indivFactorName)}
-            key={`${indivFactorName}-${index}`}
-            ></Factor>}
+            key={`${indivFactorName}-${index}`}>
+            </Factor>}
           )}
         </Box>
 
         {/* Additional notes */}
         <Typography>Additional notes</Typography>
-        <TextField id=" outlined-multiline-flexible" multiline rows={4} value={valueAdditionalNotes} onChange={handleInputAdditionalNotes} />
+        <TextField 
+        id=" outlined-multiline-flexible" 
+        multiline 
+        rows={4} 
+        value={valueAdditionalNotes} 
+        onChange={handleInputAdditionalNotes} />
 
         {/* BOTTOM SUBMIT BUTTON */}
         <Button variant="contained" onClick={onButtonClick}>Submit</Button>

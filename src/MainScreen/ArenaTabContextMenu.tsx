@@ -54,9 +54,7 @@ export const ArenaTabContextMenu: React.FC<Props> = ({children, setEditMode, han
         anchorPosition={
           contextMenu !== null
             ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-            : undefined
-        }
-      >
+            : undefined}>
         <MenuItem onClick={setEditMode}>Edit Arena</MenuItem>
         <MenuItem onClick={handleDeleteArena}>Delete Arena</MenuItem>
       </Menu>

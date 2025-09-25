@@ -14,14 +14,14 @@ interface Props {
   givenFactorName?: string
 }
 export const FactorDialog: React.FC<Props> = ({handleCloseFactorDialog, handleAddFactor, handleEditFactor, edit, givenFactorName=""}) => {
-  const [factorName, setFactorName] = useState(givenFactorName); //Value of input which changes on screen
-  const [sliderValueMacro, setSliderValueMacro] = useState(0); //Value of input which changes on screen
-  const [sliderValueMicro, setSliderValueMicro] = useState(0); //Value of input which changes on screen
+  const [factorName, setFactorName] = useState(givenFactorName); 
+  const [sliderValueMacro, setSliderValueMacro] = useState(0); 
+  const [sliderValueMicro, setSliderValueMicro] = useState(0);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => { //Reacts to you entering
     e.stopPropagation();
     setFactorName(e.target.value);
-  }
+  };
 
   const handleSliderChangeMacro = (e: Event, newValue: number) => {
     e.stopPropagation();
@@ -47,17 +47,15 @@ export const FactorDialog: React.FC<Props> = ({handleCloseFactorDialog, handleAd
       handleCloseFactorDialog();
       handleAddFactor(factorName, sliderValue);
     }
-    
-  }
+  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    console.log(`You pressed: ${e.key}`);
     if (e.key === 'Enter') {
       console.log("You pressed Enter!");
       e.preventDefault();
       onButtonClick(e as unknown as React.MouseEvent<HTMLButtonElement>);
     }
-  }
+  };
 
   return (
     <>
@@ -65,24 +63,28 @@ export const FactorDialog: React.FC<Props> = ({handleCloseFactorDialog, handleAd
       <Box
         sx={{
           height: '500px',
-          width: '800px'
-        }}
+          width: '800px'}}
         onKeyDown={handleKeyPress}>
 
           {edit ? 
           <></> 
           :
-          <TextField id="outlined-basic" label="Factor Title" variant="outlined" value={factorName} onChange={handleInput}
+          <TextField 
+          id="outlined-basic" 
+          label="Factor Title" 
+          variant="outlined" 
+          value={factorName} 
+          onChange={handleInput}
           sx={{
-            paddingBottom: '20px'
-          }}>
+            paddingBottom: '20px'}}>
           </TextField>}
 
-            <Typography sx={{fontSize: '2em'}}>Factor Weight: {
-            sliderValueMacro + sliderValueMicro >= 100 ? 100 : sliderValueMacro + sliderValueMicro
-            }</Typography>
+            <Typography sx={{fontSize: '2em'}}>Factor Weight: 
+            {sliderValueMacro + sliderValueMicro >= 100 ? 100 : sliderValueMacro + sliderValueMicro}
+            </Typography>
 
             <Typography>Macro-Slider: How much does this factor affect the results?</Typography>
+            
             <Slider
             sx={{margin: '20px', width: '80%'}}
             defaultValue={0}
@@ -92,11 +94,11 @@ export const FactorDialog: React.FC<Props> = ({handleCloseFactorDialog, handleAd
             marks
             min={0}
             max={100}
-            onChange={handleSliderChangeMacro}
-            >
+            onChange={handleSliderChangeMacro}>
             </Slider>
 
             <Typography>Micro-Slider: Fine-tune</Typography>
+
             <Slider
             sx={{margin: '20px', width: '80%'}}
             defaultValue={0}
@@ -106,11 +108,16 @@ export const FactorDialog: React.FC<Props> = ({handleCloseFactorDialog, handleAd
             marks
             min={0}
             max={9}
-            onChange={handleSliderChangeMicro}
-            >
+            onChange={handleSliderChangeMicro}>
             </Slider>
+
             <br></br>
-            <Button variant="contained" onClick={onButtonClick}>Submit</Button>
+
+            <Button 
+            variant="contained" 
+            onClick={onButtonClick}>
+            Submit
+            </Button>
         </Box>
     </>
   );

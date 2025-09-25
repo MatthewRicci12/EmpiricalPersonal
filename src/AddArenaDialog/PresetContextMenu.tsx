@@ -59,9 +59,7 @@ export const PresetContextMenu: React.FC<Props> = ({children, presetTitle, handl
         anchorPosition={
           contextMenu !== null
             ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-            : undefined
-        }
-      >
+            : undefined }>
         <MenuItem onClick={handleClickDeletePreset}>Delete Preset</MenuItem>
         <MenuItem onClick={handleClickShowFactorList}>Show Factor List</MenuItem>
       </Menu>

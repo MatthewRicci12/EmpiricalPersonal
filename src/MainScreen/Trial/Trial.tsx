@@ -1,4 +1,3 @@
-
 import Typography from '@mui/material/Typography';
 import CheckIcon from '@mui/icons-material/Check';
 import Stack from '@mui/material/Stack';
@@ -12,7 +11,6 @@ import AddSubTrialDialog from './AddSubTrialDialog.tsx';
 import RemoveIcon from '@mui/icons-material/Remove';
 import CloseIcon from '@mui/icons-material/Close';
 import { SubTrialData } from '../MainScreen.tsx';
-
 
 export function calculateTrialStatus(subTrialData: SubTrialData) {
     if (Object.keys(subTrialData).length === 0) return Result.EMPTY
@@ -32,7 +30,7 @@ export function calculateTrialStatus(subTrialData: SubTrialData) {
     } else {
       return Result.NEUTRAL;
     }
-}
+};
 
 interface Props {
   trialTitle: string,
@@ -46,48 +44,53 @@ const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial, handle
   const [openSubTrialDialog, setOpenSubTrialDialog] = useState(false);
   const [openAddSubTrialDialog, setOpenAddSubTrialDialog] = useState(false);
 
-
-  const handleOpenSubTrialDialog = () => { //Triggered by add Tab button
+  const handleOpenSubTrialDialog = () => {
     setOpenSubTrialDialog(true);
   };
 
-  const handleCloseSubTrialDialog = () => { //Triggered by Dialog x
+  const handleCloseSubTrialDialog = () => {
     setOpenSubTrialDialog(false);
   };
 
 
-  const handleOpenAddSubTrialDialog = () => { //Triggered by add Tab button
+  const handleOpenAddSubTrialDialog = () => {
     setOpenAddSubTrialDialog(true);
   };
 
-  const handleCloseAddSubTrialDialog = () => { //Triggered by Dialog x
+  const handleCloseAddSubTrialDialog = () => {
     setOpenAddSubTrialDialog(false);
   };
 
   let trialStatus;
 
   switch (calculateTrialStatus(subTrialData)) {
+
     case Result.SUCCESS:
       trialStatus = 
       <styles.TrialSuccess>
         <CheckIcon sx={styles.imgSx} />
       </styles.TrialSuccess>
       break;
+
     case Result.FAILURE:
       trialStatus = 
       <styles.TrialFailure>
         <CloseIcon sx={styles.imgSx} />
       </styles.TrialFailure>       
       break;
+
     case Result.NEUTRAL:
       trialStatus = 
       <styles.TrialNeutral>
         <RemoveIcon sx={styles.imgSx} />
       </styles.TrialNeutral>  
       break;
+
     case Result.EMPTY:
       trialStatus =
-      <styles.TrialEmpty><CheckIcon sx={styles.imgSx}/></styles.TrialEmpty>
+      <styles.TrialEmpty>
+        <CheckIcon sx={styles.imgSx}/>
+      </styles.TrialEmpty>
       break;
   }
 
@@ -95,28 +98,31 @@ const Trial: React.FC<Props> = ({ trialTitle, selected, handleClickTrial, handle
     <>
       <Stack direction="row" sx={{ backgroundColor: selected ? 'cyan' : 'none' }} onClick={handleClickTrial} onDoubleClick={handleOpenSubTrialDialog}>
         {trialStatus}
+        
         <Typography sx={styles.trialTitleStyle}>
           {trialTitle}
         </Typography>
+
         <Typography sx={styles.skepTextStyle}>
           hello
         </Typography>
+
         <Button onClick={handleOpenAddSubTrialDialog}>Add Sub-Trial</Button>
+
       </Stack>
+
       <DialogSkeleton
       open={openAddSubTrialDialog}
-      onClose={handleCloseAddSubTrialDialog}
-      >
+      onClose={handleCloseAddSubTrialDialog}>
         <AddSubTrialDialog
         handleCloseAddSubTrialDialog={handleCloseAddSubTrialDialog}
         handleAddSubTrial={handleAddSubTrial}
-        trialTitle={trialTitle}
-        />
+        trialTitle={trialTitle}/>
       </DialogSkeleton>
+
       <DialogSkeleton
       open={openSubTrialDialog}
-      onClose={handleCloseSubTrialDialog}
-      >
+      onClose={handleCloseSubTrialDialog}>
         <SubTrialDialog
         subTrialData={subTrialData}
         subTrialOrder={subTrialOrder}

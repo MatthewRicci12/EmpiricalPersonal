@@ -11,12 +11,10 @@ interface Props {
   selected: boolean
 }
 export const ArenaTab: React.FC<Props> = ({title, handleClickTab, selected}) => { // how 2 isDisplayed
-
   return (
       <Button
       sx={selected ? selectedSx : {}}
-      onClick={handleClickTab}
-      >
+      onClick={handleClickTab}>
         {title}
       </Button>
   );

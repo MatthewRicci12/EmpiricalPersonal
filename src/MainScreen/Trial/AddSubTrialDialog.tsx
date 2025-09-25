@@ -13,7 +13,6 @@ import Typography from "@mui/material/Typography";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 
-
 const selectedEffect = {boxShadow: "0px 0px 20px 5px #0ff"}
 
 interface Props {
@@ -21,18 +20,19 @@ interface Props {
     handleCloseAddSubTrialDialog: () => void,
     handleAddSubTrial: (trialTitle: string, key: string, result: Result, date: string, data: string) => void
 }
-
 export const AddSubTrialDialog: React.FC<Props> = ({trialTitle, handleCloseAddSubTrialDialog, handleAddSubTrial}) => {
 
-  const [subTrialData, setSubTrialData] = useState(""); //Value of input which changes on screen
-  const [subTrialDate, setSubTrialDate] = useState<Dayjs | null>(dayjs('')); //Value of input which changes on screen
+  const [subTrialData, setSubTrialData] = useState("");
+  const [subTrialDate, setSubTrialDate] = useState<Dayjs | null>(dayjs(''));
+  
   const [result, setResult] = useState<Result>(Result.SUCCESS);
+  
   const [resultHasBeenSelected, setResultHasBeenSelected] = useState<boolean>(false);
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => { //Reacts to you entering
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     setSubTrialData(e.target.value);
-  }
+  };
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
@@ -41,30 +41,27 @@ export const AddSubTrialDialog: React.FC<Props> = ({trialTitle, handleCloseAddSu
     if (subTrialDate !== null) {
       handleAddSubTrial(trialTitle, uuidv4(), result, subTrialDate!.format('MM/DD/YYYY'), subTrialData);
     }
-
-  }
+  };
 
   const handleClickResult = (success: Result) => {
     setResult(success);
     setResultHasBeenSelected(true);
-  }
+  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    console.log(`You pressed: ${e.key}`);
     if (e.key === 'Enter') {
       console.log("You pressed Enter!");
       e.preventDefault();
       onButtonClick(e as unknown as React.MouseEvent<HTMLButtonElement>);
     }
-  }
+  };
 
   return (
     <Box
-    sx={{
-        height: '500px',
-        width: '500px'
-    }}
-    onKeyDown={handleKeyPress}>
+      sx={{
+          height: '500px',
+          width: '500px'}}
+      onKeyDown={handleKeyPress}>
 
     <Typography display="inline">Result: </Typography>
     <styles.SubTrialSuccess onClick={() => handleClickResult(Result.SUCCESS)} sx={resultHasBeenSelected && result === Result.SUCCESS ? selectedEffect : {}}>
@@ -78,18 +75,31 @@ export const AddSubTrialDialog: React.FC<Props> = ({trialTitle, handleCloseAddSu
 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
     <DatePicker 
-    label={"Pick date"}
-    value={subTrialDate}
-    onChange={(newDate) => setSubTrialDate(newDate)}
-    />
+      label={"Pick date"}
+      value={subTrialDate}
+      onChange={(newDate) => setSubTrialDate(newDate)}/>
     </LocalizationProvider>
+
     <br/>
-    <TextField id="outlined-basic" label="Data" variant="outlined" value={subTrialData} onChange={handleInput}
-    sx={{
-    paddingBottom: '20px'
-    }}></TextField>
+
+    <TextField 
+      id="outlined-basic" 
+      label="Data" 
+      variant="outlined" 
+      value={subTrialData} 
+      onChange={handleInput}
+      sx={{
+        paddingBottom: '20px'}}>
+    </TextField>
+
     <br/>
-    <Button variant="contained" onClick={onButtonClick}>Submit</Button>
+
+    <Button 
+      variant="contained" 
+      onClick={onButtonClick}>
+      Submit
+    </Button>
+
     </Box>
   );
 }

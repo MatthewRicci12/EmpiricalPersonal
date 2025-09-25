@@ -9,13 +9,12 @@ interface Props {
   handleSavePreset: (presetName: string) => void
 }
 export const SavePresetDialog: React.FC<Props> = ({handleCloseSavePresetDialog, handleSavePreset}) => {
-  const [presetName, setPresetName] = useState(""); //Value of input which changes on screen
+  const [presetName, setPresetName] = useState("");
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => { //Reacts to you entering
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     setPresetName(e.target.value);
-  }
-
+  };
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
@@ -24,32 +23,38 @@ export const SavePresetDialog: React.FC<Props> = ({handleCloseSavePresetDialog, 
     
     handleCloseSavePresetDialog();
     handleSavePreset(presetName);
-  }
+  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    console.log(`You pressed: ${e.key}`);
     if (e.key === 'Enter') {
       console.log("You pressed Enter!");
       e.preventDefault();
       onButtonClick(e as unknown as React.MouseEvent<HTMLButtonElement>);
     }
-  }
+  };
 
   return (
     <>
       <DialogTitle>Save Preset</DialogTitle>
+
       <Box
         sx={{
           height: '500px',
-          width: '800px'
-        }}
+          width: '800px'}}
         onKeyDown={handleKeyPress}>
-        <TextField id="outlined-basic" label="Preset Name" variant="outlined" value={presetName} onChange={handleInput}
-          sx={{
-            paddingBottom: '10px'
-          }}></TextField>
+
+        <TextField 
+        id="outlined-basic" 
+        label="Preset Name" 
+        variant="outlined" 
+        value={presetName} 
+        onChange={handleInput}
+        sx={{
+          paddingBottom: '10px'}}>
+        </TextField>
   
       <Button variant="contained" onClick={onButtonClick}>Submit</Button>
+
       </Box> 
     </>
   );

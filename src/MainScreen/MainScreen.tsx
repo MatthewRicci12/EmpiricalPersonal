@@ -11,7 +11,6 @@ import TopBar from './TopBar.tsx';
 import ConclusionScreen from './ConclusionScreen.tsx';
 import { Result } from './Trial/SubTrial.tsx';
 import React from 'react';
-import ArenaTabContextMenu from './ArenaTabContextMenu.tsx';
 import ContextMenuSkeleton from '../ContextMenuSkeleton/ContextMenuSkeleton.tsx';
 import MenuItem from '@mui/material/MenuItem';
 

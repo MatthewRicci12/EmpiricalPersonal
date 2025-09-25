@@ -19,7 +19,6 @@ export const LoadPresetDialog: React.FC<Props> = ({title, weight, selected, hand
     {weight}
     </Button>
     </Typography>
-    
   );
 }
 

@@ -10,18 +10,15 @@ interface Props {
   whichTrialSelected: string,
   handleClickTrial: (title: string) => React.MouseEventHandler<HTMLDivElement>
 }
-
 export const ArenaScreen: React.FC<Props> = ({ trialData, trialOrder, handleAddSubTrial, whichTrialSelected, handleClickTrial}) => {
-  // Parameters for array.map are (singleItem, index?, fullArray?)
-  //TODO: Order not enforced here.
   const trials = trialOrder.map((title, index) => (
-    <Trial trialTitle={title} handleClickTrial={handleClickTrial(title)}
-      selected={whichTrialSelected === title} key={`${title}-${index}`}
-      handleAddSubTrial={handleAddSubTrial}
-      subTrialData={trialData[title].subTrialData} 
-      subTrialOrder={trialData[title].subTrialOrder}/>
-    )
-  );
+    <Trial 
+    trialTitle={title} 
+    handleClickTrial={handleClickTrial(title)}
+    selected={whichTrialSelected === title} key={`${title}-${index}`}
+    handleAddSubTrial={handleAddSubTrial}
+    subTrialData={trialData[title].subTrialData} 
+    subTrialOrder={trialData[title].subTrialOrder}/>));
 
   return (
     <Box sx={{ height: '80vh' }}>

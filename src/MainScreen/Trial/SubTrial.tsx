@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { styles } from "./styles.tsx";
 import DialogSkeleton from "../../DialogSkeleton/DialogSkeleton.tsx";
-import ViewSubTrialInfoDialog from "./ViewSubTrialDialog.tsx";
 import CheckIcon from '@mui/icons-material/Check';
 import ViewSubTrialDialog from "./ViewSubTrialDialog.tsx";
 import CloseIcon from '@mui/icons-material/Close';
-
 
 export enum Result {
   SUCCESS,
@@ -22,15 +20,13 @@ interface Props {
 const SubTrial: React.FC<Props> = ({result, date, data}) => {
    const [openViewSubTrialInfoDialog, setOpenViewSubTrialInfoDialog] = useState(false);
 
-
-  const handleOpenViewSubTrialDialog = () => { //Triggered by add Tab button
+  const handleOpenViewSubTrialDialog = () => {
     setOpenViewSubTrialInfoDialog(true);
   };
 
-  const handleCloseViewSubTrialDialog = () => { //Triggered by Dialog x
+  const handleCloseViewSubTrialDialog = () => {
     setOpenViewSubTrialInfoDialog(false);
   };
-
 
   return (
     <>
@@ -47,12 +43,10 @@ const SubTrial: React.FC<Props> = ({result, date, data}) => {
 
         <DialogSkeleton
         open={openViewSubTrialInfoDialog}
-        onClose={handleCloseViewSubTrialDialog}
-        >
+        onClose={handleCloseViewSubTrialDialog}>
             <ViewSubTrialDialog
             date={date}
-            data={data}
-            />
+            data={data}/>
         </DialogSkeleton>
     </>
   );

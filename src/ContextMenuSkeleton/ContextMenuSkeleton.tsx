@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 
 interface Props {
     children: React.ReactNode,
     menuItems: React.ReactNode[]
 }
-export const ArenaTabContextMenu: React.FC<Props> = ({children, menuItems}) => {
+export const ContextMenuSkeleton: React.FC<Props> = ({children, menuItems}) => {
  const [contextMenu, setContextMenu] = useState<{
     mouseX: number;
     mouseY: number;
@@ -44,22 +43,27 @@ export const ArenaTabContextMenu: React.FC<Props> = ({children, menuItems}) => {
 
 
   return (
-    <div onContextMenu={handleContextMenu} style={{ cursor: 'context-menu', display: 'inline' }}>
-      {children}
-      <Menu
-        open={contextMenu !== null}
-        onClose={handleClose}
-        anchorReference="anchorPosition"
-        anchorPosition={
-          contextMenu !== null
-            ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-            : undefined
-        }
-      >
-        {menuItems}
-      </Menu>
+    <div 
+    onContextMenu={handleContextMenu} 
+    style={{ 
+      cursor: 'context-menu', 
+      display: 'inline' }}>
+
+        {children}
+
+        <Menu
+          open={contextMenu !== null}
+          onClose={handleClose}
+          anchorReference="anchorPosition"
+          anchorPosition={
+            contextMenu !== null ? 
+              { top: contextMenu.mouseY, left: contextMenu.mouseX }
+              : undefined}>
+          {menuItems}
+        </Menu>
+
     </div>
   );
 }
 
-export default ArenaTabContextMenu;
+export default ContextMenuSkeleton;

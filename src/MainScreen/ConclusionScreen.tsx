@@ -24,29 +24,29 @@ const ConclusionScreen: React.FC<Props> = ({handleClickBackButton, trialData}) =
     let curSubTrialData = trialData[trialTitle].subTrialData;
 
     switch (calculateTrialStatus(curSubTrialData)) {
+
         case Result.SUCCESS:
             successTrials = [...successTrials, <Stack direction="row">
             <styles.TrialSuccess>
                 <CheckIcon sx={styles.imgSx} />
             </styles.TrialSuccess>
-            <Typography sx={styles.trialTitleStyle}>{trialTitle}</Typography></Stack>
-            ]
+            <Typography sx={styles.trialTitleStyle}>{trialTitle}</Typography></Stack>]
             break;
+
         case Result.FAILURE:
             failureTrials = [...failureTrials, <Stack direction="row">
             <styles.TrialFailure>
                 <CloseIcon sx={styles.imgSx} />
             </styles.TrialFailure>
-            <Typography sx={styles.trialTitleStyle}>{trialTitle}</Typography></Stack>
-            ]
+            <Typography sx={styles.trialTitleStyle}>{trialTitle}</Typography></Stack>]
             break;
+
         case Result.NEUTRAL:
             neutralTrials = [...neutralTrials, <Stack direction="row">
             <styles.TrialNeutral>
                 <RemoveIcon sx={styles.imgSx} />
             </styles.TrialNeutral>
-            <Typography sx={styles.trialTitleStyle}>{trialTitle}</Typography></Stack>
-            ]
+            <Typography sx={styles.trialTitleStyle}>{trialTitle}</Typography></Stack>]
             break;                        
     }
   });
@@ -61,12 +61,12 @@ const ConclusionScreen: React.FC<Props> = ({handleClickBackButton, trialData}) =
                 position: 'left',
                 right: 8,
                 top: 8,
-                color: theme.palette.grey[500],
-            })}
-            >
+                color: theme.palette.grey[500]})}>
                 <ArrowBackIcon/>
             </IconButton>
+
             <Typography variant="h4" gutterBottom align="center">Conclusions for Arena x</Typography>
+        
         </Box>
             {/* Reused SX: Maybe as a variable? */}
         <Box sx={{columnCount: "3", display: "flex", justifyContent: "Center", textAlign: "center"}} >
@@ -91,6 +91,5 @@ const ConclusionScreen: React.FC<Props> = ({handleClickBackButton, trialData}) =
     </>
   );
 }
-
 
 export default ConclusionScreen;

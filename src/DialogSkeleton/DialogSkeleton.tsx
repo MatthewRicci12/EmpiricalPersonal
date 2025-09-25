@@ -1,7 +1,6 @@
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
 
 interface Props {
     children: React.ReactNode,
@@ -9,7 +8,6 @@ interface Props {
     onClose: () => void;
 }
 const DialogSkeleton: React.FC<Props> = ({children, open, onClose}) => {
-    
     return (
       <Dialog 
       open={open}>
@@ -20,17 +18,12 @@ const DialogSkeleton: React.FC<Props> = ({children, open, onClose}) => {
                 position: 'absolute',
                 right: 8,
                 top: 8,
-                color: theme.palette.grey[500],
-            })}
-            >
+                color: theme.palette.grey[500]})}>
             <CloseIcon/>
         </IconButton>
         {children}
       </Dialog>
     );
-
 }
-
-
 
 export default DialogSkeleton;

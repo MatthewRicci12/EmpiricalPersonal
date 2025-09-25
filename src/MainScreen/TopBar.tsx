@@ -24,7 +24,6 @@ export const TopBar: React.FC<Props> = ({ handleAddTrial, handleOpenConclusionsP
     setOpen(false);
   };
 
-
   return(
     <Stack
     direction="row"
@@ -45,10 +44,12 @@ export const TopBar: React.FC<Props> = ({ handleAddTrial, handleOpenConclusionsP
           onClose={handleClose}>
           <AddTrialDialog handleAddTrial={handleAddTrial} handleClose={handleClose} />
           </DialogSkeleton>
+
           {/* Remove Trial Button */}
         <Button onClick={handleRemoveTrial}>
           <Typography>Remove Trial</Typography>
         </Button>
+
         {/* Conclusions Button */}
         <Button onClick={handleOpenConclusionsPage}>
           <Typography>Conclusions</Typography>
