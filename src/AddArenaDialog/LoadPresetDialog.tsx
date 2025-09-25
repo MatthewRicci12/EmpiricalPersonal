@@ -13,14 +13,8 @@ interface Props {
 export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, presetData, presetOrder, handleLoadPreset, handleDeletePreset}) => {
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-<<<<<<< HEAD
-    e.stopPropagation();
-    handleClosePresetDialog();
-  };
-=======
     handleClosePresetDialog(e);
   }
->>>>>>> refs/remotes/origin/main
 
   const handleClickPreset = (factorData: FactorData, factorOrder: (keyof FactorData)[]): React.MouseEventHandler<HTMLButtonElement> => (e) => { //Triggered by clicking a tab
     handleClosePresetDialog(e);

@@ -26,41 +26,26 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
   const [editFactorDialog, setEditFactorDialog] = useState(false);
 
   const [openPresetDialog, setOpenPresetDialog] = useState(false);
-
   const [openSavePresetDialog, setOpenSavePresetDialog] = useState(false);
 
-  const [arenaTitleValue, setArenaTitleValue] = useState("");
-
-  const [whichFactorSelected, setWhichFactorSelected] = useState<(keyof FactorData)>("");
+  const [arenaTitle, setArenaTitle] = useState("");
 
   const [factorData, setFactorData] = useState<FactorData>({});
   const [factorOrder, setFactorOrder] = useState<(keyof FactorData)[]>([]);
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-  const handleOpenPresetDialog = () => { //Triggered by add Tab button
-=======
   const [presetData, setPresetData] = useState<PresetData>({});
   const [presetOrder, setPresetOrder] = useState<(keyof PresetData)[]>([]);
 
+  const [whichFactorSelected, setWhichFactorSelected] = useState<(keyof FactorData)>("");
+
   const handleDeletePreset = (presetToBeDeleted: string): React.MouseEventHandler<HTMLLIElement> => (e) => {
-    e.stopPropagation();
-
     setPresetOrder(presetOrder.filter(presetName => presetName != presetToBeDeleted));
-
     const { [presetToBeDeleted]: _, ...newPresetData } = presetData;
-
     setPresetData(newPresetData);
   };
 
   const handleOpenPresetDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { 
     e.stopPropagation();
->>>>>>> Stashed changes
-=======
-
-  const handleOpenPresetDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { 
-    e.stopPropagation();
->>>>>>> refs/remotes/origin/main
     setOpenPresetDialog(true);
   };
 
@@ -69,88 +54,41 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
     setOpenPresetDialog(false);
   };
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-  const handleOpenFactorDialog = () => { //Triggered by Dialog x
-=======
-  const handleOpenFactorDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation();
->>>>>>> Stashed changes
-=======
   const handleOpenFactorDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { //Triggered by Dialog x
     e.stopPropagation();
->>>>>>> refs/remotes/origin/main
     setEditFactorDialog(false);
     setOpenFactorDialog(true);
   };
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-  // Subroutine of FactorDialog
->>>>>>> refs/remotes/origin/main
-  const handleCloseFactorDialog = () => { //Triggered by Dialog x
-    setOpenFactorDialog(false);
-  };
-
-  const handleOpenSavePresetDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {  //Triggered by Dialog x
-    setOpenSavePresetDialog(true);
-  };
-
-  // Subroutine of SavePresetDialog
-  const handleCloseSavePresetDialog = () => { //Triggered by Dialog x
-=======
   // Subroutine of FactorDialog
   const handleCloseFactorDialog = () => {
     setOpenFactorDialog(false);
   };
 
   const handleOpenSavePresetDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
     setOpenSavePresetDialog(true);
   };
 
   // Subroutine of SavePresetDialog
   const handleCloseSavePresetDialog = () => {
->>>>>>> Stashed changes
     setOpenSavePresetDialog(false);
   };
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
-    if (e.target.value.length < MAX_ARENA_NAME_LENGTH) setArenaTitleValue(e.target.value);
+    if (e.target.value.length < MAX_ARENA_NAME_LENGTH) setArenaTitle(e.target.value);
   };
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-    e.stopPropagation()
-=======
->>>>>>> refs/remotes/origin/main
-    if (value.length === 0) return;
+    if (arenaTitle.length === 0) return;
 
     if (edit) {
       handleCloseArenaDialog(e);
-      handleEditArena(value);
+      handleEditArena(arenaTitle);
     } else {
       handleCloseArenaDialog(e);
-      handleAddArena(value);
-    }
-    
-    
-=======
-    if (arenaTitleValue.length === 0) return;
-
-    if (edit) {
->>>>>>> Stashed changes
-
-      handleCloseArenaDialog(e);
-      handleEditArena(arenaTitleValue);
-
-    } else {
-
-      handleCloseArenaDialog(e);
-      handleAddArena(arenaTitleValue);
-
+      handleAddArena(arenaTitle);
     }
   };
 
@@ -159,15 +97,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
     whichFactorSelected === factorName ? setWhichFactorSelected("") : setWhichFactorSelected(factorName);
   };
 
-<<<<<<< Updated upstream
-
-<<<<<<< HEAD
-=======
   // Subroutine
->>>>>>> Stashed changes
-=======
-  // SUbroutine
->>>>>>> refs/remotes/origin/main
   const handleAddFactor = (factorName: string, weight: number) => {
     if (factorName in factorOrder) {
       console.error("Factor already exists.")
@@ -180,27 +110,19 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
       ...factorData,
       [factorName]: weight,
     }
+
     setFactorData(newFactorData);
+
     console.log(`handleAddFactor: ${newFactorData[factorName]}`);
+
   };
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-  }
-
   // Subroutine
->>>>>>> refs/remotes/origin/main
   const handleEditFactor = (factorName: string, newWeight: number) => {  //Triggered by clicking a tab
-=======
-  // Subroutine
-  const handleEditFactor = (factorName: string, newWeight: number) => {
->>>>>>> Stashed changes
     const newFactorData = {
       ...factorData,
       [factorName]: newWeight
     }
-
     setFactorData(newFactorData);
     setWhichFactorSelected("");
   };
@@ -210,14 +132,14 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
       whichFactorSelected === factorName ? setWhichFactorSelected("") : setWhichFactorSelected(factorName);
       setEditFactorDialog(true);
       setOpenFactorDialog(true);
-  }
+  };
 
   const handleRemoveFactor: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     setFactorOrder(factorOrder.filter(presetName => presetName != whichFactorSelected));
     const { [whichFactorSelected]: _, ...newFactorData} = factorData;
     setFactorData(newFactorData);
-  }
+  };
 
   const handleSavePreset = (presetName: string) => {
     setPresetOrder([...presetOrder, presetName]);
@@ -232,55 +154,51 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
       [presetName]: {factorData: factorData, factorOrder: factorOrder}
     }
     setPresetData(newPresetData);
-  }
-
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-  // Subroutine of LoadPresetDialog
->>>>>>> Stashed changes
-=======
+  };
 
   // Subroutine of LoadPresetDialog
->>>>>>> refs/remotes/origin/main
   const handleLoadPreset = (factorData: FactorData, factorOrder: (keyof FactorData)[]) => {
     setFactorData(factorData);
     setFactorOrder(factorOrder);
-  }
+  };
   
   const handleKeyPress = (e: React.KeyboardEvent) => {
     console.log(`You pressed: ${e.key}`);
-
     if (e.key === 'Enter') {
+      console.log("You pressed Enter!");
       e.preventDefault();
       onButtonClick(e as unknown as React.MouseEvent<HTMLButtonElement>);
     }
-  }
+  };
 
   return (
     <>
       <DialogTitle>{edit ? "Edit" : "Add"} Arena</DialogTitle>
+
       <Box
         sx={{
           height: '500px',
           width: '500px'}}
         onKeyDown={handleKeyPress}>
+
           <TextField 
           id="outlined-basic" 
           label="Arena Title" 
           variant="outlined" 
-          value={arenaTitleValue} 
+          value={arenaTitle} 
           onChange={handleInput}
-          sx={{paddingBottom: '10px'}}>
+          sx={{
+            paddingBottom: '10px'}}>
           </TextField>
 
-        <Typography sx={{fontSize: "1.5em"}}>
+
+        <Typography sx={{
+          fontSize: "1.5em"}}>
           Factors
         </Typography>
 
-        {/* Save Preset Button*/}
+        {/* Save Preset */}
         <Button onClick={handleOpenSavePresetDialog}>Save Preset</Button>
-
         <DialogSkeleton
         open={openSavePresetDialog}
         onClose={handleCloseSavePresetDialog}>
@@ -300,8 +218,8 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
           presetData={presetData}
           presetOrder={presetOrder}
           handleLoadPreset={handleLoadPreset}
-          handleDeletePreset={handleDeletePreset}>
-          </LoadPresetDialog>
+          handleDeletePreset={handleDeletePreset}
+          ></LoadPresetDialog>
         </DialogSkeleton>
 
         {/* Add Factor */}
@@ -316,8 +234,8 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
           handleAddFactor={handleAddFactor}
           handleEditFactor={handleEditFactor}
           edit={editFactorDialog}
-          givenFactorName={whichFactorSelected}>
-          </FactorDialog>
+          givenFactorName={whichFactorSelected}
+          ></FactorDialog>
         </DialogSkeleton>
 
         {/* Remove Factor */}
@@ -330,10 +248,11 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
           width: '100%', 
           height:'200px', 
           outlineStyle: 'solid', 
-          outlineWidth: '1px',
-           marginBottom: '2px'}}>
+          outlineWidth: '1px', 
+          marginBottom: '2px'}}>
 
         {factorOrder.map((factorName, index) => {
+         console.log(`factorName: ${factorName}, factorData: ${factorData}, factorData[factorName]: ${factorData[factorName]}`);
          return <Factor 
           title={factorName} 
           weight={factorData[factorName]} 
@@ -343,11 +262,10 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
           key={`${factorName}-${index}`}>
           </Factor>}
         )}
-        </Box>
 
+        </Box>
         {/* Submit button */}
         <Button variant="contained" onClick={onButtonClick}>Submit</Button>
-
       </Box>
     </>
   );

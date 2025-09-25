@@ -78,12 +78,7 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
       subTrialData: {},
       subTrialOrder: []
     }
-<<<<<<< HEAD
-
-    handleClose();
-=======
     handleClose(e);
->>>>>>> refs/remotes/origin/main
     handleAddTrial(newData);
   };
 
