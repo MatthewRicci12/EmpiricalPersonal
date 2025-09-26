@@ -13,7 +13,7 @@ interface Props {
   edit: boolean,
   givenFactorName?: string
 }
-export const FactorDialog: React.FC<Props> = ({handleCloseFactorDialog, handleAddFactor, handleEditFactor, edit, givenFactorName=""}) => {
+export const AddFactorDialog: React.FC<Props> = ({handleCloseFactorDialog, handleAddFactor, handleEditFactor, edit, givenFactorName=""}) => {
   const [factorName, setFactorName] = useState(givenFactorName); 
   const [sliderValueMacro, setSliderValueMacro] = useState(0); 
   const [sliderValueMicro, setSliderValueMicro] = useState(0);
@@ -121,4 +121,4 @@ export const FactorDialog: React.FC<Props> = ({handleCloseFactorDialog, handleAd
   );
 }
 
-export default FactorDialog;
+export default AddFactorDialog;

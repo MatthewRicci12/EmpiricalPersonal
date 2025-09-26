@@ -12,14 +12,14 @@ interface Props {
     title: string,
     factorData: FactorData,
     factorOrder: (keyof FactorData)[],
-    handleLoadPreset: React.MouseEventHandler<HTMLButtonElement>,
+    handleClickPreset: React.MouseEventHandler<HTMLButtonElement>,
     handleDeletePreset: React.MouseEventHandler<HTMLLIElement>
 }
-export const Preset: React.FC<Props> = ({title, factorData, factorOrder, handleLoadPreset, handleDeletePreset}) => {
+export const Preset: React.FC<Props> = ({title, factorData, factorOrder, handleClickPreset, handleDeletePreset}) => {
   const [open, setOpen] = useState(false);
   
   const handleOpenPresetDialog : React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    handleLoadPreset(e);
+    handleClickPreset(e);
   };
 
   const handleCloseFactorListDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { //Triggered by Dialog x

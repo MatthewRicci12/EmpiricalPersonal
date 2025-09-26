@@ -191,7 +191,6 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
             paddingBottom: '10px'}}>
           </TextField>
 
-
         <Typography sx={{
           fontSize: "1.5em"}}>
           Factors
@@ -260,8 +259,7 @@ export const AddArenaDialog: React.FC<Props> = ({ handleAddArena, handleCloseAre
           handleClickFactor={handleClickFactor(factorName)} 
           handleClickWeight={handleClickWeight(factorName)}
           key={`${factorName}-${index}`}>
-          </Factor>}
-        )}
+          </Factor>})}
 
         </Box>
         {/* Submit button */}

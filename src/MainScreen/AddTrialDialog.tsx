@@ -3,7 +3,7 @@ import Box from "@mui/system/Box";
 import Button from "@mui/material/Button";
 import DialogSkeleton from "../DialogSkeleton/DialogSkeleton";
 import DialogTitle from "@mui/material/DialogTitle";
-import FactorDialog from "../AddArenaDialog/AddFactorDialog";
+import AddFactorDialog from "../AddArenaDialog/AddFactorDialog";
 import RemoveIcon from '@mui/icons-material/Remove';
 import TextField from "@mui/material/TextField";
 import Typography from '@mui/material/Typography';
@@ -186,7 +186,8 @@ export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose })
           <DialogSkeleton
           open={openAddIndivFactorDialog}
           onClose={handleClose}>
-            <FactorDialog
+            {/* Re-using same factor dialog, so no need for prop names to match */}
+            <AddFactorDialog
             handleCloseFactorDialog={handleCloseIndivFactorDialog}
             handleAddFactor={handleAddIndivFactor}
             handleEditFactor={handleEditIndivFactor}

@@ -12,10 +12,6 @@ interface Props {
 }
 export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, presetData, presetOrder, handleLoadPreset, handleDeletePreset}) => {
 
-  const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    handleClosePresetDialog(e);
-  }
-
   const handleClickPreset = (factorData: FactorData, factorOrder: (keyof FactorData)[]): React.MouseEventHandler<HTMLButtonElement> => (e) => { //Triggered by clicking a tab
     handleClosePresetDialog(e);
     handleLoadPreset(factorData, factorOrder);
@@ -32,7 +28,7 @@ export const LoadPresetDialog: React.FC<Props> = ({handleClosePresetDialog, pres
             title={presetTitle} 
             factorData={presetData[presetTitle].factorData} 
             factorOrder={presetData[presetTitle].factorOrder} 
-            handleLoadPreset={handleClickPreset(presetData[presetTitle].factorData, presetData[presetTitle].factorOrder)} 
+            handleClickPreset={handleClickPreset(presetData[presetTitle].factorData, presetData[presetTitle].factorOrder)} 
             handleDeletePreset={handleDeletePreset(presetTitle)}
             key={`${presetTitle}-${index}`}/>)}
         </Box>
