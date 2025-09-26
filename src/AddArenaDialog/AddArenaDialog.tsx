@@ -1,19 +1,19 @@
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import DialogTitle from '@mui/material/DialogTitle';
-import RemoveIcon from '@mui/icons-material/Remove';
-import { MAX_ARENA_NAME_LENGTH } from '../MainScreen/MainScreen.tsx';
-import { useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
 import DialogSkeleton from '../DialogSkeleton/DialogSkeleton.tsx';
-import LoadPresetDialog from './LoadPresetDialog.tsx';
-import FactorDialog from './FactorDialog.tsx';
-import { FactorData } from './Factor.tsx';
-import { PresetData } from './Preset.tsx';
-import SavePresetDialog from './SavePresetDialog.tsx';
+import DialogTitle from '@mui/material/DialogTitle';
 import Factor from './Factor.tsx';
+import FactorDialog from './AddFactorDialog.tsx';
+import LoadPresetDialog from './LoadPresetDialog.tsx';
+import RemoveIcon from '@mui/icons-material/Remove';
+import SavePresetDialog from './SavePresetDialog.tsx';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { FactorData } from './Factor.tsx';
+import { MAX_ARENA_NAME_LENGTH } from '../MainScreen/MainScreen.tsx';
+import { PresetData } from './Preset.tsx';
+import { useState } from 'react';
 
 interface Props {
   handleAddArena: (tabName: string) => void,

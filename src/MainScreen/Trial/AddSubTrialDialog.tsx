@@ -1,17 +1,17 @@
-import Button from "@mui/material/Button";
-import { useState } from "react";
 import Box from '@mui/system/Box';
-import {Result} from "./SubTrial.tsx";
-import TextField from "@mui/material/TextField";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs, { Dayjs } from 'dayjs';
-import { v4 as uuidv4 } from 'uuid';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { styles } from "./styles";
-import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import dayjs, { Dayjs } from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { styles } from "./styles";
+import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
+import {Result} from "./SubTrial.tsx";
 
 const selectedEffect = {boxShadow: "0px 0px 20px 5px #0ff"}
 

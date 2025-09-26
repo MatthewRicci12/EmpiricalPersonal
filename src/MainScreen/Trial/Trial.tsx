@@ -1,16 +1,16 @@
-import Typography from '@mui/material/Typography';
-import CheckIcon from '@mui/icons-material/Check';
-import Stack from '@mui/material/Stack';
 import * as styles from './styles.tsx';
-import DialogSkeleton from "../../DialogSkeleton/DialogSkeleton.tsx";
-import SubTrialDialog, { RESULT_INDEX } from "./SubTrialDialog.tsx";
-import { useState } from "react";
-import { Result} from './SubTrial.tsx';
-import Button from '@mui/material/Button';
 import AddSubTrialDialog from './AddSubTrialDialog.tsx';
-import RemoveIcon from '@mui/icons-material/Remove';
+import Button from '@mui/material/Button';
+import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import DialogSkeleton from "../../DialogSkeleton/DialogSkeleton.tsx";
+import RemoveIcon from '@mui/icons-material/Remove';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import SubTrialDialog, { RESULT_INDEX } from "./SubTrialDialog.tsx";
+import { Result} from './SubTrial.tsx';
 import { SubTrialData } from '../MainScreen.tsx';
+import { useState } from "react";
 
 export function calculateTrialStatus(subTrialData: SubTrialData) {
     if (Object.keys(subTrialData).length === 0) return Result.EMPTY

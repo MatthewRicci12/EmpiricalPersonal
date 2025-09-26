@@ -1,19 +1,19 @@
+import AddIcon from '@mui/icons-material/Add';
+import Box from "@mui/system/Box";
 import Button from "@mui/material/Button";
+import DialogSkeleton from "../DialogSkeleton/DialogSkeleton";
 import DialogTitle from "@mui/material/DialogTitle";
+import FactorDialog from "../AddArenaDialog/AddFactorDialog";
+import RemoveIcon from '@mui/icons-material/Remove';
 import TextField from "@mui/material/TextField";
 import Typography from '@mui/material/Typography';
-import { useState } from "react";
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
-import { SubTrialData } from "./MainScreen";
-import DialogSkeleton from "../DialogSkeleton/DialogSkeleton";
-import FactorDialog from "../AddArenaDialog/FactorDialog";
 import Factor, { FactorData } from "../AddArenaDialog/Factor";
-import Box from "@mui/system/Box";
+import { SubTrialData } from "./MainScreen";
+import { useState } from "react";
 
 const MAX_TRIAL_NAME_LENGTH = 64;
 
-export interface AddTrialDialogData {
+export interface TrialInnerData {
   trialTitle: string,
   successString: string,
   failureString: string,
@@ -23,7 +23,7 @@ export interface AddTrialDialogData {
 }
 
 interface Props {
-  handleAddTrial: (addTrialDialogData: AddTrialDialogData) => void,
+  handleAddTrial: (TrialInnerData: TrialInnerData) => void,
   handleClose: React.MouseEventHandler<HTMLButtonElement>
 }
 export const AddTrialDialog: React.FC<Props> = ({ handleAddTrial, handleClose }) => {

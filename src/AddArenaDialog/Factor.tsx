@@ -1,16 +1,16 @@
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 export type FactorData = Record<string, number>;
 
 interface Props {
     title: string,
     weight: number,
-    selected?: boolean,
     handleClickFactor: React.MouseEventHandler<HTMLDivElement>,
-    handleClickWeight: React.MouseEventHandler<HTMLButtonElement>
+    handleClickWeight: React.MouseEventHandler<HTMLButtonElement>,
+    selected?: boolean
 }
-export const LoadPresetDialog: React.FC<Props> = ({title, weight, selected, handleClickFactor, handleClickWeight}) => {
+export const LoadPresetDialog: React.FC<Props> = ({title, weight, handleClickFactor, handleClickWeight,  selected}) => {
   return (
     <Typography onClick={handleClickFactor} sx={{ backgroundColor: selected ? 'cyan' : 'none' }}>
     {`${title}:`} 

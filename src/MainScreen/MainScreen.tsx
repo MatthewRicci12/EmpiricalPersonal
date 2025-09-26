@@ -1,23 +1,23 @@
+import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
+import ConclusionScreen from './ConclusionScreen.tsx';
+import ContextMenuSkeleton from '../ContextMenuSkeleton/ContextMenuSkeleton.tsx';
 import DialogSkeleton from '../DialogSkeleton/DialogSkeleton.tsx';
-import { useState } from "react";
+import MenuItem from '@mui/material/MenuItem';
+import React from 'react';
+import TopBar from './TopBar.tsx';
 import { AddArenaDialog } from '../AddArenaDialog/AddArenaDialog.tsx';
 import { ArenaScreen } from './ArenaScreen/ArenaScreen.tsx';
 import { ArenaTab } from './ArenaTab.tsx';
-import { AddTrialDialogData } from './AddTrialDialog.tsx';
-import TopBar from './TopBar.tsx';
-import ConclusionScreen from './ConclusionScreen.tsx';
 import { Result } from './Trial/SubTrial.tsx';
-import React from 'react';
-import ContextMenuSkeleton from '../ContextMenuSkeleton/ContextMenuSkeleton.tsx';
-import MenuItem from '@mui/material/MenuItem';
+import { TrialInnerData } from './AddTrialDialog.tsx';
+import { useState } from "react";
 
 export const MAX_ARENA_NAME_LENGTH = 32;
 
 export type SubTrialData = Record<string, [Result, string, string]>;
-export type TrialData = Record<string, AddTrialDialogData>
+export type TrialData = Record<string, TrialInnerData>
 export type ArenaData = Record<string, TrialData>
 
 
@@ -69,10 +69,10 @@ const MainScreen: React.FC<Props> = () => {
   };
 
   // Subroutine of event handler in AddTrialDialog.
-  const handleAddTrial = (addTrialDialogData: AddTrialDialogData) => {
+  const handleAddTrial = (TrialInnerData: TrialInnerData) => {
     // Can't add trial if no arena selected.
 
-    const trialTitle = addTrialDialogData.trialTitle;
+    const trialTitle = TrialInnerData.trialTitle;
 
     setTrialOrder([...trialOrder, trialTitle]);
 
@@ -83,7 +83,7 @@ const MainScreen: React.FC<Props> = () => {
 
     const newTrialData = {
       ...arenaData[whichArenaSelected],
-      [trialTitle]: addTrialDialogData
+      [trialTitle]: TrialInnerData
     }
 
 

@@ -1,14 +1,13 @@
-
-import Stack from '@mui/material/Stack';
-import Container from '@mui/system/Container';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { useState } from "react";
+import Container from '@mui/system/Container';
 import DialogSkeleton from '../DialogSkeleton/DialogSkeleton.tsx';
-import AddTrialDialog, { AddTrialDialogData } from './AddTrialDialog.tsx';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import AddTrialDialog, { TrialInnerData } from './AddTrialDialog.tsx';
+import { useState } from "react";
 
 interface Props {
-  handleAddTrial: (addTrialDialogData: AddTrialDialogData) => void,
+  handleAddTrial: (TrialInnerData: TrialInnerData) => void,
   handleOpenConclusionsPage: () => void,
   handleRemoveTrial: React.MouseEventHandler<HTMLButtonElement>,
   whichArenaSelected: string

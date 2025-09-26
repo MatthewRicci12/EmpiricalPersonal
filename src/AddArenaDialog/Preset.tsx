@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { FactorData } from './Factor.tsx';
 import Button from '@mui/material/Button';
+import ContextMenuSkeleton from '../ContextMenuSkeleton/ContextMenuSkeleton.tsx';
 import DialogSkeleton from '../DialogSkeleton/DialogSkeleton.tsx';
 import FactorListDialog from './FactorListDialog.tsx';
-import ContextMenuSkeleton from '../ContextMenuSkeleton/ContextMenuSkeleton.tsx';
 import MenuItem from '@mui/material/MenuItem';
+import { FactorData } from './Factor.tsx';
+import { useState } from 'react';
 
 export type PresetData = Record<string, {factorData: FactorData, factorOrder: (keyof FactorData)[]}>;
 

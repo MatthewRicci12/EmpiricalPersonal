@@ -1,15 +1,21 @@
-import { Box } from "@mui/system";
-import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Typography from '@mui/material/Typography';
-import { styles } from "./Trial/styles.tsx";
-import { TrialData } from "./MainScreen.tsx";
-import { calculateTrialStatus } from "./Trial/Trial.tsx";
-import { Result } from "./Trial/SubTrial.tsx";
-import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Stack from "@mui/material/Stack";
+import Typography from '@mui/material/Typography';
+import { Box } from "@mui/system";
+import { Result } from "./Trial/SubTrial.tsx";
+import { TrialData } from "./MainScreen.tsx";
+import { calculateTrialStatus } from "./Trial/Trial.tsx";
+import { styles } from "./Trial/styles.tsx";
+
+const trialColumnsx = {
+    outline: "0.01em solid black", 
+    height: "100%", 
+    flexGrow: "1", 
+    textAlign: "left"};
 
 interface Props {
     handleClickBackButton: () => void,
@@ -70,19 +76,19 @@ const ConclusionScreen: React.FC<Props> = ({handleClickBackButton, trialData}) =
         </Box>
             {/* Reused SX: Maybe as a variable? */}
         <Box sx={{columnCount: "3", display: "flex", justifyContent: "Center", textAlign: "center"}} >
-            <Box sx={{outline: "0.01em solid black", height: "100%", flexGrow: "1", textAlign: "left"}}>
+            <Box sx={trialColumnsx}>
                 <Typography variant="h6">Successes</Typography>
                 {/* Success trials go here */}
                 {successTrials}
             </Box>
 
-            <Box sx={{outline: "0.01em solid black", height: "100%", flexGrow: "1", textAlign: "left"}}>
+            <Box sx={{trialColumnsx}}>
                 <Typography variant="h6">Failures</Typography>
                 {/* Failure trials go here */}
                 {failureTrials}
             </Box>
 
-            <Box sx={{outline: "0.01em solid black", height: "100%", flexGrow: "1", textAlign: "left"}}>
+            <Box sx={trialColumnsx}>
                 <Typography variant="h6">Neutrals</Typography>
                 {/* Neutral trials go here */}
                 {neutralTrials}

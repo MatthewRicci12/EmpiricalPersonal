@@ -1,10 +1,10 @@
-import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/system/Box';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import { useState } from 'react';
-import Typography from '@mui/material/Typography';
+import DialogTitle from '@mui/material/DialogTitle';
 import Slider from '@mui/material/Slider';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 
 interface Props {
   handleCloseFactorDialog: React.MouseEventHandler<HTMLButtonElement>,

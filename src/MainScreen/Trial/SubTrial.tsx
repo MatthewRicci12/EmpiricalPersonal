@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { styles } from "./styles.tsx";
-import DialogSkeleton from "../../DialogSkeleton/DialogSkeleton.tsx";
 import CheckIcon from '@mui/icons-material/Check';
-import ViewSubTrialDialog from "./ViewSubTrialDialog.tsx";
 import CloseIcon from '@mui/icons-material/Close';
+import DialogSkeleton from "../../DialogSkeleton/DialogSkeleton.tsx";
+import ViewSubTrialDialog from "./ViewSubTrialDialog.tsx";
+import { styles } from "./styles.tsx";
+import { useState } from "react";
 
 export enum Result {
   SUCCESS,
