@@ -24,11 +24,8 @@ export const AddSubTrialDialog: React.FC<Props> = ({trialTitle, handleCloseAddSu
 
   const [subTrialData, setSubTrialData] = useState("");
   const [subTrialDate, setSubTrialDate] = useState<Dayjs | null>(dayjs(''));
+  const [selectedResult, setSelectedResult] = useState<Result>(Result.EMPTY);
   
-  const [result, setResult] = useState<Result>(Result.SUCCESS);
-  
-  const [resultHasBeenSelected, setResultHasBeenSelected] = useState<boolean>(false);
-
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     setSubTrialData(e.target.value);
@@ -37,14 +34,13 @@ export const AddSubTrialDialog: React.FC<Props> = ({trialTitle, handleCloseAddSu
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     handleCloseAddSubTrialDialog(e);
     if (subTrialDate !== null) {
-      handleAddSubTrial(trialTitle, uuidv4(), result, subTrialDate!.format('MM/DD/YYYY'), subTrialData);
+      handleAddSubTrial(trialTitle, uuidv4(), selectedResult, subTrialDate!.format('MM/DD/YYYY'), subTrialData);
     }
   };
 
   // Subroutine 
   const handleClickResult = (success: Result) => {
-    setResult(success);
-    setResultHasBeenSelected(true);
+    setSelectedResult(success);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -63,10 +59,10 @@ export const AddSubTrialDialog: React.FC<Props> = ({trialTitle, handleCloseAddSu
       onKeyDown={handleKeyPress}>
 
     <Typography display="inline">Result: </Typography>
-    <styles.SubTrialSuccess onClick={(e) => {e.stopPropagation(); handleClickResult(Result.SUCCESS)}} sx={resultHasBeenSelected && result === Result.SUCCESS ? selectedEffect : {}}>
+    <styles.SubTrialSuccess onClick={(e) => {e.stopPropagation(); handleClickResult(Result.SUCCESS)}} sx={selectedResult === Result.SUCCESS ? selectedEffect : {}}>
       <CheckIcon/>
     </styles.SubTrialSuccess>
-    <styles.SubTrialFailure onClick={(e) => {e.stopPropagation(); ; handleClickResult(Result.FAILURE)}} sx={resultHasBeenSelected && result === Result.FAILURE ? selectedEffect : {}}>
+    <styles.SubTrialFailure onClick={(e) => {e.stopPropagation(); ; handleClickResult(Result.FAILURE)}} sx={selectedResult === Result.FAILURE ? selectedEffect : {}}>
       <CloseIcon/>
     </styles.SubTrialFailure>
 

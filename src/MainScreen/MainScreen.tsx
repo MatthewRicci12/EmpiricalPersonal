@@ -26,23 +26,29 @@ interface Props {
 }
 const MainScreen: React.FC<Props> = () => {
 
-  const [openAddArenaDialog, setOpenAddArenaDialog] = useState(false); //dialog pop up or not
-  const [arenaOrder, setArenaOrder] = useState<(keyof ArenaData)[]>([]); //visible tabs
-  const [whichArenaSelected, setWhichArenaSelected] = useState<keyof ArenaData>(""); //WHICH arena shown/tab selected
-  const [displayConclusionsPage, setDisplayConclusionsPage] = useState<boolean>(false);
+  const [openAddArenaDialog, setOpenAddArenaDialog] = useState(false);
+
   const [arenaData, setArenaData] = useState<ArenaData>({});
+  const [arenaOrder, setArenaOrder] = useState<(keyof ArenaData)[]>([]);
+
+  const [whichArenaSelected, setWhichArenaSelected] = useState<keyof ArenaData>(""); 
+  
+  const [displayConclusionsPage, setDisplayConclusionsPage] = useState<boolean>(false);
+
   const [trialData, setTrialData] = useState<TrialData>({});
   const [trialOrder, setTrialOrder] = useState<(keyof TrialData)[]>([]);
+
   const [whichTrialSelected, setTrialSelected] = useState<keyof TrialData>("");
+
   const [editArenaDialog, setEditArenaDialog] = useState(false);
 
-  const handleOpenArenaDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { //Triggered by add Tab button
+  const handleOpenArenaDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     setEditArenaDialog(false);
     setOpenAddArenaDialog(true);
   };
 
-  const handleCloseArenaDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => { //Triggered by Dialog x
+  const handleCloseArenaDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     setOpenAddArenaDialog(false);
   };

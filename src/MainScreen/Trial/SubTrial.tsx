@@ -18,8 +18,7 @@ interface Props {
     data: string
 }
 const SubTrial: React.FC<Props> = ({result, date, data}) => {
-   const [openViewSubTrialInfoDialog, setOpenViewSubTrialInfoDialog] = useState(false);
-
+  const [openViewSubTrialInfoDialog, setOpenViewSubTrialInfoDialog] = useState(false);
 
   const handleOpenViewSubTrialDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {//Triggered by add Tab button
     setOpenViewSubTrialInfoDialog(true);
