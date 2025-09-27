@@ -104,12 +104,12 @@ const MainScreen: React.FC<Props> = () => {
   }
 
   // Subroutine
-  const handleOpenConclusionsPage = () => { //Triggered by Dialog x
+  const handleOpenConclusionsPage = () => {
     setDisplayConclusionsPage(true);
   };
 
   // Subroutine
-  const handleClickBackButton = () => { //Triggered by Dialog x
+  const handleClickBackButton = () => {
     setDisplayConclusionsPage(false);
   };
 
