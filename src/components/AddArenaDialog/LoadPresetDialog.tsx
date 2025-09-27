@@ -1,7 +1,8 @@
 import Box from "@mui/system/Box";
 import DialogTitle from "@mui/material/DialogTitle";
-import Preset, { PresetData } from "./Preset.tsx";
-import { FactorData } from "../Factor.tsx";
+import Preset from "./Preset.tsx";
+import { FactorData } from "../types.tsx";
+import { PresetData } from "./types.tsx";
 
 interface Props {
   handleClosePresetDialog: React.MouseEventHandler<HTMLButtonElement>;

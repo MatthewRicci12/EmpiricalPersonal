@@ -4,13 +4,7 @@ import DialogSkeleton from "../../utils/DialogSkeleton.tsx";
 import ViewSubTrialDialog from "./ViewSubTrialDialog.tsx";
 import { styles } from "./styles.tsx";
 import { useState } from "react";
-
-export enum Result {
-  SUCCESS,
-  FAILURE,
-  NEUTRAL,
-  EMPTY,
-}
+import { Result } from "../types.tsx";
 
 interface Props {
   result: Result;

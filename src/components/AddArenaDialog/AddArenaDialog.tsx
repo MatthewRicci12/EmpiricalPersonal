@@ -10,10 +10,10 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import SavePresetDialog from "./SavePresetDialog.tsx";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { FactorData } from "../Factor.tsx";
-import { MAX_ARENA_NAME_LENGTH } from "../../pages/MainScreen/MainScreen.tsx";
-import { PresetData } from "./Preset.tsx";
+import { FactorData } from "../types.tsx";
+import { MAX_ARENA_NAME_LENGTH } from "../../pages/MainScreen/types.tsx";
 import { useState } from "react";
+import { PresetData } from "./types.tsx";
 
 interface Props {
   handleAddArena: (tabName: string) => void;

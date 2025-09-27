@@ -11,9 +11,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { styles } from "./styles";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Result } from "./SubTrial.tsx";
-
-const selectedEffect = { boxShadow: "0px 0px 20px 5px #0ff" };
+import { selectedEffect } from "./types";
+import { Result } from "../types";
 
 interface Props {
   trialTitle: string;

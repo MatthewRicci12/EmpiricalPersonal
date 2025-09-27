@@ -1,7 +1,7 @@
 import Trial from "./Trial";
 import { Box, Stack } from "@mui/system";
-import { TrialData } from "../pages/MainScreen/MainScreen";
-import { Result } from "./Trial/SubTrial";
+import { TrialData } from "../pages/MainScreen/types";
+import { Result } from "./types";
 
 interface Props {
   trialData: TrialData;

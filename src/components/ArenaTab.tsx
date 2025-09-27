@@ -1,9 +1,5 @@
 import Button from "@mui/material/Button";
-
-const selectedSx = {
-  backgroundColor: "blue",
-  color: "white",
-};
+import { selectedSx } from "./types";
 
 interface Props {
   title: string;
@@ -15,7 +11,6 @@ export const ArenaTab: React.FC<Props> = ({
   handleClickTab,
   selected,
 }) => {
-  // how 2 isDisplayed
   return (
     <Button sx={selected ? selectedSx : {}} onClick={handleClickTab}>
       {title}

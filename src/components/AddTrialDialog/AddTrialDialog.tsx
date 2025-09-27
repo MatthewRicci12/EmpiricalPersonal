@@ -8,19 +8,9 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Factor, { FactorData } from "../Factor";
-import { SubTrialData } from "../../pages/MainScreen/MainScreen";
 import { useState } from "react";
-
-const MAX_TRIAL_NAME_LENGTH = 64;
-
-export interface TrialInnerData {
-  trialTitle: string;
-  successString: string;
-  failureString: string;
-  additionalNotesString: string;
-  subTrialData: SubTrialData;
-  subTrialOrder: (keyof SubTrialData)[];
-}
+import { MAX_TRIAL_NAME_LENGTH } from "./types";
+import { TrialInnerData } from "./types";
 
 interface Props {
   handleAddTrial: (TrialInnerData: TrialInnerData) => void;

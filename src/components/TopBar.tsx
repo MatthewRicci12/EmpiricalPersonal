@@ -3,10 +3,9 @@ import Container from "@mui/system/Container";
 import DialogSkeleton from "../utils/DialogSkeleton.tsx";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import AddTrialDialog, {
-  TrialInnerData,
-} from "./AddTrialDialog/AddTrialDialog.tsx";
+import AddTrialDialog from "./AddTrialDialog/AddTrialDialog.tsx";
 import { useState } from "react";
+import { TrialInnerData } from "./AddTrialDialog/types.tsx";
 
 interface Props {
   handleAddTrial: (TrialInnerData: TrialInnerData) => void;

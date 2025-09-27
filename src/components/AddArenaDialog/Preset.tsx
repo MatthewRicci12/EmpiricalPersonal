@@ -3,13 +3,8 @@ import ContextMenuSkeleton from "../../utils/ContextMenuSkeleton.tsx";
 import DialogSkeleton from "../../utils/DialogSkeleton.tsx";
 import FactorListDialog from "./FactorListDialog.tsx";
 import MenuItem from "@mui/material/MenuItem";
-import { FactorData } from "../Factor.tsx";
+import { FactorData } from "../types.tsx";
 import { useState } from "react";
-
-export type PresetData = Record<
-  string,
-  { factorData: FactorData; factorOrder: (keyof FactorData)[] }
->;
 
 interface Props {
   title: string;

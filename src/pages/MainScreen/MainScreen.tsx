@@ -10,19 +10,15 @@ import TopBar from "../../components/TopBar.tsx";
 import { AddArenaDialog } from "../../components/AddArenaDialog/AddArenaDialog.tsx";
 import { ArenaScreen } from "../../components/ArenaScreen.tsx";
 import { ArenaTab } from "../../components/ArenaTab.tsx";
-import { Result } from "../../components/Trial/SubTrial.tsx";
-import { TrialInnerData } from "../../components/AddTrialDialog/AddTrialDialog.tsx";
+import { Result } from "../../components/types.tsx";
+import { TrialInnerData } from "../../components/AddTrialDialog/types.tsx";
 import { useState } from "react";
-
-export const MAX_ARENA_NAME_LENGTH = 32;
-
-export type SubTrialData = Record<string, [Result, string, string]>;
-export type TrialData = Record<string, TrialInnerData>;
-export type ArenaData = Record<string, TrialData>;
+import { ArenaData, TrialData } from "./types.tsx";
 
 interface Props {}
 const MainScreen: React.FC<Props> = () => {
   const [openAddArenaDialog, setOpenAddArenaDialog] = useState(false);
+  const [editArenaDialog, setEditArenaDialog] = useState(false);
 
   const [arenaData, setArenaData] = useState<ArenaData>({});
   const [arenaOrder, setArenaOrder] = useState<(keyof ArenaData)[]>([]);
@@ -37,8 +33,6 @@ const MainScreen: React.FC<Props> = () => {
   const [trialOrder, setTrialOrder] = useState<(keyof TrialData)[]>([]);
 
   const [whichTrialSelected, setTrialSelected] = useState<keyof TrialData>("");
-
-  const [editArenaDialog, setEditArenaDialog] = useState(false);
 
   const handleOpenArenaDialog: React.MouseEventHandler<HTMLButtonElement> = (
     e

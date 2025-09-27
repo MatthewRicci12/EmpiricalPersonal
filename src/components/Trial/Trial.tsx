@@ -7,10 +7,11 @@ import DialogSkeleton from "../../utils/DialogSkeleton.tsx";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import SubTrialDialog, { RESULT_INDEX } from "./SubTrialDialog.tsx";
-import { Result } from "./SubTrial.tsx";
+import SubTrialDialog from "./SubTrialDialog.tsx";
 import { SubTrialData } from "../../pages/MainScreen/MainScreen.tsx";
 import { useState } from "react";
+import { Result } from "../types.tsx";
+import { RESULT_INDEX } from "./types.tsx";
 
 export function calculateTrialStatus(subTrialData: SubTrialData) {
   if (Object.keys(subTrialData).length === 0) return Result.EMPTY;

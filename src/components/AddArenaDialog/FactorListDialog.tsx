@@ -1,6 +1,6 @@
 import Box from "@mui/system/Box";
 import Typography from "@mui/material/Typography";
-import { FactorData } from "../Factor.tsx";
+import { FactorData } from "../types";
 
 interface Props {
   factorData: FactorData;
