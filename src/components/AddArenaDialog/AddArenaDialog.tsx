@@ -14,6 +14,7 @@ import { FactorData } from "../types.tsx";
 import { MAX_ARENA_NAME_LENGTH } from "../../pages/MainScreen/types.tsx";
 import { useState } from "react";
 import { PresetData } from "./types.tsx";
+import { useReducer } from "react";
 
 interface Props {
   handleAddArena: (tabName: string) => void;

@@ -1,6 +1,6 @@
 import Box from "@mui/system/Box";
 import SubTrial from "./SubTrial.tsx";
-import { SubTrialData } from "../../pages/MainScreen/MainScreen.tsx";
+import { SubTrialData } from "../../pages/MainScreen/types.tsx";
 import { RESULT_INDEX, DATE_INDEX, DATA_INDEX } from "./types.tsx";
 
 interface Props {

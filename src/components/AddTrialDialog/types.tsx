@@ -1,4 +1,4 @@
-import { SubTrialData } from "../../pages/MainScreen/MainScreen";
+import { SubTrialData } from "../../pages/MainScreen/types";
 
 export const MAX_TRIAL_NAME_LENGTH = 64;
 

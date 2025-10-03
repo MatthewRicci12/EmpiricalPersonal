@@ -8,7 +8,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import SubTrialDialog from "./SubTrialDialog.tsx";
-import { SubTrialData } from "../../pages/MainScreen/MainScreen.tsx";
+import { SubTrialData } from "../../pages/MainScreen/types.tsx";
 import { useState } from "react";
 import { Result } from "../types.tsx";
 import { RESULT_INDEX } from "./types.tsx";

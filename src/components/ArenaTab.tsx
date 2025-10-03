@@ -3,16 +3,16 @@ import { selectedSx } from "./types";
 
 interface Props {
   title: string;
-  handleClickTab: React.MouseEventHandler<HTMLButtonElement>;
+  handleClickArena: React.MouseEventHandler<HTMLButtonElement>;
   selected: boolean;
 }
 export const ArenaTab: React.FC<Props> = ({
   title,
-  handleClickTab,
+  handleClickArena,
   selected,
 }) => {
   return (
-    <Button sx={selected ? selectedSx : {}} onClick={handleClickTab}>
+    <Button sx={selected ? selectedSx : {}} onClick={handleClickArena}>
       {title}
     </Button>
   );

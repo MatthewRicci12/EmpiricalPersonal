@@ -6,8 +6,8 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
-import { Result } from "../components/Trial/SubTrial.tsx";
-import { TrialData } from "./MainScreen/MainScreen.tsx";
+import { Result } from "../components/types.tsx";
+import { TrialData } from "./MainScreen/types.tsx";
 import { styles } from "../components/Trial/styles.tsx";
 import { calculateTrialStatus } from "../components/Trial/Trial.tsx";
 
