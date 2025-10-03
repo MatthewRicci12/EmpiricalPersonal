@@ -1,9 +1,7 @@
-import MainScreen from './MainScreen/MainScreen.tsx';
+import MainScreen from "./pages/MainScreen";
 
 function App() {
-  return (
-    <MainScreen/>
-  );
+  return <MainScreen />;
 }
 
 export default App;

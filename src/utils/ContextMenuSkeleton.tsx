@@ -1,13 +1,11 @@
-import { useState } from 'react';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { useState } from 'react';
 
 interface Props {
     children: React.ReactNode,
-    setEditMode: () => void,
-    handleDeleteArena: React.MouseEventHandler<HTMLLIElement>,
+    menuItems: React.ReactNode[]
 }
-export const ArenaTabContextMenu: React.FC<Props> = ({children, setEditMode, handleDeleteArena}) => {
+export const ContextMenuSkeleton: React.FC<Props> = ({children, menuItems}) => {
  const [contextMenu, setContextMenu] = useState<{
     mouseX: number;
     mouseY: number;
@@ -40,27 +38,32 @@ export const ArenaTabContextMenu: React.FC<Props> = ({children, setEditMode, han
   };
 
   const handleClose: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation();
     setContextMenu(null);
   };
 
 
   return (
-    <div onContextMenu={handleContextMenu} style={{ cursor: 'context-menu', display: 'inline' }}>
-      {children}
-      <Menu
-        open={contextMenu !== null}
-        onClose={handleClose}
-        anchorReference="anchorPosition"
-        anchorPosition={
-          contextMenu !== null
-            ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-            : undefined}>
-        <MenuItem onClick={setEditMode}>Edit Arena</MenuItem>
-        <MenuItem onClick={handleDeleteArena}>Delete Arena</MenuItem>
-      </Menu>
+    <div 
+    onContextMenu={handleContextMenu} 
+    style={{ 
+      cursor: 'context-menu', 
+      display: 'inline' }}>
+
+        {children}
+
+        <Menu
+          open={contextMenu !== null}
+          onClose={handleClose}
+          anchorReference="anchorPosition"
+          anchorPosition={
+            contextMenu !== null ? 
+              { top: contextMenu.mouseY, left: contextMenu.mouseX }
+              : undefined}>
+          {menuItems}
+        </Menu>
+
     </div>
   );
 }
 
-export default ArenaTabContextMenu;
+export default ContextMenuSkeleton;
