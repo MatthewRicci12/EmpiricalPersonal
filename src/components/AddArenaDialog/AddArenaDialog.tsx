@@ -112,7 +112,7 @@ export const AddArenaDialog: React.FC<Props> = ({
       return;
     }
     dispatch({
-      type: ActionKind.EDITFACTOR,
+      type: ActionKind.ADDFACTOR,
       payload: [factorName, weight],
     });
   };
