@@ -12,7 +12,6 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { FactorData } from "../types.tsx";
 import { MAX_ARENA_NAME_LENGTH } from "../../pages/MainScreen/types.tsx";
-import { useState } from "react";
 import { PresetData } from "./types.tsx";
 import { useReducer } from "react";
 
@@ -28,45 +27,30 @@ export const AddArenaDialog: React.FC<Props> = ({
   handleEditArena,
   edit,
 }) => {
-  const [openFactorDialog, setOpenFactorDialog] = useState(false);
-  const [editFactorDialog, setEditFactorDialog] = useState(false);
-
-  const [openPresetDialog, setOpenPresetDialog] = useState(false);
-  const [openSavePresetDialog, setOpenSavePresetDialog] = useState(false);
-
-  const [arenaTitle, setArenaTitle] = useState("");
-
-  const [factorData, setFactorData] = useState<FactorData>({});
-  const [factorOrder, setFactorOrder] = useState<(keyof FactorData)[]>([]);
-
-  const [presetData, setPresetData] = useState<PresetData>({});
-  const [presetOrder, setPresetOrder] = useState<(keyof PresetData)[]>([]);
-
-  const [whichFactorSelected, setWhichFactorSelected] =
-    useState<keyof FactorData>("");
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleDeletePreset =
     (presetToBeDeleted: string): React.MouseEventHandler<HTMLLIElement> =>
     (e) => {
-      setPresetOrder(
-        presetOrder.filter((presetName) => presetName != presetToBeDeleted)
-      );
-      const { [presetToBeDeleted]: _, ...newPresetData } = presetData;
-      setPresetData(newPresetData);
+      e.stopPropagation();
+      dispatch({
+        type: ActionKind.DELETESAVEDPRESET,
+        payload: presetToBeDeleted,
+      });
     };
 
   const handleOpenPresetDialog: React.MouseEventHandler<HTMLButtonElement> = (
     e
   ) => {
     e.stopPropagation();
-    setOpenPresetDialog(true);
+    dispatch({ type: ActionKind.VIEWPRESETSMODAL, payload: true });
   };
 
   const handleClosePresetDialog: React.MouseEventHandler<HTMLButtonElement> = (
     e
   ) => {
     e.stopPropagation();
-    setOpenPresetDialog(false);
+    dispatch({ type: ActionKind.VIEWPRESETSMODAL, payload: false });
   };
 
   const handleOpenFactorDialog: React.MouseEventHandler<HTMLButtonElement> = (
@@ -74,42 +58,42 @@ export const AddArenaDialog: React.FC<Props> = ({
   ) => {
     //Triggered by Dialog x
     e.stopPropagation();
-    setEditFactorDialog(false);
-    setOpenFactorDialog(true);
+    dispatch({ type: ActionKind.FACTORMODAL, payload: [true, false] });
   };
 
   // Subroutine of FactorDialog
   const handleCloseFactorDialog = () => {
-    setOpenFactorDialog(false);
+    dispatch({ type: ActionKind.FACTORMODAL, payload: [false, false] });
   };
 
   const handleOpenSavePresetDialog: React.MouseEventHandler<
     HTMLButtonElement
   > = (e) => {
     e.stopPropagation();
-    setOpenSavePresetDialog(true);
+    dispatch({ type: ActionKind.SAVEPRESETMODAL, payload: true });
   };
 
   // Subroutine of SavePresetDialog
   const handleCloseSavePresetDialog = () => {
-    setOpenSavePresetDialog(false);
+    dispatch({ type: ActionKind.SAVEPRESETMODAL, payload: false });
   };
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
-    if (e.target.value.length < MAX_ARENA_NAME_LENGTH)
-      setArenaTitle(e.target.value);
+    if (e.target.value.length < MAX_ARENA_NAME_LENGTH) {
+      dispatch({ type: ActionKind.SETARENATITLE, payload: e.target.value });
+    }
   };
 
+  // Note: These functions are passed in, so do not get reduced. They say 'handle' and not 'set'.
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    if (arenaTitle.length === 0) return;
+    if (state.arenaTitle.length === 0) return;
+    handleCloseArenaDialog(e);
 
     if (edit) {
-      handleCloseArenaDialog(e);
-      handleEditArena(arenaTitle);
+      handleEditArena(state.arenaTitle);
     } else {
-      handleCloseArenaDialog(e);
-      handleAddArena(arenaTitle);
+      handleAddArena(state.arenaTitle);
     }
   };
 
@@ -118,39 +102,25 @@ export const AddArenaDialog: React.FC<Props> = ({
     (e) => {
       //Triggered by clicking a tab
       e.stopPropagation();
-      whichFactorSelected === factorName
-        ? setWhichFactorSelected("")
-        : setWhichFactorSelected(factorName);
+      dispatch({ type: ActionKind.CLICKFACTOR, payload: factorName });
     };
 
   // Subroutine
   const handleAddFactor = (factorName: string, weight: number) => {
-    if (factorName in factorOrder) {
+    if (factorName in state.factorOrder) {
       console.error("Factor already exists.");
       return;
     }
-
-    setFactorOrder([...factorOrder, factorName]);
-
-    const newFactorData = {
-      ...factorData,
-      [factorName]: weight,
-    };
-
-    setFactorData(newFactorData);
-
-    console.log(`handleAddFactor: ${newFactorData[factorName]}`);
+    dispatch({
+      type: ActionKind.EDITFACTOR,
+      payload: [factorName, weight],
+    });
   };
 
   // Subroutine
   const handleEditFactor = (factorName: string, newWeight: number) => {
     //Triggered by clicking a tab
-    const newFactorData = {
-      ...factorData,
-      [factorName]: newWeight,
-    };
-    setFactorData(newFactorData);
-    setWhichFactorSelected("");
+    dispatch({ type: ActionKind.EDITFACTOR, payload: [factorName, newWeight] });
   };
 
   const handleClickWeight =
@@ -158,37 +128,18 @@ export const AddArenaDialog: React.FC<Props> = ({
     (e) => {
       //Triggered by clicking a tab
       e.stopPropagation();
-      whichFactorSelected === factorName
-        ? setWhichFactorSelected("")
-        : setWhichFactorSelected(factorName);
-      setEditFactorDialog(true);
-      setOpenFactorDialog(true);
+      dispatch({ type: ActionKind.CLICKWEIGHT, payload: factorName });
     };
 
   const handleRemoveFactor: React.MouseEventHandler<HTMLButtonElement> = (
     e
   ) => {
     e.stopPropagation();
-    setFactorOrder(
-      factorOrder.filter((presetName) => presetName != whichFactorSelected)
-    );
-    const { [whichFactorSelected]: _, ...newFactorData } = factorData;
-    setFactorData(newFactorData);
+    dispatch({ type: ActionKind.REMOVEFACTOR, payload: {} });
   };
 
   const handleSavePreset = (presetName: string) => {
-    setPresetOrder([...presetOrder, presetName]);
-
-    if (presetName in presetOrder) {
-      console.error("Preset with that name already exists!");
-      return;
-    }
-
-    const newPresetData = {
-      ...presetData,
-      [presetName]: { factorData: factorData, factorOrder: factorOrder },
-    };
-    setPresetData(newPresetData);
+    dispatch({ type: ActionKind.SAVEPRESET, payload: presetName });
   };
 
   // Subroutine of LoadPresetDialog
@@ -196,8 +147,10 @@ export const AddArenaDialog: React.FC<Props> = ({
     factorData: FactorData,
     factorOrder: (keyof FactorData)[]
   ) => {
-    setFactorData(factorData);
-    setFactorOrder(factorOrder);
+    dispatch({
+      type: ActionKind.LOADPRESET,
+      payload: [factorData, factorOrder],
+    });
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -224,7 +177,7 @@ export const AddArenaDialog: React.FC<Props> = ({
           id="outlined-basic"
           label="Arena Title"
           variant="outlined"
-          value={arenaTitle}
+          value={state.arenaTitle}
           onChange={handleInput}
           sx={{
             paddingBottom: "10px",
@@ -242,7 +195,7 @@ export const AddArenaDialog: React.FC<Props> = ({
         {/* Save Preset */}
         <Button onClick={handleOpenSavePresetDialog}>Save Preset</Button>
         <DialogSkeleton
-          open={openSavePresetDialog}
+          open={state.openSavePresetDialog}
           onClose={handleCloseSavePresetDialog}
         >
           <SavePresetDialog
@@ -254,13 +207,13 @@ export const AddArenaDialog: React.FC<Props> = ({
         {/* Load Preset */}
         <Button onClick={handleOpenPresetDialog}>Load Preset</Button>
         <DialogSkeleton
-          open={openPresetDialog}
+          open={state.openViewPresetsDialog}
           onClose={handleClosePresetDialog}
         >
           <LoadPresetDialog
             handleClosePresetDialog={handleClosePresetDialog}
-            presetData={presetData}
-            presetOrder={presetOrder}
+            presetData={state.presetData}
+            presetOrder={state.presetOrder}
             handleLoadPreset={handleLoadPreset}
             handleDeletePreset={handleDeletePreset}
           ></LoadPresetDialog>
@@ -271,15 +224,15 @@ export const AddArenaDialog: React.FC<Props> = ({
           <AddIcon />
         </Button>
         <DialogSkeleton
-          open={openFactorDialog}
+          open={state.openFactorDialog}
           onClose={handleCloseFactorDialog}
         >
           <FactorDialog
             handleCloseFactorDialog={handleCloseFactorDialog}
             handleAddFactor={handleAddFactor}
             handleEditFactor={handleEditFactor}
-            edit={editFactorDialog}
-            givenFactorName={whichFactorSelected}
+            edit={state.editFactorDialog}
+            givenFactorName={state.whichFactorSelected}
           ></FactorDialog>
         </DialogSkeleton>
 
@@ -298,15 +251,12 @@ export const AddArenaDialog: React.FC<Props> = ({
             marginBottom: "2px",
           }}
         >
-          {factorOrder.map((factorName, index) => {
-            console.log(
-              `factorName: ${factorName}, factorData: ${factorData}, factorData[factorName]: ${factorData[factorName]}`
-            );
+          {state.factorOrder.map((factorName, index) => {
             return (
               <Factor
                 title={factorName}
-                weight={factorData[factorName]}
-                selected={whichFactorSelected === factorName}
+                weight={state.factorData[factorName]}
+                selected={state.whichFactorSelected === factorName}
                 handleClickFactor={handleClickFactor(factorName)}
                 handleClickWeight={handleClickWeight(factorName)}
                 key={`${factorName}-${index}`}
@@ -322,5 +272,214 @@ export const AddArenaDialog: React.FC<Props> = ({
     </>
   );
 };
+
+enum ActionKind {
+  FACTORMODAL = "FACTORMODAL",
+  VIEWPRESETSMODAL = "VIEWPRESETSMODAL",
+  SAVEPRESETMODAL = "SAVEPRESETMODAL",
+
+  SETEDITFACTOR = "SETEDITFACTOR",
+  SETADDFACTOR = "SETADDFACTOR",
+
+  SETARENATITLE = "SETARENATITLE",
+  ADDFACTOR = "ADDFACTOR",
+  EDITFACTOR = "EDITFACTOR",
+  REMOVEFACTOR = "REMOVEFACTOR",
+
+  LOADPRESET = "LOADPRESET",
+  SAVEPRESET = "SAVEPRESET",
+  DELETESAVEDPRESET = "DELETESAVEDPRESET",
+
+  CLICKWEIGHT = "CLICKWEIGHT",
+  CLICKSUBMIT = "CLICKSUBMIT",
+  CLICKFACTOR = "CLICKFACTOR",
+}
+
+interface Action {
+  type: ActionKind;
+  payload: any;
+}
+
+interface State {
+  openFactorDialog: boolean;
+  editFactorDialog: boolean;
+
+  openViewPresetsDialog: boolean;
+  openSavePresetDialog: boolean;
+
+  arenaTitle: string;
+
+  factorData: FactorData;
+  factorOrder: (keyof FactorData)[];
+
+  presetData: PresetData;
+  presetOrder: (keyof PresetData)[];
+
+  whichFactorSelected: keyof FactorData;
+}
+
+const initialState: State = {
+  openFactorDialog: false,
+  editFactorDialog: false,
+
+  openViewPresetsDialog: false,
+  openSavePresetDialog: false,
+
+  arenaTitle: "",
+
+  factorData: {},
+  factorOrder: [],
+
+  presetData: {},
+  presetOrder: [],
+
+  whichFactorSelected: "",
+};
+
+function reducer(state: State, action: Action): State {
+  const { type, payload } = action;
+
+  switch (type) {
+    case ActionKind.CLICKWEIGHT: {
+      const factorName = payload;
+
+      const whichFactorSelected =
+        state.whichFactorSelected === factorName ? "" : factorName;
+
+      return {
+        ...state,
+        whichFactorSelected: whichFactorSelected,
+        editFactorDialog: true,
+        openFactorDialog: true,
+      };
+    }
+
+    case ActionKind.VIEWPRESETSMODAL: {
+      const openViewPresetsDialog = payload;
+
+      return {
+        ...state,
+        openViewPresetsDialog: openViewPresetsDialog,
+      } as State;
+    }
+    case ActionKind.SAVEPRESETMODAL: {
+      const openSavePresetDialog = payload;
+
+      return { ...state, openSavePresetDialog: openSavePresetDialog };
+    }
+    case ActionKind.FACTORMODAL: {
+      const [openFactorDialog, editFactorDialog] = payload;
+
+      return {
+        ...state,
+        openFactorDialog: openFactorDialog,
+        editFactorDialog: editFactorDialog,
+      };
+    }
+
+    case ActionKind.SETARENATITLE: {
+      const currentInputValue = payload;
+      return { ...state, arenaTitle: currentInputValue };
+    }
+
+    case ActionKind.ADDFACTOR: {
+      const [factorName, weight] = payload;
+
+      const newFactorOrder = [...state.factorOrder, factorName];
+
+      const newFactorData = {
+        ...state.factorData,
+        [factorName]: weight,
+      };
+
+      return {
+        ...state,
+        factorData: newFactorData,
+        factorOrder: newFactorOrder,
+      };
+    }
+    case ActionKind.EDITFACTOR: {
+      const [factorName, newWeight] = payload;
+
+      const newFactorData = {
+        ...state.factorData,
+        [factorName]: newWeight,
+      };
+      return { ...state, factorData: newFactorData, whichFactorSelected: "" };
+    }
+    case ActionKind.REMOVEFACTOR: {
+      const newFactorOrder = state.factorOrder.filter(
+        (presetName) => presetName != state.whichFactorSelected
+      );
+
+      const { [state.whichFactorSelected]: _, ...newFactorData } =
+        state.factorData;
+
+      return {
+        ...state,
+        factorData: newFactorData,
+        factorOrder: newFactorOrder,
+      };
+    }
+    case ActionKind.LOADPRESET: {
+      const [newFactorData, newFactorOrder] = payload;
+
+      return {
+        ...state,
+        factorData: newFactorData,
+        factorOrder: newFactorOrder,
+      };
+    }
+    case ActionKind.SAVEPRESET: {
+      const presetName = payload;
+
+      if (presetName in state.presetOrder) {
+        console.error("Preset with that name already exists!");
+        return state;
+      }
+
+      const newPresetData = {
+        ...state.presetData,
+        [presetName]: {
+          factorData: state.factorData,
+          factorOrder: state.factorOrder,
+        },
+      };
+
+      return {
+        ...state,
+        presetData: newPresetData,
+        presetOrder: [...state.presetOrder, presetName],
+      };
+    }
+
+    case ActionKind.DELETESAVEDPRESET: {
+      const presetToBeDeleted = payload;
+
+      const newPresetOrder = state.presetOrder.filter(
+        (presetName) => presetName != presetToBeDeleted
+      );
+      const { [presetToBeDeleted]: _, ...newPresetData } = state.presetData;
+
+      return {
+        ...state,
+        presetOrder: newPresetOrder,
+        presetData: newPresetData,
+      };
+    }
+
+    case ActionKind.CLICKFACTOR: {
+      const factorName = payload;
+
+      const whichFactorSelected =
+        state.whichFactorSelected === factorName ? "" : factorName;
+      return { ...state, whichFactorSelected: whichFactorSelected };
+    }
+
+    default: {
+      return state;
+    }
+  }
+}
 
 export default AddArenaDialog;
