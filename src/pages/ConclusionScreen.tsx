@@ -107,7 +107,7 @@ const ConclusionScreen: React.FC<Props> = ({
           {successTrials}
         </Box>
 
-        <Box sx={{ trialColumnsx }}>
+        <Box sx={trialColumnsx}>
           <Typography variant="h6">Failures</Typography>
           {/* Failure trials go here */}
           {failureTrials}

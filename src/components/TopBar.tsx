@@ -6,6 +6,9 @@ import Typography from "@mui/material/Typography";
 import AddTrialDialog from "./AddTrialDialog/AddTrialDialog.tsx";
 import { useState } from "react";
 import { TrialInnerData } from "./AddTrialDialog/types.tsx";
+import ContextMenuSkeleton from "../utils/ContextMenuSkeleton.tsx";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
 
 interface Props {
   handleAddTrial: (TrialInnerData: TrialInnerData) => void;
@@ -31,10 +34,39 @@ export const TopBar: React.FC<Props> = ({
     setOpen(false);
   };
 
+  const handleNewFile: React.MouseEventHandler<HTMLLIElement> = (e) => {
+    e.stopPropagation();
+  };
+
+  const handleOpenFile: React.MouseEventHandler<HTMLLIElement> = (e) => {
+    e.stopPropagation();
+  };
+
+  const handleSaveFile: React.MouseEventHandler<HTMLLIElement> = (e) => {
+    e.stopPropagation();
+  };
+
+  const handleExit: React.MouseEventHandler<HTMLLIElement> = (e) => {
+    e.stopPropagation();
+  };
+
   return (
     <Stack direction="row" alignItems="center">
       <Container>
-        <Button>File</Button>
+        <ContextMenuSkeleton
+          menuItems={[
+            <>
+              <MenuItem onClick={handleNewFile}>New</MenuItem>,
+              <MenuItem onClick={handleOpenFile}>Open</MenuItem>,
+              <Divider />
+              <MenuItem onClick={handleSaveFile}>Save</MenuItem>,
+              <Divider />
+              <MenuItem onClick={handleExit}>Exit</MenuItem>,
+            </>,
+          ]}
+        >
+          <Button>File</Button>
+        </ContextMenuSkeleton>
       </Container>
 
       <Container>
