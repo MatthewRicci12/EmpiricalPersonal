@@ -9,17 +9,20 @@ import { TrialInnerData } from "./AddTrialDialog/types.tsx";
 import ContextMenuSkeleton from "../utils/ContextMenuSkeleton.tsx";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
+import { emit } from "@tauri-apps/api/event";
 
 interface Props {
   handleAddTrial: (TrialInnerData: TrialInnerData) => void;
   handleOpenConclusionsPage: () => void;
   handleRemoveTrial: React.MouseEventHandler<HTMLButtonElement>;
+  handleClear: () => void;
   whichArenaSelected: string;
 }
 export const TopBar: React.FC<Props> = ({
   handleAddTrial,
   handleOpenConclusionsPage,
   handleRemoveTrial,
+  handleClear,
   whichArenaSelected,
 }) => {
   const [open, setOpen] = useState(false);
@@ -36,6 +39,7 @@ export const TopBar: React.FC<Props> = ({
 
   const handleNewFile: React.MouseEventHandler<HTMLLIElement> = (e) => {
     e.stopPropagation();
+    handleClear();
   };
 
   const handleOpenFile: React.MouseEventHandler<HTMLLIElement> = (e) => {

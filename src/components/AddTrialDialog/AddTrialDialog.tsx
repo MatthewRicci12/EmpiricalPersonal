@@ -83,6 +83,8 @@ export const AddTrialDialog: React.FC<Props> = ({
       successString: valueSuccess,
       failureString: valueFailure,
       additionalNotesString: valueAdditionalNotes,
+      indivFactorData: indivFactorData,
+      indivFactorOrder: indivFactorOrder,
       subTrialData: {},
       subTrialOrder: [],
     };

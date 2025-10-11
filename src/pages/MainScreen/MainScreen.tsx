@@ -5,7 +5,7 @@ import ConclusionScreen from "../ConclusionScreen.tsx";
 import ContextMenuSkeleton from "../../utils/ContextMenuSkeleton.tsx";
 import DialogSkeleton from "../../utils/DialogSkeleton.tsx";
 import MenuItem from "@mui/material/MenuItem";
-import React from "react";
+import React, { useReducer, useContext, useEffect } from "react";
 import TopBar from "../../components/TopBar.tsx";
 import { AddArenaDialog } from "../../components/AddArenaDialog/AddArenaDialog.tsx";
 import { ArenaScreen } from "../../components/ArenaScreen.tsx";
@@ -13,11 +13,11 @@ import { ArenaTab } from "../../components/ArenaTab.tsx";
 import { Result } from "../../components/types.tsx";
 import { TrialInnerData } from "../../components/AddTrialDialog/types.tsx";
 import { ArenaData, TrialData } from "./types.tsx";
-import { useReducer } from "react";
 
 interface Props {}
 const MainScreen: React.FC<Props> = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialStateFilled);
+  // const handleDirty = useContext(DirtyContext);
 
   const handleOpenArenaDialog: React.MouseEventHandler<HTMLButtonElement> = (
     e
@@ -83,7 +83,7 @@ const MainScreen: React.FC<Props> = () => {
       return state;
     }
 
-    dispatch({ type: ActionKind.ADDTRIAL, payload: { ...TrialInnerData } });
+    dispatch({ type: ActionKind.ADDTRIAL, payload: TrialInnerData });
   };
 
   // Subroutine
@@ -128,6 +128,12 @@ const MainScreen: React.FC<Props> = () => {
       dispatch({ type: ActionKind.CLICKTRIAL, payload: title });
     };
 
+  //TODO: Reduce
+  // Event already stopped in TopBar.
+  const handleClear = () => {
+    dispatch({ type: ActionKind.CLEAR, payload: {} });
+  };
+
   const curTrialData = state.arenaData[state.whichArenaSelected] ?? {};
 
   return !state.displayConclusionsPage ? (
@@ -136,6 +142,7 @@ const MainScreen: React.FC<Props> = () => {
         handleAddTrial={handleAddTrial}
         handleOpenConclusionsPage={handleOpenConclusionsPage}
         handleRemoveTrial={handleRemoveTrial}
+        handleClear={handleClear}
         whichArenaSelected={state.whichArenaSelected}
       />
       <Box
@@ -212,6 +219,8 @@ enum ActionKind {
   REMOVETRIAL = "REMOVETRIAL",
   CLICKTRIAL = "CLICKTRIAL",
   ADDSUBTRIAL = "ADDSUBTRIAL",
+
+  CLEAR = "CLEAR",
 }
 
 interface Action {
@@ -229,6 +238,7 @@ interface State {
   trialData: TrialData;
   trialOrder: (keyof TrialData)[];
   whichTrialSelected: keyof TrialData | "";
+  windowTitle: string;
 }
 
 const initialState: State = {
@@ -241,12 +251,43 @@ const initialState: State = {
   trialData: {} as TrialData,
   trialOrder: [] as (keyof TrialData)[],
   whichTrialSelected: "" as keyof TrialData | "",
+  windowTitle: "Personal Empirical",
+};
+
+const initialStateFilled: State = {
+  openAddArenaDialog: false,
+  editArenaDialog: true,
+  arenaData: {
+    f: {
+      title: {
+        trialTitle: "title",
+        successString: "",
+        failureString: "",
+        additionalNotesString: "",
+        indivFactorData: { x: 5 },
+        indivFactorOrder: ["x"],
+        subTrialData: { title: [Result.SUCCESS, "", ""] },
+        subTrialOrder: ["title"],
+      },
+    },
+  } as ArenaData,
+  arenaOrder: ["f"] as (keyof ArenaData)[],
+  whichArenaSelected: "f" as keyof ArenaData | "",
+  displayConclusionsPage: false,
+  trialData: {} as TrialData,
+  trialOrder: ["title"] as (keyof TrialData)[],
+  whichTrialSelected: "" as keyof TrialData | "",
+  windowTitle: "Personal Empirical",
 };
 
 function reducer(state: State, action: Action): State {
   const { type, payload } = action;
 
   switch (type) {
+    case ActionKind.CLEAR: {
+      return initialState;
+    }
+
     case ActionKind.ARENAMODAL: {
       const [editArenaDialog, openAddArenaDialog] = payload;
 
@@ -314,13 +355,13 @@ function reducer(state: State, action: Action): State {
     }
 
     case ActionKind.ADDTRIAL: {
-      const { addTrialDialogData } = payload;
+      const trialInnerData = payload;
 
-      const trialTitle = addTrialDialogData.trialTitle;
+      const trialTitle = trialInnerData.trialTitle;
 
       const newTrialData = {
         ...state.arenaData[state.whichArenaSelected],
-        [trialTitle]: addTrialDialogData,
+        [trialTitle]: trialInnerData,
       };
 
       const newArenaData = {

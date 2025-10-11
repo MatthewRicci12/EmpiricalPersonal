@@ -327,11 +327,11 @@ const initialState: State = {
 
   arenaTitle: "",
 
-  factorData: {},
-  factorOrder: [],
+  factorData: { y: 5 },
+  factorOrder: ["y"],
 
-  presetData: {},
-  presetOrder: [],
+  presetData: { x: { factorData: { x: 5 }, factorOrder: ["x"] } },
+  presetOrder: ["x"],
 
   whichFactorSelected: "",
 };
