@@ -5,7 +5,7 @@ import ConclusionScreen from "../ConclusionScreen.tsx";
 import ContextMenuSkeleton from "../../utils/ContextMenuSkeleton.tsx";
 import DialogSkeleton from "../../utils/DialogSkeleton.tsx";
 import MenuItem from "@mui/material/MenuItem";
-import React, { useReducer, useContext, useEffect } from "react";
+import React, { useReducer, useEffect } from "react";
 import TopBar from "../../components/TopBar.tsx";
 import { AddArenaDialog } from "../../components/AddArenaDialog/AddArenaDialog.tsx";
 import { ArenaScreen } from "../../components/ArenaScreen.tsx";
@@ -13,11 +13,21 @@ import { ArenaTab } from "../../components/ArenaTab.tsx";
 import { Result } from "../../components/types.tsx";
 import { TrialInnerData } from "../../components/AddTrialDialog/types.tsx";
 import { ArenaData, TrialData } from "./types.tsx";
+import { useDirtyState } from "../../contexts/DirtyStateContext.tsx";
+import { useGlobalShortcut } from "../../hooks/DirtyState.tsx";
 
 interface Props {}
 const MainScreen: React.FC<Props> = () => {
-  const [state, dispatch] = useReducer(reducer, initialStateFilled);
-  // const handleDirty = useContext(DirtyContext);
+  //const { isDirty } = useDirtyState();
+  const { isDirty, setDirty } = useDirtyState();
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const saveData = () => {
+    setDirty(false);
+  };
+
+  useGlobalShortcut(isDirty, saveData);
 
   const handleOpenArenaDialog: React.MouseEventHandler<HTMLButtonElement> = (
     e
@@ -39,6 +49,8 @@ const MainScreen: React.FC<Props> = () => {
 
   // Subroutine of submit button handler in AddArenaDialog.
   const handleAddArena = (tabName: string) => {
+    setDirty(true);
+
     if (tabName in state.arenaData) {
       console.error(
         "Tab with that name already exists! (Some kind of UUID should be used as keys if that's supposed to be allowed.)"
@@ -239,6 +251,7 @@ interface State {
   trialOrder: (keyof TrialData)[];
   whichTrialSelected: keyof TrialData | "";
   windowTitle: string;
+  dirty: boolean;
 }
 
 const initialState: State = {
@@ -252,6 +265,7 @@ const initialState: State = {
   trialOrder: [] as (keyof TrialData)[],
   whichTrialSelected: "" as keyof TrialData | "",
   windowTitle: "Personal Empirical",
+  dirty: false,
 };
 
 const initialStateFilled: State = {
@@ -278,6 +292,7 @@ const initialStateFilled: State = {
   trialOrder: ["title"] as (keyof TrialData)[],
   whichTrialSelected: "" as keyof TrialData | "",
   windowTitle: "Personal Empirical",
+  dirty: false,
 };
 
 function reducer(state: State, action: Action): State {
@@ -310,6 +325,7 @@ function reducer(state: State, action: Action): State {
         ...state,
         arenaOrder: [...state.arenaOrder, tabName],
         arenaData: newArenaData,
+        dirty: true,
       };
     }
 

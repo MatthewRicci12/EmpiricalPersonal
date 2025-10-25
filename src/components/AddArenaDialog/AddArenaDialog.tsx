@@ -154,9 +154,7 @@ export const AddArenaDialog: React.FC<Props> = ({
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    console.log(`You pressed: ${e.key}`);
     if (e.key === "Enter") {
-      console.log("You pressed Enter!");
       e.preventDefault();
       onButtonClick(e as unknown as React.MouseEvent<HTMLButtonElement>);
     }
