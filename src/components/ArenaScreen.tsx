@@ -30,8 +30,8 @@ export const ArenaScreen: React.FC<Props> = ({
       selected={whichTrialSelected === title}
       key={`${title}-${index}`}
       handleAddSubTrial={handleAddSubTrial}
-      subTrialData={trialData[title].subTrialData}
-      subTrialOrder={trialData[title].subTrialOrder}
+      subtrialData={trialData[title].subtrialData}
+      subtrialOrder={trialData[title].subtrialOrder}
     />
   ));
 

@@ -8,21 +8,21 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import SubTrialDialog from "./SubTrialDialog.tsx";
-import { SubTrialData } from "../../pages/MainScreen/types.tsx";
+import { SubtrialData } from "../../pages/MainScreen/types.tsx";
 import { useState } from "react";
 import { Result } from "../types.tsx";
 import { RESULT_INDEX } from "./types.tsx";
 
-export function calculateTrialStatus(subTrialData: SubTrialData) {
-  if (Object.keys(subTrialData).length === 0) return Result.EMPTY;
+export function calculateTrialStatus(subtrialData: SubtrialData) {
+  if (Object.keys(subtrialData).length === 0) return Result.EMPTY;
 
   const counts = {
     successCount: 0,
     failureCount: 0,
   };
 
-  Object.keys(subTrialData).map((key: string) =>
-    subTrialData[key][RESULT_INDEX] === Result.SUCCESS
+  Object.keys(subtrialData).map((key: string) =>
+    subtrialData[key][RESULT_INDEX] === Result.SUCCESS
       ? counts.successCount++
       : counts.failureCount++
   );
@@ -47,16 +47,16 @@ interface Props {
     date: string,
     data: string
   ) => void;
-  subTrialData: SubTrialData;
-  subTrialOrder: (keyof SubTrialData)[];
+  subtrialData: SubtrialData;
+  subtrialOrder: (keyof SubtrialData)[];
 }
 const Trial: React.FC<Props> = ({
   trialTitle,
   selected,
   handleClickTrial,
   handleAddSubTrial,
-  subTrialData,
-  subTrialOrder,
+  subtrialData,
+  subtrialOrder,
 }) => {
   const [openSubTrialDialog, setOpenSubTrialDialog] = useState(false);
   const [openAddSubTrialDialog, setOpenAddSubTrialDialog] = useState(false);
@@ -95,7 +95,7 @@ const Trial: React.FC<Props> = ({
 
   let trialStatus;
 
-  switch (calculateTrialStatus(subTrialData)) {
+  switch (calculateTrialStatus(subtrialData)) {
     case Result.SUCCESS:
       trialStatus = (
         <styles.TrialSuccess>
@@ -162,8 +162,8 @@ const Trial: React.FC<Props> = ({
         onClose={handleCloseSubTrialDialog}
       >
         <SubTrialDialog
-          subTrialData={subTrialData}
-          subTrialOrder={subTrialOrder}
+          subtrialData={subtrialData}
+          subtrialOrder={subtrialOrder}
         />
       </DialogSkeleton>
     </>

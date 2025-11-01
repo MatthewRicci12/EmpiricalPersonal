@@ -52,6 +52,7 @@ export const Preset: React.FC<Props> = ({
             Show Factor List
           </MenuItem>,
         ]}
+        leftClick={false}
       >
         <Button onClick={handleOpenPresetDialog}>{title}</Button>
       </ContextMenuSkeleton>

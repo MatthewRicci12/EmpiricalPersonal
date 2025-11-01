@@ -6,3 +6,5 @@ node_modules
 dist
 src/eslint.config.mjs
 src-tauri/sandbox
+saved_data/
+target/

@@ -1,4 +1,4 @@
-import { SubTrialData } from "../../pages/MainScreen/types";
+import { SubtrialData } from "../../pages/MainScreen/types";
 import { FactorData } from "../types";
 
 export const MAX_TRIAL_NAME_LENGTH = 64;
@@ -10,6 +10,6 @@ export interface TrialInnerData {
   additionalNotesString: string;
   indivFactorData: FactorData;
   indivFactorOrder: (keyof FactorData)[];
-  subTrialData: SubTrialData;
-  subTrialOrder: (keyof SubTrialData)[];
+  subtrialData: SubtrialData;
+  subtrialOrder: (keyof SubtrialData)[];
 }

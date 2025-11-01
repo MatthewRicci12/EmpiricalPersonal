@@ -1,15 +1,15 @@
 import Box from "@mui/system/Box";
 import SubTrial from "./SubTrial.tsx";
-import { SubTrialData } from "../../pages/MainScreen/types.tsx";
+import { SubtrialData } from "../../pages/MainScreen/types.tsx";
 import { RESULT_INDEX, DATE_INDEX, DATA_INDEX } from "./types.tsx";
 
 interface Props {
-  subTrialData: SubTrialData;
-  subTrialOrder: (keyof SubTrialData)[];
+  subtrialData: SubtrialData;
+  subtrialOrder: (keyof SubtrialData)[];
 }
 export const SubTrialDialog: React.FC<Props> = ({
-  subTrialData,
-  subTrialOrder,
+  subtrialData,
+  subtrialOrder,
 }) => {
   return (
     <Box
@@ -19,11 +19,11 @@ export const SubTrialDialog: React.FC<Props> = ({
         backgroundColor: "#66ccff",
       }}
     >
-      {subTrialOrder.map((subTrialKey) => (
+      {subtrialOrder.map((subTrialKey) => (
         <SubTrial
-          result={subTrialData[subTrialKey][RESULT_INDEX]}
-          date={subTrialData[subTrialKey][DATE_INDEX]}
-          data={subTrialData[subTrialKey][DATA_INDEX]}
+          result={subtrialData[subTrialKey][RESULT_INDEX]}
+          date={subtrialData[subTrialKey][DATE_INDEX]}
+          data={subtrialData[subTrialKey][DATA_INDEX]}
           key={subTrialKey}
         />
       ))}

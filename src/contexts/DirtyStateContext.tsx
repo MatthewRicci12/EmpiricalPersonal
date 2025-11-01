@@ -15,9 +15,9 @@ interface DirtyStateProviderProps {
 export const DirtyStateProvider = ({ children }: DirtyStateProviderProps) => {
   const [isDirty, setIsDirty] = useState<boolean>(false);
 
-  const setDirty = useCallback((value: boolean) => {
+  const setDirty = (value: boolean) => {
     setIsDirty(value);
-  }, []);
+  };
 
   const value = { isDirty, setDirty };
 

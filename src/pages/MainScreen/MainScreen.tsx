@@ -18,15 +18,18 @@ import { useGlobalShortcut } from "../../hooks/DirtyState.tsx";
 
 interface Props {}
 const MainScreen: React.FC<Props> = () => {
-  //const { isDirty } = useDirtyState();
+  // Notice this is not using useState. This is RETRIEVING the context value.
   const { isDirty, setDirty } = useDirtyState();
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialStateFilled);
 
   const saveData = () => {
     setDirty(false);
   };
 
+  // This is basically just a wrapped useEffect call to add a global Ctrl+S shortcut.
+  // Setting dirty equal to false is obviously what we wanna do upon ctrl+s.
+  // isDirty is only passed so we can no-op if there's nothing to save.
   useGlobalShortcut(isDirty, saveData);
 
   const handleOpenArenaDialog: React.MouseEventHandler<HTMLButtonElement> = (
@@ -156,6 +159,7 @@ const MainScreen: React.FC<Props> = () => {
         handleRemoveTrial={handleRemoveTrial}
         handleClear={handleClear}
         whichArenaSelected={state.whichArenaSelected}
+        arenaData={state.arenaData}
       />
       <Box
         sx={{
@@ -199,6 +203,7 @@ const MainScreen: React.FC<Props> = () => {
                 Delete Arena
               </MenuItem>,
             ]}
+            leftClick={false}
           >
             <ArenaTab
               title={title}
@@ -280,8 +285,8 @@ const initialStateFilled: State = {
         additionalNotesString: "",
         indivFactorData: { x: 5 },
         indivFactorOrder: ["x"],
-        subTrialData: { title: [Result.SUCCESS, "", ""] },
-        subTrialOrder: ["title"],
+        subtrialData: { title: [Result.SUCCESS, "", ""] },
+        subtrialOrder: ["title"],
       },
     },
   } as ArenaData,
@@ -404,9 +409,9 @@ function reducer(state: State, action: Action): State {
       let trialData = state.arenaData[state.whichArenaSelected];
       let trialInnerData = trialData[trialTitle];
 
-      trialInnerData.subTrialOrder = [...trialInnerData.subTrialOrder, key];
-      trialInnerData.subTrialData = {
-        ...trialInnerData.subTrialData,
+      trialInnerData.subtrialOrder = [...trialInnerData.subtrialOrder, key];
+      trialInnerData.subtrialData = {
+        ...trialInnerData.subtrialData,
         [key]: [result, date, data],
       };
 

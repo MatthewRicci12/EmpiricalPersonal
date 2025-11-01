@@ -31,9 +31,9 @@ const ConclusionScreen: React.FC<Props> = ({
   let neutralTrials: React.ReactNode[] = [];
 
   Object.keys(trialData).map((trialTitle) => {
-    let curSubTrialData = trialData[trialTitle].subTrialData;
+    let curSubtrialData = trialData[trialTitle].subtrialData;
 
-    switch (calculateTrialStatus(curSubTrialData)) {
+    switch (calculateTrialStatus(curSubtrialData)) {
       case Result.SUCCESS:
         successTrials = [
           ...successTrials,

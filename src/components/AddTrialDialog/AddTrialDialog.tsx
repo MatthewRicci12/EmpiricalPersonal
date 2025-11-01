@@ -85,8 +85,8 @@ export const AddTrialDialog: React.FC<Props> = ({
       additionalNotesString: valueAdditionalNotes,
       indivFactorData: indivFactorData,
       indivFactorOrder: indivFactorOrder,
-      subTrialData: {},
-      subTrialOrder: [],
+      subtrialData: {},
+      subtrialOrder: [],
     };
     handleClose(e);
     handleAddTrial(newData);
