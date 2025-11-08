@@ -49,7 +49,7 @@ async fn set_window_title(app: AppHandle, label: &str, is_dirty: bool) -> Result
 	tauri_window.set_title(new_title).unwrap();
 	match tauri_window.gtk_window().unwrap().titlebar() {
 		Some(titlebar) => {
-			// Wayland
+			// Wayland workaround as seen on GitHub
 			let event_box = titlebar.downcast::<EventBox>().unwrap();
 			let header_bar = event_box.child().unwrap().downcast::<HeaderBar>().unwrap();
 			header_bar.set_title(Some(new_title));
@@ -58,6 +58,21 @@ async fn set_window_title(app: AppHandle, label: &str, is_dirty: bool) -> Result
 	}
 	Ok(())
 }
+
+// #[tauri::command]
+// fn load_file(app: AppHandle, file_name: &str) -> Result<()> {
+//     let json_string = fs::read_to_string(file_name)?;
+
+//     let json: serde_json::Value =
+//         serde_json::from_str(&json_string).expect("JSON was not well-formatted");
+
+//     fs::remove_file(file_name)?;
+
+//     app.emit("file-load", json).unwrap();
+
+//     Ok(())
+// }
+
 
 type SubTrialDataPayload = HashMap<String, (i32, String, String)>;
 
@@ -78,7 +93,7 @@ struct TrialInnerDataPayload {
 
 type TrialDataPayload = HashMap<String, TrialInnerDataPayload>;
 
-type ArenaDataPayload = HashMap<String, TrialDataPayload>;
+type ArenaDataPayload = (HashMap<String, TrialDataPayload>, Vec<String>);
 
 #[tauri::command]
 fn save_file(app: AppHandle, label: &str, payload: ArenaDataPayload) -> Result<()> {
@@ -90,3 +105,4 @@ fn save_file(app: AppHandle, label: &str, payload: ArenaDataPayload) -> Result<(
 
     Ok(())
 }
+

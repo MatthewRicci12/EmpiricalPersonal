@@ -21,7 +21,7 @@ const MainScreen: React.FC<Props> = () => {
   // Notice this is not using useState. This is RETRIEVING the context value.
   const { isDirty, setDirty } = useDirtyState();
 
-  const [state, dispatch] = useReducer(reducer, initialStateFilled);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const saveData = () => {
     setDirty(false);
@@ -149,8 +149,6 @@ const MainScreen: React.FC<Props> = () => {
     dispatch({ type: ActionKind.CLEAR, payload: {} });
   };
 
-  const curTrialData = state.arenaData[state.whichArenaSelected] ?? {};
-
   return !state.displayConclusionsPage ? (
     <>
       <TopBar
@@ -168,7 +166,7 @@ const MainScreen: React.FC<Props> = () => {
         }}
       >
         <ArenaScreen
-          trialData={curTrialData}
+          trialData={state.trialData}
           trialOrder={state.trialOrder}
           key={state.whichArenaSelected}
           handleAddSubTrial={handleAddSubTrial}
@@ -440,9 +438,9 @@ function reducer(state: State, action: Action): State {
     }
 
     case ActionKind.CLICKTRIAL: {
-      const { title } = payload;
+      const title = payload;
 
-      let finalTitle = title ? "" : title;
+      let finalTitle = title === "" ? "" : title;
 
       return { ...state, whichTrialSelected: finalTitle };
     }

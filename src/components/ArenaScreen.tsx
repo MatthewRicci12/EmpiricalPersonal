@@ -23,6 +23,9 @@ export const ArenaScreen: React.FC<Props> = ({
   whichTrialSelected,
   handleClickTrial,
 }) => {
+  console.log(`trialData: ${JSON.stringify(trialData)}`);
+  console.log(`trialOrder: ${JSON.stringify(trialOrder)}`);
+
   const trials = trialOrder.map((title, index) => (
     <Trial
       trialTitle={title}
