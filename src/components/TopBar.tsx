@@ -79,12 +79,24 @@ export const TopBar: React.FC<Props> = ({
         <ContextMenuSkeleton
           menuItems={[
             <>
-              <MenuItem onClick={handleNewFile}>New</MenuItem>,
-              <MenuItem onClick={handleOpenFile}>Open</MenuItem>,
+              <MenuItem key={0} onClick={handleNewFile}>
+                New
+              </MenuItem>
+              ,
+              <MenuItem key={1} onClick={handleOpenFile}>
+                Open
+              </MenuItem>
+              ,
               <Divider />
-              <MenuItem onClick={handleSaveFile}>Save</MenuItem>,
+              <MenuItem key={2} onClick={handleSaveFile}>
+                Save
+              </MenuItem>
+              ,
               <Divider />
-              <MenuItem onClick={handleExit}>Exit</MenuItem>,
+              <MenuItem key={3} onClick={handleExit}>
+                Exit
+              </MenuItem>
+              ,
             </>,
           ]}
           leftClick={true}

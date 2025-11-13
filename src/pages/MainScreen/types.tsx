@@ -3,6 +3,7 @@ import { Result } from "../../components/types";
 
 export const MAX_ARENA_NAME_LENGTH = 32;
 
-export type SubtrialData = Record<string, [Result, string, string]>;
-export type TrialData = Record<string, TrialInnerData>;
-export type ArenaData = Record<string, TrialData>;
+type uuid = string;
+export type SubtrialData = Record<uuid, [Result, string, string]>;
+export type TrialData = Record<uuid, TrialInnerData>;
+export type ArenaData = Record<string, uuid[]>;

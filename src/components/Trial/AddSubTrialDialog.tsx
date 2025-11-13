@@ -15,10 +15,10 @@ import { selectedEffect } from "./types";
 import { Result } from "../types";
 
 interface Props {
-  trialTitle: string;
+  trialKey: string;
   handleCloseAddSubTrialDialog: React.MouseEventHandler<HTMLButtonElement>;
   handleAddSubTrial: (
-    trialTitle: string,
+    trialKey: string,
     key: string,
     result: Result,
     date: string,
@@ -26,7 +26,7 @@ interface Props {
   ) => void;
 }
 export const AddSubTrialDialog: React.FC<Props> = ({
-  trialTitle,
+  trialKey,
   handleCloseAddSubTrialDialog,
   handleAddSubTrial,
 }) => {
@@ -41,9 +41,9 @@ export const AddSubTrialDialog: React.FC<Props> = ({
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     handleCloseAddSubTrialDialog(e);
-    if (subtrialDate !== null) {
+    if (subtrialDate !== null && selectedResult !== Result.EMPTY) {
       handleAddSubTrial(
-        trialTitle,
+        trialKey,
         uuidv4(),
         selectedResult,
         subtrialDate!.format("MM/DD/YYYY"),

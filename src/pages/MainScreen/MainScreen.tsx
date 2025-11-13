@@ -12,9 +12,10 @@ import { ArenaScreen } from "../../components/ArenaScreen.tsx";
 import { ArenaTab } from "../../components/ArenaTab.tsx";
 import { Result } from "../../components/types.tsx";
 import { TrialInnerData } from "../../components/AddTrialDialog/types.tsx";
-import { ArenaData, TrialData } from "./types.tsx";
+import { ArenaData, TrialData, SubtrialData } from "./types.tsx";
 import { useDirtyState } from "../../contexts/DirtyStateContext.tsx";
 import { useGlobalShortcut } from "../../hooks/DirtyState.tsx";
+import { v4 as uuidv4 } from "uuid";
 
 interface Props {}
 const MainScreen: React.FC<Props> = () => {
@@ -61,7 +62,7 @@ const MainScreen: React.FC<Props> = () => {
       return;
     }
 
-    dispatch({ type: ActionKind.ADDARENA, payload: { tabName } });
+    dispatch({ type: ActionKind.ADDARENA, payload: tabName });
   };
 
   // Subroutine of submit button handler in AddArenaDialog when editing an arena.
@@ -93,10 +94,13 @@ const MainScreen: React.FC<Props> = () => {
       return;
     }
 
-    if (TrialInnerData.trialTitle in state.trialOrder) {
-      console.error("Trial with that title already exists!");
-      return state;
-    }
+    //TODO: Need to do a loop to check this.
+    // Also it only matters if it exists in the CURRENT ARENA.
+
+    // if (TrialInnerData.trialTitle in state.trialOrder) {
+    //   console.error("Trial with that title already exists!");
+    //   return state;
+    // }
 
     dispatch({ type: ActionKind.ADDTRIAL, payload: TrialInnerData });
   };
@@ -113,15 +117,15 @@ const MainScreen: React.FC<Props> = () => {
 
   // Subroutine of event handler in ArenaScreen.
   const handleAddSubTrial = (
-    trialTitle: string,
-    key: string,
+    trialKey: string,
+    subtrialKey: string,
     result: Result,
     date: string,
     data: string
   ) => {
     dispatch({
       type: ActionKind.ADDSUBTRIAL,
-      payload: { trialTitle, key, result, date, data },
+      payload: { trialKey, subtrialKey, result, date, data },
     });
   };
 
@@ -149,6 +153,8 @@ const MainScreen: React.FC<Props> = () => {
     dispatch({ type: ActionKind.CLEAR, payload: {} });
   };
 
+  const trialUuids = state.arenaData[state.whichArenaSelected] ?? [];
+
   return !state.displayConclusionsPage ? (
     <>
       <TopBar
@@ -167,7 +173,8 @@ const MainScreen: React.FC<Props> = () => {
       >
         <ArenaScreen
           trialData={state.trialData}
-          trialOrder={state.trialOrder}
+          trialUuids={trialUuids}
+          subtrialData={state.subtrialData}
           key={state.whichArenaSelected}
           handleAddSubTrial={handleAddSubTrial}
           whichTrialSelected={state.whichTrialSelected}
@@ -192,16 +199,25 @@ const MainScreen: React.FC<Props> = () => {
       </DialogSkeleton>
 
       {/* Arena Tabs */}
-      {state.arenaOrder.map((title, index) => {
+      {state.arenaOrder.map((title: string, index) => {
         return (
           <ContextMenuSkeleton
             menuItems={[
-              <MenuItem onClick={handleClickEditArena}>Edit Arena</MenuItem>,
-              <MenuItem onClick={handleDeleteArena(title)}>
+              <MenuItem
+                key={`${title}-${index}`}
+                onClick={handleClickEditArena}
+              >
+                Edit Arena
+              </MenuItem>,
+              <MenuItem
+                key={`${title}-${index}`}
+                onClick={handleDeleteArena(title)}
+              >
                 Delete Arena
               </MenuItem>,
             ]}
             leftClick={false}
+            key={`${title}-${index}`}
           >
             <ArenaTab
               title={title}
@@ -216,7 +232,8 @@ const MainScreen: React.FC<Props> = () => {
   ) : (
     <ConclusionScreen
       handleClickBackButton={handleClickBackButton}
-      trialData={curTrialData}
+      trialData={state.trialData}
+      subtrialData={state.subtrialData}
     />
   );
 };
@@ -246,12 +263,14 @@ interface Action {
 interface State {
   openAddArenaDialog: boolean;
   editArenaDialog: boolean;
+
   arenaData: ArenaData;
   arenaOrder: (keyof ArenaData)[];
+  trialData: TrialData;
+  subtrialData: SubtrialData;
+
   whichArenaSelected: keyof ArenaData | "";
   displayConclusionsPage: boolean;
-  trialData: TrialData;
-  trialOrder: (keyof TrialData)[];
   whichTrialSelected: keyof TrialData | "";
   windowTitle: string;
   dirty: boolean;
@@ -260,12 +279,14 @@ interface State {
 const initialState: State = {
   openAddArenaDialog: false,
   editArenaDialog: true,
+
   arenaData: {} as ArenaData,
   arenaOrder: [] as (keyof ArenaData)[],
-  whichArenaSelected: "" as keyof ArenaData | "",
-  displayConclusionsPage: false,
   trialData: {} as TrialData,
-  trialOrder: [] as (keyof TrialData)[],
+  subtrialData: {} as SubtrialData,
+
+  whichArenaSelected: "f" as keyof ArenaData | "",
+  displayConclusionsPage: false,
   whichTrialSelected: "" as keyof TrialData | "",
   windowTitle: "Personal Empirical",
   dirty: false,
@@ -274,25 +295,38 @@ const initialState: State = {
 const initialStateFilled: State = {
   openAddArenaDialog: false,
   editArenaDialog: true,
-  arenaData: {
-    f: {
-      title: {
-        trialTitle: "title",
-        successString: "",
-        failureString: "",
-        additionalNotesString: "",
-        indivFactorData: { x: 5 },
-        indivFactorOrder: ["x"],
-        subtrialData: { title: [Result.SUCCESS, "", ""] },
-        subtrialOrder: ["title"],
-      },
+
+  arenaData: { "Arena 1": ["0", "1"] } as ArenaData,
+  arenaOrder: ["Arena 1"] as (keyof ArenaData)[],
+
+  trialData: {
+    "0": {
+      trialTitle: "Trial 1",
+      successString: "",
+      failureString: "",
+      additionalNotesString: "",
+      indivFactorData: { x: 5 },
+      indivFactorOrder: ["x"],
+      subtrialData: ["0", "1"],
     },
-  } as ArenaData,
-  arenaOrder: ["f"] as (keyof ArenaData)[],
+    "1": {
+      trialTitle: "Trial 2",
+      successString: "",
+      failureString: "",
+      additionalNotesString: "",
+      indivFactorData: { x: 5 },
+      indivFactorOrder: ["x"],
+      subtrialData: ["2", "3"],
+    },
+  } as TrialData,
+
+  subtrialData: {
+    "2": [Result.SUCCESS, "2024-01-01", "Data"],
+    "3": [Result.FAILURE, "2024-01-02", "Data"],
+  } as SubtrialData,
+
   whichArenaSelected: "f" as keyof ArenaData | "",
   displayConclusionsPage: false,
-  trialData: {} as TrialData,
-  trialOrder: ["title"] as (keyof TrialData)[],
   whichTrialSelected: "" as keyof TrialData | "",
   windowTitle: "Personal Empirical",
   dirty: false,
@@ -317,11 +351,11 @@ function reducer(state: State, action: Action): State {
     }
 
     case ActionKind.ADDARENA: {
-      const { tabName } = payload;
+      const tabName: string = payload;
 
       const newArenaData = {
         ...state.arenaData,
-        [tabName]: state.arenaData[tabName],
+        [tabName]: [] as string[],
       };
 
       return {
@@ -376,23 +410,23 @@ function reducer(state: State, action: Action): State {
     case ActionKind.ADDTRIAL: {
       const trialInnerData = payload;
 
-      const trialTitle = trialInnerData.trialTitle;
-
-      const newTrialData = {
-        ...state.arenaData[state.whichArenaSelected],
-        [trialTitle]: trialInnerData,
-      };
+      const key = uuidv4();
+      const curTrialList = state.arenaData[state.whichArenaSelected];
 
       const newArenaData = {
         ...state.arenaData,
-        [state.whichArenaSelected]: newTrialData,
+        [state.whichArenaSelected]: [...curTrialList, key],
+      };
+
+      const newTrialData = {
+        ...state.trialData,
+        [key]: trialInnerData,
       };
 
       return {
         ...state,
         arenaData: newArenaData,
         trialData: newTrialData,
-        trialOrder: [...state.trialOrder, trialTitle],
       };
     }
 
@@ -402,37 +436,48 @@ function reducer(state: State, action: Action): State {
     }
 
     case ActionKind.ADDSUBTRIAL: {
-      const { trialTitle, key, result, date, data } = payload;
+      const { trialKey, subtrialKey, result, date, data } = payload;
 
-      let trialData = state.arenaData[state.whichArenaSelected];
-      let trialInnerData = trialData[trialTitle];
-
-      trialInnerData.subtrialOrder = [...trialInnerData.subtrialOrder, key];
-      trialInnerData.subtrialData = {
-        ...trialInnerData.subtrialData,
-        [key]: [result, date, data],
+      const newTrialData = {
+        ...state.trialData,
+        [trialKey]: {
+          ...state.trialData[trialKey],
+          subtrialData: [
+            ...state.trialData[trialKey].subtrialData,
+            subtrialKey,
+          ],
+        },
       };
 
-      const newArenaData = {
-        ...state.arenaData,
-        [state.whichArenaSelected]: trialData,
+      const newSubTrialData = {
+        ...state.subtrialData,
+        [subtrialKey]: [result, date, data],
       };
 
-      return { ...state, arenaData: newArenaData };
+      return {
+        ...state,
+        trialData: newTrialData,
+        subtrialData: newSubTrialData,
+      };
     }
 
     case ActionKind.REMOVETRIAL: {
       const { [state.whichTrialSelected]: _, ...newTrialData } =
         state.trialData;
 
-      const newTrialOrder = state.trialOrder.filter(
-        (trialTitle) => trialTitle != state.whichTrialSelected
+      const newArenaData = state.arenaData[state.whichArenaSelected].filter(
+        (trialKey) => trialKey != state.whichTrialSelected
       );
+
+      const updatedArenaData = {
+        ...state.arenaData,
+        [state.whichArenaSelected]: newArenaData,
+      };
 
       return {
         ...state,
+        arenaData: updatedArenaData,
         trialData: newTrialData,
-        trialOrder: newTrialOrder,
         whichTrialSelected: "",
       };
     }
@@ -440,7 +485,7 @@ function reducer(state: State, action: Action): State {
     case ActionKind.CLICKTRIAL: {
       const title = payload;
 
-      let finalTitle = title === "" ? "" : title;
+      let finalTitle = state.whichTrialSelected !== "" ? "" : title;
 
       return { ...state, whichTrialSelected: finalTitle };
     }

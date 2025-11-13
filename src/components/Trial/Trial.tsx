@@ -13,7 +13,10 @@ import { useState } from "react";
 import { Result } from "../types.tsx";
 import { RESULT_INDEX } from "./types.tsx";
 
-export function calculateTrialStatus(subtrialData: SubtrialData) {
+export function calculateTrialStatus(
+  subtrialUuids: (keyof SubtrialData)[],
+  subtrialData: SubtrialData
+) {
   if (Object.keys(subtrialData).length === 0) return Result.EMPTY;
 
   const counts = {
@@ -21,11 +24,11 @@ export function calculateTrialStatus(subtrialData: SubtrialData) {
     failureCount: 0,
   };
 
-  Object.keys(subtrialData).map((key: string) =>
+  subtrialUuids.map((key: string) => {
     subtrialData[key][RESULT_INDEX] === Result.SUCCESS
       ? counts.successCount++
-      : counts.failureCount++
-  );
+      : counts.failureCount++;
+  });
 
   if (counts.successCount > counts.failureCount) {
     return Result.SUCCESS;
@@ -38,6 +41,7 @@ export function calculateTrialStatus(subtrialData: SubtrialData) {
 
 interface Props {
   trialTitle: string;
+  trialKey: string;
   selected: boolean;
   handleClickTrial: React.MouseEventHandler<HTMLDivElement>;
   handleAddSubTrial: (
@@ -47,16 +51,17 @@ interface Props {
     date: string,
     data: string
   ) => void;
+  subtrialUuids: string[];
   subtrialData: SubtrialData;
-  subtrialOrder: (keyof SubtrialData)[];
 }
 const Trial: React.FC<Props> = ({
   trialTitle,
+  trialKey,
   selected,
   handleClickTrial,
   handleAddSubTrial,
+  subtrialUuids,
   subtrialData,
-  subtrialOrder,
 }) => {
   const [openSubTrialDialog, setOpenSubTrialDialog] = useState(false);
   const [openAddSubTrialDialog, setOpenAddSubTrialDialog] = useState(false);
@@ -95,38 +100,46 @@ const Trial: React.FC<Props> = ({
 
   let trialStatus;
 
-  switch (calculateTrialStatus(subtrialData)) {
-    case Result.SUCCESS:
-      trialStatus = (
-        <styles.TrialSuccess>
-          <CheckIcon sx={styles.imgSx} />
-        </styles.TrialSuccess>
-      );
-      break;
+  if (subtrialUuids.length === 0) {
+    trialStatus = (
+      <styles.TrialEmpty>
+        <CheckIcon sx={styles.imgSx} />
+      </styles.TrialEmpty>
+    );
+  } else {
+    switch (calculateTrialStatus(subtrialUuids, subtrialData)) {
+      case Result.SUCCESS:
+        trialStatus = (
+          <styles.TrialSuccess>
+            <CheckIcon sx={styles.imgSx} />
+          </styles.TrialSuccess>
+        );
+        break;
 
-    case Result.FAILURE:
-      trialStatus = (
-        <styles.TrialFailure>
-          <CloseIcon sx={styles.imgSx} />
-        </styles.TrialFailure>
-      );
-      break;
+      case Result.FAILURE:
+        trialStatus = (
+          <styles.TrialFailure>
+            <CloseIcon sx={styles.imgSx} />
+          </styles.TrialFailure>
+        );
+        break;
 
-    case Result.NEUTRAL:
-      trialStatus = (
-        <styles.TrialNeutral>
-          <RemoveIcon sx={styles.imgSx} />
-        </styles.TrialNeutral>
-      );
-      break;
+      case Result.NEUTRAL:
+        trialStatus = (
+          <styles.TrialNeutral>
+            <RemoveIcon sx={styles.imgSx} />
+          </styles.TrialNeutral>
+        );
+        break;
 
-    case Result.EMPTY:
-      trialStatus = (
-        <styles.TrialEmpty>
-          <CheckIcon sx={styles.imgSx} />
-        </styles.TrialEmpty>
-      );
-      break;
+      case Result.EMPTY:
+        trialStatus = (
+          <styles.TrialEmpty>
+            <CheckIcon sx={styles.imgSx} />
+          </styles.TrialEmpty>
+        );
+        break;
+    }
   }
 
   return (
@@ -153,7 +166,7 @@ const Trial: React.FC<Props> = ({
         <AddSubTrialDialog
           handleCloseAddSubTrialDialog={handleCloseAddSubTrialDialog}
           handleAddSubTrial={handleAddSubTrial}
-          trialTitle={trialTitle}
+          trialKey={trialKey}
         />
       </DialogSkeleton>
 
@@ -163,7 +176,7 @@ const Trial: React.FC<Props> = ({
       >
         <SubTrialDialog
           subtrialData={subtrialData}
-          subtrialOrder={subtrialOrder}
+          subtrialUuids={subtrialUuids}
         />
       </DialogSkeleton>
     </>

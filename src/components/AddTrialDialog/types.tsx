@@ -3,6 +3,7 @@ import { FactorData } from "../types";
 
 export const MAX_TRIAL_NAME_LENGTH = 64;
 
+type uuid = string;
 export interface TrialInnerData {
   trialTitle: string;
   successString: string;
@@ -10,6 +11,5 @@ export interface TrialInnerData {
   additionalNotesString: string;
   indivFactorData: FactorData;
   indivFactorOrder: (keyof FactorData)[];
-  subtrialData: SubtrialData;
-  subtrialOrder: (keyof SubtrialData)[];
+  subtrialData: uuid[];
 }
