@@ -83,8 +83,9 @@ export const AddTrialDialog: React.FC<Props> = ({
       successString: valueSuccess,
       failureString: valueFailure,
       additionalNotesString: valueAdditionalNotes,
-      subTrialData: {},
-      subTrialOrder: [],
+      indivFactorData: indivFactorData,
+      indivFactorOrder: indivFactorOrder,
+      subtrialData: [],
     };
     handleClose(e);
     handleAddTrial(newData);
@@ -161,7 +162,6 @@ export const AddTrialDialog: React.FC<Props> = ({
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      console.log("You pressed Enter!");
       e.preventDefault();
       onButtonClick(e as unknown as React.MouseEvent<HTMLButtonElement>);
     }

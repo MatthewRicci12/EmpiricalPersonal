@@ -15,10 +15,10 @@ import { selectedEffect } from "./types";
 import { Result } from "../types";
 
 interface Props {
-  trialTitle: string;
+  trialKey: string;
   handleCloseAddSubTrialDialog: React.MouseEventHandler<HTMLButtonElement>;
   handleAddSubTrial: (
-    trialTitle: string,
+    trialKey: string,
     key: string,
     result: Result,
     date: string,
@@ -26,28 +26,28 @@ interface Props {
   ) => void;
 }
 export const AddSubTrialDialog: React.FC<Props> = ({
-  trialTitle,
+  trialKey,
   handleCloseAddSubTrialDialog,
   handleAddSubTrial,
 }) => {
-  const [subTrialData, setSubTrialData] = useState("");
-  const [subTrialDate, setSubTrialDate] = useState<Dayjs | null>(dayjs(""));
+  const [subtrialData, setSubtrialData] = useState("");
+  const [subtrialDate, setSubtrialDate] = useState<Dayjs | null>(dayjs(""));
   const [selectedResult, setSelectedResult] = useState<Result>(Result.EMPTY);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
-    setSubTrialData(e.target.value);
+    setSubtrialData(e.target.value);
   };
 
   const onButtonClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     handleCloseAddSubTrialDialog(e);
-    if (subTrialDate !== null) {
+    if (subtrialDate !== null && selectedResult !== Result.EMPTY) {
       handleAddSubTrial(
-        trialTitle,
+        trialKey,
         uuidv4(),
         selectedResult,
-        subTrialDate!.format("MM/DD/YYYY"),
-        subTrialData
+        subtrialDate!.format("MM/DD/YYYY"),
+        subtrialData
       );
     }
   };
@@ -59,7 +59,6 @@ export const AddSubTrialDialog: React.FC<Props> = ({
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      console.log("You pressed Enter!");
       e.preventDefault();
       onButtonClick(e as unknown as React.MouseEvent<HTMLButtonElement>);
     }
@@ -98,8 +97,8 @@ export const AddSubTrialDialog: React.FC<Props> = ({
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           label={"Pick date"}
-          value={subTrialDate}
-          onChange={(newDate) => setSubTrialDate(newDate)}
+          value={subtrialDate}
+          onChange={(newDate) => setSubtrialDate(newDate)}
         />
       </LocalizationProvider>
 
@@ -109,7 +108,7 @@ export const AddSubTrialDialog: React.FC<Props> = ({
         id="outlined-basic"
         label="Data"
         variant="outlined"
-        value={subTrialData}
+        value={subtrialData}
         onChange={handleInput}
         sx={{
           paddingBottom: "20px",

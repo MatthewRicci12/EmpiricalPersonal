@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import { Result } from "../components/types.tsx";
-import { TrialData } from "./MainScreen/types.tsx";
+import { SubtrialData, TrialData } from "./MainScreen/types.tsx";
 import { styles } from "../components/Trial/styles.tsx";
 import { calculateTrialStatus } from "../components/Trial/Trial.tsx";
 
@@ -21,19 +21,21 @@ const trialColumnsx = {
 interface Props {
   handleClickBackButton: () => void;
   trialData: TrialData;
+  subtrialData: SubtrialData;
 }
 const ConclusionScreen: React.FC<Props> = ({
   handleClickBackButton,
   trialData,
+  subtrialData,
 }) => {
   let successTrials: React.ReactNode[] = [];
   let failureTrials: React.ReactNode[] = [];
   let neutralTrials: React.ReactNode[] = [];
 
   Object.keys(trialData).map((trialTitle) => {
-    let curSubTrialData = trialData[trialTitle].subTrialData;
+    let subtrialUuids = trialData[trialTitle].subtrialData;
 
-    switch (calculateTrialStatus(curSubTrialData)) {
+    switch (calculateTrialStatus(subtrialUuids, subtrialData)) {
       case Result.SUCCESS:
         successTrials = [
           ...successTrials,

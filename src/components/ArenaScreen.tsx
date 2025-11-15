@@ -1,11 +1,12 @@
 import Trial from "./Trial";
 import { Box, Stack } from "@mui/system";
-import { TrialData } from "../pages/MainScreen/types";
+import { TrialData, SubtrialData } from "../pages/MainScreen/types";
 import { Result } from "./types";
 
 interface Props {
   trialData: TrialData;
-  trialOrder: (keyof TrialData)[];
+  trialUuids: string[];
+  subtrialData: SubtrialData;
   handleAddSubTrial: (
     trialTitle: string,
     key: string,
@@ -18,22 +19,34 @@ interface Props {
 }
 export const ArenaScreen: React.FC<Props> = ({
   trialData,
-  trialOrder,
+  trialUuids,
+  subtrialData,
   handleAddSubTrial,
   whichTrialSelected,
   handleClickTrial,
 }) => {
-  const trials = trialOrder.map((title, index) => (
-    <Trial
-      trialTitle={title}
-      handleClickTrial={handleClickTrial(title)}
-      selected={whichTrialSelected === title}
-      key={`${title}-${index}`}
-      handleAddSubTrial={handleAddSubTrial}
-      subTrialData={trialData[title].subTrialData}
-      subTrialOrder={trialData[title].subTrialOrder}
-    />
-  ));
+  const trials = trialUuids.map((uuid) => {
+    const trialTitle = trialData[uuid].trialTitle;
+    const curTrialSubtrialUuids = trialData[uuid].subtrialData;
+
+    console.log(
+      `Cur trial uuid: ${uuid}, subtrialData: ${JSON.stringify(
+        curTrialSubtrialUuids
+      )}`
+    );
+
+    return (
+      <Trial
+        trialTitle={trialTitle}
+        trialKey={uuid}
+        handleClickTrial={handleClickTrial(uuid)}
+        selected={whichTrialSelected === uuid}
+        handleAddSubTrial={handleAddSubTrial}
+        subtrialUuids={curTrialSubtrialUuids}
+        subtrialData={subtrialData}
+      />
+    );
+  });
 
   return (
     <Box sx={{ height: "80vh" }}>

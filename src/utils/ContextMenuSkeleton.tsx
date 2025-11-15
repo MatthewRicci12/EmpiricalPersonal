@@ -1,12 +1,17 @@
-import Menu from '@mui/material/Menu';
-import { useState } from 'react';
+import Menu from "@mui/material/Menu";
+import { useState } from "react";
 
 interface Props {
-    children: React.ReactNode,
-    menuItems: React.ReactNode[]
+  children: React.ReactNode;
+  menuItems: React.ReactNode[];
+  leftClick: boolean;
 }
-export const ContextMenuSkeleton: React.FC<Props> = ({children, menuItems}) => {
- const [contextMenu, setContextMenu] = useState<{
+export const ContextMenuSkeleton: React.FC<Props> = ({
+  children,
+  menuItems,
+  leftClick,
+}) => {
+  const [contextMenu, setContextMenu] = useState<{
     mouseX: number;
     mouseY: number;
   } | null>(null);
@@ -23,7 +28,7 @@ export const ContextMenuSkeleton: React.FC<Props> = ({children, menuItems}) => {
         : // repeated contextmenu when it is already open closes it with Chrome 84 on Ubuntu
           // Other native context menus might behave different.
           // With this behavior we prevent contextmenu from the backdrop to re-locale existing context menus.
-          null,
+          null
     );
 
     // Prevent text selection lost after opening the context menu on Safari and Firefox
@@ -41,29 +46,32 @@ export const ContextMenuSkeleton: React.FC<Props> = ({children, menuItems}) => {
     setContextMenu(null);
   };
 
-
   return (
-    <div 
-    onContextMenu={handleContextMenu} 
-    style={{ 
-      cursor: 'context-menu', 
-      display: 'inline' }}>
+    <div
+      {...(!leftClick
+        ? { onContextMenu: handleContextMenu }
+        : { onClick: handleContextMenu })}
+      style={{
+        cursor: "context-menu",
+        display: "inline",
+      }}
+    >
+      {children}
 
-        {children}
-
-        <Menu
-          open={contextMenu !== null}
-          onClose={handleClose}
-          anchorReference="anchorPosition"
-          anchorPosition={
-            contextMenu !== null ? 
-              { top: contextMenu.mouseY, left: contextMenu.mouseX }
-              : undefined}>
-          {menuItems}
-        </Menu>
-
+      <Menu
+        open={contextMenu !== null}
+        onClose={handleClose}
+        anchorReference="anchorPosition"
+        anchorPosition={
+          contextMenu !== null
+            ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+            : undefined
+        }
+      >
+        {menuItems}
+      </Menu>
     </div>
   );
-}
+};
 
 export default ContextMenuSkeleton;
