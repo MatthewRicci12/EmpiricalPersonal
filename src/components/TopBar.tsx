@@ -4,33 +4,38 @@ import DialogSkeleton from "../utils/DialogSkeleton.tsx";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import AddTrialDialog from "./AddTrialDialog/AddTrialDialog.tsx";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { TrialInnerData } from "./AddTrialDialog/types.tsx";
 import ContextMenuSkeleton from "../utils/ContextMenuSkeleton.tsx";
 import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import { invoke } from "@tauri-apps/api/core";
-import { ArenaData } from "../pages/MainScreen/types.tsx";
-import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
+import {
+  ArenaData,
+  SubtrialData,
+  TrialData,
+} from "../pages/MainScreen/types.tsx";
 import { useDirtyState } from "../contexts/DirtyStateContext";
-
 interface Props {
   handleAddTrial: (TrialInnerData: TrialInnerData) => void;
   handleOpenConclusionsPage: () => void;
   handleRemoveTrial: React.MouseEventHandler<HTMLButtonElement>;
   handleClear: () => void;
+  handleLoadFile: (obj: any) => void;
   whichArenaSelected: string;
-  arenaData: ArenaData;
+  payload: [ArenaData, (keyof ArenaData)[], TrialData, SubtrialData];
 }
 export const TopBar: React.FC<Props> = ({
   handleAddTrial,
   handleOpenConclusionsPage,
   handleRemoveTrial,
   handleClear,
+  handleLoadFile,
   whichArenaSelected,
-  arenaData,
+  payload,
 }) => {
   const [open, setOpen] = useState(false);
+  const inputFileRef = useRef<HTMLInputElement | null>(null);
 
   const handleClickOpen: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
@@ -48,12 +53,53 @@ export const TopBar: React.FC<Props> = ({
   };
 
   const handleOpenFile: React.MouseEventHandler<HTMLLIElement> = (e) => {
+    if (inputFileRef.current) {
+      inputFileRef.current.click();
+    }
+
     e.stopPropagation();
+  };
+
+  const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = async (
+    e
+  ) => {
+    if (e.target.files) {
+      const selectedFile = e.target.files[0];
+      inputFileRef.current!.value = "";
+      if (selectedFile) {
+        const reader = new FileReader();
+        reader.readAsText(selectedFile);
+
+        reader.onload = (event: ProgressEvent<FileReader>) => {
+          try {
+            if (!event.target) {
+              throw new Error("File reading failed: No target found.");
+            }
+
+            const jsonString: string = event.target!.result as string;
+
+            const obj: typeof payload = JSON.parse(
+              jsonString
+            ) as typeof payload;
+
+            handleLoadFile(obj);
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+            // Handle non-JSON file or corrupt data
+            alert("Failed to parse file: Please ensure it is valid JSON.");
+          }
+        };
+
+        reader.onerror = (error) => {
+          console.error("Error reading file:", error);
+        };
+      }
+    }
   };
 
   const handleSaveFile: React.MouseEventHandler<HTMLLIElement> = async (e) => {
     try {
-      await invoke("save_file", { label: "main", payload: arenaData });
+      await invoke("save_file", { label: "main", payload: payload });
     } catch (e: any) {
       alert(e.toString());
     }
@@ -75,6 +121,12 @@ export const TopBar: React.FC<Props> = ({
 
   return (
     <Stack direction="row" alignItems="center">
+      <input
+        type="file"
+        ref={inputFileRef}
+        style={{ display: "none" }}
+        onChange={handleFileChange}
+      />
       <Container>
         <ContextMenuSkeleton
           menuItems={[

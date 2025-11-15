@@ -73,7 +73,6 @@ async fn set_window_title(app: AppHandle, label: &str, is_dirty: bool) -> Result
 //     Ok(())
 // }
 
-
 type SubTrialDataPayload = HashMap<String, (i32, String, String)>;
 
 type FactorDataPayload = HashMap<String, i32>;
@@ -87,16 +86,17 @@ struct TrialInnerDataPayload {
     additional_notes_string: String,
     indiv_factor_data: FactorDataPayload,
     indiv_factor_order: Vec<String>,
-    subtrial_data: SubTrialDataPayload,
-    subtrial_order: Vec<String>,
+    subtrial_data: Vec<String>,
 }
 
 type TrialDataPayload = HashMap<String, TrialInnerDataPayload>;
 
-type ArenaDataPayload = (HashMap<String, TrialDataPayload>, Vec<String>);
+type ArenaDataPayload = HashMap<String, Vec<String>>;
+
+type FullPayload = (ArenaDataPayload, Vec<String>, TrialDataPayload, SubTrialDataPayload);
 
 #[tauri::command]
-fn save_file(app: AppHandle, label: &str, payload: ArenaDataPayload) -> Result<()> {
+fn save_file(app: AppHandle, label: &str, payload: FullPayload) -> Result<()> {
     println!("{:?}", serde_json::to_string(&payload));
 
     let serialized = serde_json::to_string_pretty(&payload).unwrap();

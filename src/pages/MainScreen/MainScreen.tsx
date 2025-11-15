@@ -22,7 +22,7 @@ const MainScreen: React.FC<Props> = () => {
   // Notice this is not using useState. This is RETRIEVING the context value.
   const { isDirty, setDirty } = useDirtyState();
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialStateFilledLoadIn);
 
   const saveData = () => {
     setDirty(false);
@@ -153,6 +153,10 @@ const MainScreen: React.FC<Props> = () => {
     dispatch({ type: ActionKind.CLEAR, payload: {} });
   };
 
+  const handleLoadFile = (obj: any) => {
+    dispatch({ type: ActionKind.LOADFILE, payload: obj });
+  };
+
   const trialUuids = state.arenaData[state.whichArenaSelected] ?? [];
 
   return !state.displayConclusionsPage ? (
@@ -162,8 +166,14 @@ const MainScreen: React.FC<Props> = () => {
         handleOpenConclusionsPage={handleOpenConclusionsPage}
         handleRemoveTrial={handleRemoveTrial}
         handleClear={handleClear}
+        handleLoadFile={handleLoadFile}
         whichArenaSelected={state.whichArenaSelected}
-        arenaData={state.arenaData}
+        payload={[
+          state.arenaData,
+          state.arenaOrder,
+          state.trialData,
+          state.subtrialData,
+        ]}
       />
       <Box
         sx={{
@@ -253,6 +263,7 @@ enum ActionKind {
   ADDSUBTRIAL = "ADDSUBTRIAL",
 
   CLEAR = "CLEAR",
+  LOADFILE = "LOADFILE",
 }
 
 interface Action {
@@ -321,6 +332,8 @@ const initialStateFilled: State = {
   } as TrialData,
 
   subtrialData: {
+    "0": [Result.SUCCESS, "2024-01-01", "Data"],
+    "1": [Result.FAILURE, "2024-01-02", "Data"],
     "2": [Result.SUCCESS, "2024-01-01", "Data"],
     "3": [Result.FAILURE, "2024-01-02", "Data"],
   } as SubtrialData,
@@ -336,6 +349,19 @@ function reducer(state: State, action: Action): State {
   const { type, payload } = action;
 
   switch (type) {
+    case ActionKind.LOADFILE: {
+      const [newArenaData, newArenaOrder, newTrialData, newSubtrialData] =
+        payload;
+
+      return {
+        ...initialState,
+        arenaData: newArenaData,
+        arenaOrder: newArenaOrder,
+        trialData: newTrialData,
+        subtrialData: newSubtrialData,
+      };
+    }
+
     case ActionKind.CLEAR: {
       return initialState;
     }
