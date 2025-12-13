@@ -5,7 +5,7 @@ import ConclusionScreen from "../ConclusionScreen.tsx";
 import ContextMenuSkeleton from "../../utils/ContextMenuSkeleton.tsx";
 import DialogSkeleton from "../../utils/DialogSkeleton.tsx";
 import MenuItem from "@mui/material/MenuItem";
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useState } from "react";
 import TopBar from "../../components/TopBar.tsx";
 import { AddArenaDialog } from "../../components/AddArenaDialog/AddArenaDialog.tsx";
 import { ArenaScreen } from "../../components/ArenaScreen.tsx";
@@ -21,6 +21,10 @@ interface Props {}
 const MainScreen: React.FC<Props> = () => {
   // Notice this is not using useState. This is RETRIEVING the context value.
   const { isDirty, setDirty } = useDirtyState();
+  const [contextMenu, setContextMenu] = useState<{
+    mouseX: number;
+    mouseY: number;
+  } | null>(null);
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -227,6 +231,8 @@ const MainScreen: React.FC<Props> = () => {
               </MenuItem>,
             ]}
             leftClick={false}
+            contextMenu={contextMenu}
+            setContextMenu={setContextMenu}
             key={`${title}-${index}`}
           >
             <ArenaTab

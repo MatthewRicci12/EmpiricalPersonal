@@ -16,6 +16,7 @@ import {
   TrialData,
 } from "../pages/MainScreen/types.tsx";
 import { useDirtyState } from "../contexts/DirtyStateContext";
+
 interface Props {
   handleAddTrial: (TrialInnerData: TrialInnerData) => void;
   handleOpenConclusionsPage: () => void;
@@ -37,19 +38,29 @@ export const TopBar: React.FC<Props> = ({
   const [open, setOpen] = useState(false);
   const inputFileRef = useRef<HTMLInputElement | null>(null);
 
+  const [contextMenu, setContextMenu] = useState<{
+    mouseX: number;
+    mouseY: number;
+  } | null>(null);
+
+  const { isDirty } = useDirtyState();
+
   const handleClickOpen: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     if (whichArenaSelected.length !== 0) setOpen(true);
+    setContextMenu(null);
   };
 
   const handleClose: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     setOpen(false);
+    setContextMenu(null);
   };
 
   const handleNewFile: React.MouseEventHandler<HTMLLIElement> = (e) => {
     e.stopPropagation();
     handleClear();
+    setContextMenu(null);
   };
 
   const handleOpenFile: React.MouseEventHandler<HTMLLIElement> = (e) => {
@@ -58,6 +69,7 @@ export const TopBar: React.FC<Props> = ({
     }
 
     e.stopPropagation();
+    setContextMenu(null);
   };
 
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = async (
@@ -109,7 +121,7 @@ export const TopBar: React.FC<Props> = ({
 
   const handleExit: React.MouseEventHandler<HTMLLIElement> = async (e) => {
     e.stopPropagation();
-    const { isDirty } = useDirtyState();
+
     try {
       await invoke("close_application", {
         isDirty: isDirty,
@@ -117,6 +129,8 @@ export const TopBar: React.FC<Props> = ({
     } catch (e: any) {
       alert(e.toString());
     }
+
+    setContextMenu(null);
   };
 
   return (
@@ -152,6 +166,8 @@ export const TopBar: React.FC<Props> = ({
             </>,
           ]}
           leftClick={true}
+          contextMenu={contextMenu}
+          setContextMenu={setContextMenu}
         >
           <Button>File</Button>
         </ContextMenuSkeleton>

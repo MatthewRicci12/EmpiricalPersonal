@@ -5,17 +5,24 @@ interface Props {
   children: React.ReactNode;
   menuItems: React.ReactNode[];
   leftClick: boolean;
+  contextMenu: {
+    mouseX: number;
+    mouseY: number;
+  } | null;
+  setContextMenu: React.Dispatch<
+    React.SetStateAction<{
+      mouseX: number;
+      mouseY: number;
+    } | null>
+  >;
 }
 export const ContextMenuSkeleton: React.FC<Props> = ({
   children,
   menuItems,
   leftClick,
+  contextMenu,
+  setContextMenu,
 }) => {
-  const [contextMenu, setContextMenu] = useState<{
-    mouseX: number;
-    mouseY: number;
-  } | null>(null);
-
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
 

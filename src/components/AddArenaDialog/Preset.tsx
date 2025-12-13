@@ -21,6 +21,10 @@ export const Preset: React.FC<Props> = ({
   handleDeletePreset,
 }) => {
   const [open, setOpen] = useState(false);
+  const [contextMenu, setContextMenu] = useState<{
+    mouseX: number;
+    mouseY: number;
+  } | null>(null);
 
   const handleOpenPresetDialog: React.MouseEventHandler<HTMLButtonElement> = (
     e
@@ -53,6 +57,8 @@ export const Preset: React.FC<Props> = ({
           </MenuItem>,
         ]}
         leftClick={false}
+        contextMenu={contextMenu}
+        setContextMenu={setContextMenu}
       >
         <Button onClick={handleOpenPresetDialog}>{title}</Button>
       </ContextMenuSkeleton>
