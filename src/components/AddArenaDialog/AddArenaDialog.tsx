@@ -325,6 +325,24 @@ const initialState: State = {
 
   arenaTitle: "",
 
+  factorData: {},
+  factorOrder: [],
+
+  presetData: {},
+  presetOrder: [],
+
+  whichFactorSelected: "",
+};
+
+const initialStateFilled: State = {
+  openFactorDialog: false,
+  editFactorDialog: false,
+
+  openViewPresetsDialog: false,
+  openSavePresetDialog: false,
+
+  arenaTitle: "",
+
   factorData: { y: 5 },
   factorOrder: ["y"],
 

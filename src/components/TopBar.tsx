@@ -109,8 +109,8 @@ export const TopBar: React.FC<Props> = ({
 
   const handleExit: React.MouseEventHandler<HTMLLIElement> = async (e) => {
     e.stopPropagation();
+    const { isDirty } = useDirtyState();
     try {
-      const { isDirty } = useDirtyState();
       await invoke("close_application", {
         isDirty: isDirty,
       });

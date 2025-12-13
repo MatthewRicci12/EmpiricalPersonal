@@ -22,7 +22,7 @@ const MainScreen: React.FC<Props> = () => {
   // Notice this is not using useState. This is RETRIEVING the context value.
   const { isDirty, setDirty } = useDirtyState();
 
-  const [state, dispatch] = useReducer(reducer, initialStateFilledLoadIn);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const saveData = () => {
     setDirty(false);
