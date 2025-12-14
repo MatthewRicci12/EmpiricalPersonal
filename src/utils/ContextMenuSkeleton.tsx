@@ -1,5 +1,5 @@
 import Menu from "@mui/material/Menu";
-import { useState } from "react";
+import { cloneElement } from "react";
 
 interface Props {
   children: React.ReactNode;
@@ -23,6 +23,17 @@ export const ContextMenuSkeleton: React.FC<Props> = ({
   contextMenu,
   setContextMenu,
 }) => {
+  menuItems = menuItems.map((item: React.ReactNode): React.ReactNode => {
+    return cloneElement(item as React.ReactElement, {
+      onClick: (e: React.MouseEvent<HTMLLIElement>) => {
+        if (item && (item as React.ReactElement).props.onClick) {
+          (item as React.ReactElement).props.onClick(e);
+        }
+        setContextMenu(null);
+      },
+    });
+  });
+
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
 
@@ -49,7 +60,7 @@ export const ContextMenuSkeleton: React.FC<Props> = ({
     }
   };
 
-  const handleClose: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleClose: React.MouseEventHandler<HTMLButtonElement> = () => {
     setContextMenu(null);
   };
 
