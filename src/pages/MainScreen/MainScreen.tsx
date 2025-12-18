@@ -16,6 +16,7 @@ import { ArenaData, TrialData, SubtrialData } from "./types.tsx";
 import { useDirtyState } from "../../contexts/DirtyStateContext.tsx";
 import { useGlobalShortcut } from "../../hooks/DirtyState.tsx";
 import { v4 as uuidv4 } from "uuid";
+import { arrayMove } from "@dnd-kit/sortable";
 
 interface Props {}
 const MainScreen: React.FC<Props> = () => {
@@ -26,7 +27,7 @@ const MainScreen: React.FC<Props> = () => {
     mouseY: number;
   } | null>(null);
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialStateFilled);
 
   const saveData = () => {
     setDirty(false);
@@ -147,9 +148,15 @@ const MainScreen: React.FC<Props> = () => {
   const handleClickTrial =
     (title: string): React.MouseEventHandler<HTMLDivElement> =>
     (e) => {
-      e.stopPropagation();
       dispatch({ type: ActionKind.CLICKTRIAL, payload: title });
     };
+
+  const handleReorderTrials = (oldIndex: number, newIndex: number) => {
+    dispatch({
+      type: ActionKind.REORDERTRIALS,
+      payload: { oldIndex, newIndex },
+    });
+  };
 
   //TODO: Reduce
   // Event already stopped in TopBar.
@@ -193,6 +200,7 @@ const MainScreen: React.FC<Props> = () => {
           handleAddSubTrial={handleAddSubTrial}
           whichTrialSelected={state.whichTrialSelected}
           handleClickTrial={handleClickTrial}
+          handleReorderTrials={handleReorderTrials}
         />
       </Box>
 
@@ -267,6 +275,7 @@ enum ActionKind {
   REMOVETRIAL = "REMOVETRIAL",
   CLICKTRIAL = "CLICKTRIAL",
   ADDSUBTRIAL = "ADDSUBTRIAL",
+  REORDERTRIALS = "REORDERTRIALS",
 
   CLEAR = "CLEAR",
   LOADFILE = "LOADFILE",
@@ -355,6 +364,22 @@ function reducer(state: State, action: Action): State {
   const { type, payload } = action;
 
   switch (type) {
+    case ActionKind.REORDERTRIALS: {
+      const { oldIndex, newIndex } = payload;
+
+      let newTrials = state.arenaData[state.whichArenaSelected];
+
+      newTrials = arrayMove(newTrials, oldIndex, newIndex);
+
+      return {
+        ...state,
+        arenaData: {
+          ...state.arenaData,
+          [state.whichArenaSelected]: newTrials,
+        },
+      };
+    }
+
     case ActionKind.LOADFILE: {
       const [newArenaData, newArenaOrder, newTrialData, newSubtrialData] =
         payload;

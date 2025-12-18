@@ -12,32 +12,8 @@ import { SubtrialData } from "../../pages/MainScreen/types.tsx";
 import { useState } from "react";
 import { Result } from "../types.tsx";
 import { RESULT_INDEX } from "./types.tsx";
-
-export function calculateTrialStatus(
-  subtrialUuids: (keyof SubtrialData)[],
-  subtrialData: SubtrialData
-) {
-  if (Object.keys(subtrialData).length === 0) return Result.EMPTY;
-
-  const counts = {
-    successCount: 0,
-    failureCount: 0,
-  };
-
-  subtrialUuids.map((key: string) => {
-    subtrialData[key][RESULT_INDEX] === Result.SUCCESS
-      ? counts.successCount++
-      : counts.failureCount++;
-  });
-
-  if (counts.successCount > counts.failureCount) {
-    return Result.SUCCESS;
-  } else if (counts.failureCount > counts.successCount) {
-    return Result.FAILURE;
-  } else {
-    return Result.NEUTRAL;
-  }
-}
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
   trialTitle: string;
@@ -53,6 +29,7 @@ interface Props {
   ) => void;
   subtrialUuids: string[];
   subtrialData: SubtrialData;
+  id: string;
 }
 const Trial: React.FC<Props> = ({
   trialTitle,
@@ -62,9 +39,17 @@ const Trial: React.FC<Props> = ({
   handleAddSubTrial,
   subtrialUuids,
   subtrialData,
+  id,
 }) => {
   const [openSubTrialDialog, setOpenSubTrialDialog] = useState(false);
   const [openAddSubTrialDialog, setOpenAddSubTrialDialog] = useState(false);
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   const handleOpenSubTrialDialog: React.MouseEventHandler<HTMLDivElement> = (
     e
@@ -149,6 +134,10 @@ const Trial: React.FC<Props> = ({
         sx={{ backgroundColor: selected ? "cyan" : "none" }}
         onClick={handleClickTrial}
         onDoubleClick={handleOpenSubTrialDialog}
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
       >
         {trialStatus}
 
@@ -182,5 +171,31 @@ const Trial: React.FC<Props> = ({
     </>
   );
 };
+
+export function calculateTrialStatus(
+  subtrialUuids: (keyof SubtrialData)[],
+  subtrialData: SubtrialData
+) {
+  if (Object.keys(subtrialData).length === 0) return Result.EMPTY;
+
+  const counts = {
+    successCount: 0,
+    failureCount: 0,
+  };
+
+  subtrialUuids.map((key: string) => {
+    subtrialData[key][RESULT_INDEX] === Result.SUCCESS
+      ? counts.successCount++
+      : counts.failureCount++;
+  });
+
+  if (counts.successCount > counts.failureCount) {
+    return Result.SUCCESS;
+  } else if (counts.failureCount > counts.successCount) {
+    return Result.FAILURE;
+  } else {
+    return Result.NEUTRAL;
+  }
+}
 
 export default Trial;
