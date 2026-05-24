@@ -8,7 +8,7 @@ function App() {
   return (
     <DirtyStateProvider>
       <ExitListener />
-      <FileLoadListener/>
+      {/* <FileLoadListener/> */}
       <SaveActionUpdater />
       <MainScreen />
     </DirtyStateProvider>

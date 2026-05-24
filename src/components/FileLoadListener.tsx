@@ -6,11 +6,12 @@ import { listen } from "@tauri-apps/api/event";
 export const FileLoadListener = () => {
     useEffect(() => {
         const unlisten = listen("file-load", (event) => {
-            console.log("Received file-load event:", event.payload);
+            let payload = event.payload
+            console.log(payload);
         });
 
         return () => {
-            unlisten.then(f => f()); // cleanup listener on unmount
+            unlisten.then(f => f());
         };
     }, []);
 

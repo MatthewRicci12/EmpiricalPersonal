@@ -5,7 +5,7 @@ import ConclusionScreen from "../ConclusionScreen.tsx";
 import ContextMenuSkeleton from "../../utils/ContextMenuSkeleton.tsx";
 import DialogSkeleton from "../../utils/DialogSkeleton.tsx";
 import MenuItem from "@mui/material/MenuItem";
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useEffect, useCallback } from "react";
 import TopBar from "../../components/TopBar.tsx";
 import { AddArenaDialog } from "../../components/AddArenaDialog/AddArenaDialog.tsx";
 import { ArenaScreen } from "../../components/ArenaScreen.tsx";
@@ -17,6 +17,22 @@ import { useDirtyState } from "../../contexts/DirtyStateContext.tsx";
 import { useGlobalShortcut } from "../../hooks/DirtyState.tsx";
 import { v4 as uuidv4 } from "uuid";
 import { arrayMove } from "@dnd-kit/sortable";
+import { listen } from "@tauri-apps/api/event";
+//import { Action } from "@dnd-kit/core/dist/store/actions";
+
+const FileLoadListener: React.FC<{ onFileLoad: (payload: any) => void }> = ({ onFileLoad }) => {
+  useEffect(() => {
+    const unlisten = listen("file-load", (event) => {
+      onFileLoad(event.payload);  // call the callback with payload
+    });
+
+    return () => {
+      unlisten.then(f => f());
+    };
+  }, [onFileLoad]);
+
+  return null;
+};
 
 interface Props {}
 const MainScreen: React.FC<Props> = () => {
@@ -26,6 +42,8 @@ const MainScreen: React.FC<Props> = () => {
     mouseX: number;
     mouseY: number;
   } | null>(null);
+
+
 
   const [state, dispatch] = useReducer(reducer, initialStateFilled);
 
@@ -37,6 +55,12 @@ const MainScreen: React.FC<Props> = () => {
   // Setting dirty equal to false is obviously what we wanna do upon ctrl+s.
   // isDirty is only passed so we can no-op if there's nothing to save.
   useGlobalShortcut(isDirty, saveData);
+
+
+  const handleFileLoad = useCallback((payload: any) => {
+        dispatch({ type: ActionKind.LOADFILE, payload });
+  }, []);
+
 
   const handleOpenArenaDialog: React.MouseEventHandler<HTMLButtonElement> = (
     e
@@ -172,6 +196,7 @@ const MainScreen: React.FC<Props> = () => {
 
   return !state.displayConclusionsPage ? (
     <>
+      <FileLoadListener onFileLoad={handleFileLoad} />
       <TopBar
         handleAddTrial={handleAddTrial}
         handleOpenConclusionsPage={handleOpenConclusionsPage}
