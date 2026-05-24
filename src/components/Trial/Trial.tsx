@@ -71,6 +71,7 @@ const Trial: React.FC<Props> = ({
     HTMLButtonElement
   > = (e) => {
     //Triggered by add Tab button
+    console.log("triggered");
     e.stopPropagation();
     setOpenAddSubTrialDialog(true);
   };
@@ -145,7 +146,7 @@ const Trial: React.FC<Props> = ({
 
         <Typography sx={styles.skepTextStyle}>hello</Typography>
 
-        <Button onClick={handleOpenAddSubTrialDialog}>Add Sub-Trial</Button>
+        <Button onPointerDown={(event) => event.stopPropagation()} onClick={handleOpenAddSubTrialDialog}>Add Sub-Trial</Button>
       </Stack>
 
       <DialogSkeleton

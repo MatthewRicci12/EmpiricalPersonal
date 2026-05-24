@@ -152,6 +152,7 @@ const MainScreen: React.FC<Props> = () => {
     date: string,
     data: string
   ) => {
+    console.log("Clicked");
     dispatch({
       type: ActionKind.ADDSUBTRIAL,
       payload: { trialKey, subtrialKey, result, date, data },
