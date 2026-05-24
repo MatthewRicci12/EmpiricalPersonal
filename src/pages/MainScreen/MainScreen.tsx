@@ -27,7 +27,7 @@ const MainScreen: React.FC<Props> = () => {
     mouseY: number;
   } | null>(null);
 
-  const [state, dispatch] = useReducer(reducer, initialStateFilled);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const saveData = () => {
     setDirty(false);
