@@ -8,13 +8,11 @@ use serde_json::{Result as SerdeResult};
 use std::fs;
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 
-const SAVE_FILE: &str = "../saved_data/data.json";
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![set_window_title, save_file, close_application])
+        .invoke_handler(tauri::generate_handler![set_window_title, save_file, load_file, close_application])
         .on_window_event(|window, event| match event {
             tauri::WindowEvent::CloseRequested { api, .. } => {
                 let app_handle = window.app_handle();
@@ -59,19 +57,20 @@ async fn set_window_title(app: AppHandle, label: &str, is_dirty: bool) -> Result
 	Ok(())
 }
 
-// #[tauri::command]
-// fn load_file(app: AppHandle, file_name: &str) -> Result<()> {
-//     let json_string = fs::read_to_string(file_name)?;
+#[tauri::command]
+fn load_file(app: AppHandle) -> Result<()> {
+    let save_dir = app.path().app_data_dir().unwrap().join("saved_data");
+    let file_path = save_dir.join("data.json");
 
-//     let json: serde_json::Value =
-//         serde_json::from_str(&json_string).expect("JSON was not well-formatted");
+    let json_string = fs::read_to_string(&file_path)?;
 
-//     fs::remove_file(file_name)?;
+    let json: serde_json::Value =
+        serde_json::from_str(&json_string).expect("JSON was not well-formatted");
 
-//     app.emit("file-load", json).unwrap();
+    app.emit("file-load", json).unwrap();
 
-//     Ok(())
-// }
+    Ok(())
+}
 
 type SubTrialDataPayload = HashMap<String, (i32, String, String)>;
 
@@ -101,7 +100,11 @@ fn save_file(app: AppHandle, label: &str, payload: FullPayload) -> Result<()> {
 
     let serialized = serde_json::to_string_pretty(&payload).unwrap();
 
-    fs::write(SAVE_FILE, serialized).expect("Should be able to write to file.");
+    let save_dir = app.path().app_data_dir().unwrap().join("saved_data");
+    fs::create_dir_all(&save_dir).expect("Should be able to create saves dir");
+    
+    let save_file = save_dir.join("data.json");
+    fs::write(&save_file, serialized).expect("Should be able to write to file.");
 
     Ok(())
 }

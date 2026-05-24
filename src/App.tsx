@@ -2,12 +2,13 @@ import MainScreen from "./pages/MainScreen";
 import { DirtyStateProvider } from "./contexts/DirtyStateContext";
 import { SaveActionUpdater } from "./components/SaveActionUpdater";
 import { ExitListener } from "./components/ExitListener";
-//import { FileLoadListener } from "./components/FileLoadListener";
+import { FileLoadListener } from "./components/FileLoadListener.tsx";
 
 function App() {
   return (
     <DirtyStateProvider>
       <ExitListener />
+      <FileLoadListener/>
       <SaveActionUpdater />
       <MainScreen />
     </DirtyStateProvider>

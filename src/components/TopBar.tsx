@@ -63,50 +63,15 @@ export const TopBar: React.FC<Props> = ({
     setContextMenu(null);
   };
 
-  const handleOpenFile: React.MouseEventHandler<HTMLLIElement> = (e) => {
-    if (inputFileRef.current) {
-      inputFileRef.current.click();
+  const handleOpenFile: React.MouseEventHandler<HTMLLIElement> = async (e) => {
+    try {
+      await invoke("load_file");
+    } catch (e: any) {
+      alert(e.toString());
     }
 
     e.stopPropagation();
     setContextMenu(null);
-  };
-
-  const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = async (
-    e
-  ) => {
-    if (e.target.files) {
-      const selectedFile = e.target.files[0];
-      inputFileRef.current!.value = "";
-      if (selectedFile) {
-        const reader = new FileReader();
-        reader.readAsText(selectedFile);
-
-        reader.onload = (event: ProgressEvent<FileReader>) => {
-          try {
-            if (!event.target) {
-              throw new Error("File reading failed: No target found.");
-            }
-
-            const jsonString: string = event.target!.result as string;
-
-            const obj: typeof payload = JSON.parse(
-              jsonString
-            ) as typeof payload;
-
-            handleLoadFile(obj);
-          } catch (error) {
-            console.error("Error parsing JSON:", error);
-            // Handle non-JSON file or corrupt data
-            alert("Failed to parse file: Please ensure it is valid JSON.");
-          }
-        };
-
-        reader.onerror = (error) => {
-          console.error("Error reading file:", error);
-        };
-      }
-    }
   };
 
   const handleSaveFile: React.MouseEventHandler<HTMLLIElement> = async (e) => {
@@ -135,12 +100,6 @@ export const TopBar: React.FC<Props> = ({
 
   return (
     <Stack direction="row" alignItems="center">
-      <input
-        type="file"
-        ref={inputFileRef}
-        style={{ display: "none" }}
-        onChange={handleFileChange}
-      />
       <Container>
         <ContextMenuSkeleton
           menuItems={[
