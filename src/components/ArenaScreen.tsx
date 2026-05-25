@@ -52,11 +52,18 @@ export const ArenaScreen: React.FC<Props> = ({
   const trials = trialUuids.map((uuid) => {
     const trialTitle = trialData[uuid].trialTitle;
     const curTrialSubtrialUuids = trialData[uuid].subtrialData;
+    const successString = trialData[uuid].successString;
+    const failureString = trialData[uuid].failureString;
+    const additionalNotesString = trialData[uuid].additionalNotesString;
+  
 
     return (
       <Trial
         trialTitle={trialTitle}
         trialKey={uuid}
+        successString={successString}
+        failureString={failureString}
+        additionalNotesString={additionalNotesString}
         handleClickTrial={handleClickTrial(uuid)}
         selected={whichTrialSelected === uuid}
         handleAddSubTrial={handleAddSubTrial}

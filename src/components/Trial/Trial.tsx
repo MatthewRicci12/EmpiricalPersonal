@@ -14,10 +14,14 @@ import { Result } from "../types.tsx";
 import { RESULT_INDEX } from "./types.tsx";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { ViewTrialNotesDialog } from "./ViewTrialNotesDialog.tsx";
 
 interface Props {
   trialTitle: string;
   trialKey: string;
+  successString: string;
+  failureString: string;
+  additionalNotesString: string;
   selected: boolean;
   handleClickTrial: React.MouseEventHandler<HTMLDivElement>;
   handleAddSubTrial: (
@@ -34,6 +38,9 @@ interface Props {
 const Trial: React.FC<Props> = ({
   trialTitle,
   trialKey,
+  successString,
+  failureString,
+  additionalNotesString,
   selected,
   handleClickTrial,
   handleAddSubTrial,
@@ -43,6 +50,7 @@ const Trial: React.FC<Props> = ({
 }) => {
   const [openSubTrialDialog, setOpenSubTrialDialog] = useState(false);
   const [openAddSubTrialDialog, setOpenAddSubTrialDialog] = useState(false);
+  const [openViewTrialNotesDialog, setOpenViewTrialNotesDialog] = useState(false);
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: id });
 
@@ -70,8 +78,6 @@ const Trial: React.FC<Props> = ({
   const handleOpenAddSubTrialDialog: React.MouseEventHandler<
     HTMLButtonElement
   > = (e) => {
-    //Triggered by add Tab button
-    console.log("triggered");
     e.stopPropagation();
     setOpenAddSubTrialDialog(true);
   };
@@ -83,6 +89,17 @@ const Trial: React.FC<Props> = ({
     e.stopPropagation();
     setOpenAddSubTrialDialog(false);
   };
+
+  const handleOpenViewTrialNotesDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    setOpenViewTrialNotesDialog(true);
+  };
+
+  const handleCloseViewTrialNotesDialog: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    setOpenViewTrialNotesDialog(false);
+  };
+
 
   let trialStatus;
 
@@ -147,6 +164,7 @@ const Trial: React.FC<Props> = ({
         <Typography sx={styles.skepTextStyle}>hello</Typography>
 
         <Button onPointerDown={(event) => event.stopPropagation()} onClick={handleOpenAddSubTrialDialog}>Add Sub-Trial</Button>
+        <Button onPointerDown={(event) => event.stopPropagation()} onClick={handleOpenViewTrialNotesDialog}>View Notes</Button>
       </Stack>
 
       <DialogSkeleton
@@ -169,7 +187,20 @@ const Trial: React.FC<Props> = ({
           subtrialUuids={subtrialUuids}
         />
       </DialogSkeleton>
+
+      <DialogSkeleton
+        open={openViewTrialNotesDialog}
+        onClose={handleCloseViewTrialNotesDialog}
+      >
+        <ViewTrialNotesDialog
+          successString={successString}
+          failureString={failureString}
+          additionalNotesString={additionalNotesString}
+        />
+      </DialogSkeleton>
+
     </>
+
   );
 };
 
