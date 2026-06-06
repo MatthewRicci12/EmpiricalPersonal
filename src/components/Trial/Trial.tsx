@@ -161,8 +161,6 @@ const Trial: React.FC<Props> = ({
 
         <Typography sx={styles.trialTitleStyle}>{trialTitle}</Typography>
 
-        <Typography sx={styles.skepTextStyle}>hello</Typography>
-
         <Button onPointerDown={(event) => event.stopPropagation()} onClick={handleOpenAddSubTrialDialog}>Add Sub-Trial</Button>
         <Button onPointerDown={(event) => event.stopPropagation()} onClick={handleOpenViewTrialNotesDialog}>View Notes</Button>
       </Stack>
