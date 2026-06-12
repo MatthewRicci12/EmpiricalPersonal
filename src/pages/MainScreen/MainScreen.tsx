@@ -1,8 +1,11 @@
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/system/Box";
+import Stack from "@mui/material/Stack";
+import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import ConclusionScreen from "../ConclusionScreen.tsx";
 import ContextMenuSkeleton from "../../utils/ContextMenuSkeleton.tsx";
+import Typography from "@mui/material/Typography";
 import DialogSkeleton from "../../utils/DialogSkeleton.tsx";
 import MenuItem from "@mui/material/MenuItem";
 import React, { useReducer, useState, useEffect, useCallback } from "react";
@@ -196,7 +199,7 @@ const MainScreen: React.FC<Props> = () => {
   const trialUuids = state.arenaData[state.whichArenaSelected] ?? [];
 
   return !state.displayConclusionsPage ? (
-    <>
+    <Box sx={{ pb: 3 }}>
       <FileLoadListener onFileLoad={handleFileLoad} />
       <TopBar
         handleAddTrial={handleAddTrial}
@@ -212,79 +215,107 @@ const MainScreen: React.FC<Props> = () => {
           state.subtrialData,
         ]}
       />
-      <Box
-        sx={{
-          height: "90%",
-          whiteSpace: "pre",
-        }}
-      >
-        <ArenaScreen
-          trialData={state.trialData}
-          trialUuids={trialUuids}
-          subtrialData={state.subtrialData}
-          key={state.whichArenaSelected}
-          handleAddSubTrial={handleAddSubTrial}
-          whichTrialSelected={state.whichTrialSelected}
-          handleClickTrial={handleClickTrial}
-          handleReorderTrials={handleReorderTrials}
-        />
-      </Box>
+      <Stack direction={{ xs: "column", lg: "row" }} spacing={2.5} sx={{ px: { xs: 2, md: 3 } }}>
+        <Paper>
+          <Stack>
+            <Box>
 
-      {/* Button to add a new Arena */}
-      <Button onClick={handleOpenArenaDialog}>
-        <AddIcon />
-      </Button>
-      <DialogSkeleton
-        open={state.openAddArenaDialog}
-        onClose={handleCloseArenaDialog}
-      >
-        <AddArenaDialog
-          handleAddArena={handleAddArena}
-          handleCloseArenaDialog={handleCloseArenaDialog}
-          handleEditArena={handleEditArena(state.whichArenaSelected)}
-          edit={state.editArenaDialog}
-        />
-      </DialogSkeleton>
+              <Box className="section-kicker">Arena Navigation</Box>
+              <Typography variant="h4" sx={{ mt: 1.25, mb: 0.75 }}>Arenas</Typography>
+              {/* <Typography variant="body2" color="text.secondary">
+                Group trials by business theme, initiative, or decision horizon. */}
+              {/* </Typography> */}
 
-      {/* Arena Tabs */}
-      {state.arenaOrder.map((title: string, index) => {
-        return (
-          <ContextMenuSkeleton
-            menuItems={[
-              <MenuItem
-                key={`${title}-${index}`}
-                onClick={handleClickEditArena}
+              <Button onClick={handleOpenArenaDialog} variant="contained" startIcon={<AddIcon />}>
+                Add Arena
+              </Button>
+              <DialogSkeleton
+                open={state.openAddArenaDialog}
+                onClose={handleCloseArenaDialog}
               >
-                Edit Arena
-              </MenuItem>,
-              <MenuItem
-                key={`${title}-${index}`}
-                onClick={handleDeleteArena(title)}
-              >
-                Delete Arena
-              </MenuItem>,
-            ]}
-            leftClick={false}
-            contextMenu={contextMenu}
-            setContextMenu={setContextMenu}
-            key={`${title}-${index}`}
-          >
-            <ArenaTab
-              title={title}
-              handleClickArena={handleClickArena(title)}
-              selected={title === state.whichArenaSelected}
-              key={`${title}-${index}`}
+                <AddArenaDialog
+                  handleAddArena={handleAddArena}
+                  handleCloseArenaDialog={handleCloseArenaDialog}
+                  handleEditArena={handleEditArena(state.whichArenaSelected)}
+                  edit={state.editArenaDialog}
+                />
+              </DialogSkeleton>
+
+              <Stack>
+              {state.arenaOrder.map((title: string, index) => {
+                return (
+                  <ContextMenuSkeleton
+                    menuItems={[
+                      <MenuItem
+                        key={`${title}-${index}-edit`}
+                        onClick={handleClickEditArena}
+                      >
+                        Edit Arena
+                      </MenuItem>,
+                      <MenuItem
+                        key={`${title}-${index}-delete`}
+                        onClick={handleDeleteArena(title)}
+                      >
+                        Delete Arena
+                      </MenuItem>,
+                    ]}
+                    leftClick={false}
+                    contextMenu={contextMenu}
+                    setContextMenu={setContextMenu}
+                    key={`${title}-${index}`}
+                  >
+                    <ArenaTab
+                      title={title}
+                      handleClickArena={handleClickArena(title)}
+                      selected={title === state.whichArenaSelected}
+                      key={`${title}-${index}`}
+                    />
+                  </ContextMenuSkeleton>
+                );
+              })}
+              </Stack>
+
+              <Paper>
+                <Stack>
+                  <Box>
+                  </Box>
+                </Stack>
+              </Paper>
+            </Box>
+          </Stack>
+        </Paper>
+        <Box>
+            <ArenaScreen
+              trialData={state.trialData}
+              trialUuids={trialUuids}
+              subtrialData={state.subtrialData}
+              key={state.whichArenaSelected}
+              handleAddSubTrial={handleAddSubTrial}
+              whichTrialSelected={state.whichTrialSelected}
+              handleClickTrial={handleClickTrial}
+              handleReorderTrials={handleReorderTrials}
             />
-          </ContextMenuSkeleton>
-        );
-      })}
-    </>
+        </Box>
+      </Stack>
+
+
+    </Box>
   ) : (
-    <ConclusionScreen
-      handleClickBackButton={handleClickBackButton}
-      trialData={state.trialData}
-      subtrialData={state.subtrialData}
-    />
+    <React.Suspense
+      fallback={
+        <Box sx={{ px: { xs: 2, md: 3 }, py: 6 }}>
+          <Paper>
+            <Typography variant="h5">Preparing conclusions view...</Typography>
+          </Paper>
+        </Box>
+      }
+    >
+      <ConclusionScreen
+        handleClickBackButton={handleClickBackButton}
+        trialData={state.trialData}
+        subtrialData={state.subtrialData}
+      />
+    </React.Suspense>
   );
 };
 
