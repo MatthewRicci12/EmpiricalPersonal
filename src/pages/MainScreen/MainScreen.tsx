@@ -216,7 +216,13 @@ const MainScreen: React.FC<Props> = () => {
         ]}
       />
       <Stack direction={{ xs: "column", lg: "row" }} spacing={2.5} sx={{ px: { xs: 2, md: 3 } }}>
-        <Paper>
+        <Paper
+        elevation={0}
+          sx={{
+            width: { xs: "100%", lg: 348, xl: 368 },
+            p: 3,
+          }}
+        >
           <Stack>
             <Box>
 
