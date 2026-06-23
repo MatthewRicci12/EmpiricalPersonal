@@ -281,7 +281,15 @@ const MainScreen: React.FC<Props> = () => {
               })}
               </Stack>
 
-              <Paper>
+              <Paper
+              elevation={0}
+              sx={{
+                mt: 1,
+                p: 2.35,
+                borderRadius: "20px",
+                background: "linear-gradient(135deg, rgba(22,58,95,0.1) 0%, rgba(34,211,238,0.08) 100%)",
+              }}
+              >
                 <Stack>
                   <Box>
                   </Box>
