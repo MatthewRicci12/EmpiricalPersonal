@@ -223,7 +223,7 @@ const MainScreen: React.FC<Props> = () => {
             p: 3,
           }}
         >
-          <Stack>
+          <Stack spacing={2}>
             <Box>
 
               <Box className="section-kicker">Arena Navigation</Box>
@@ -247,7 +247,7 @@ const MainScreen: React.FC<Props> = () => {
                 />
               </DialogSkeleton>
 
-              <Stack>
+              <Stack spacing={1.2}>
               {state.arenaOrder.map((title: string, index) => {
                 return (
                   <ContextMenuSkeleton
@@ -286,11 +286,9 @@ const MainScreen: React.FC<Props> = () => {
               sx={{
                 mt: 1,
                 p: 2.35,
-                borderRadius: "20px",
-                background: "linear-gradient(135deg, rgba(22,58,95,0.1) 0%, rgba(34,211,238,0.08) 100%)",
               }}
               >
-                <Stack>
+                <Stack direction="row" spacing={1.25} alignItems="flex-start">
                   <Box>
                   </Box>
                 </Stack>
@@ -298,7 +296,7 @@ const MainScreen: React.FC<Props> = () => {
             </Box>
           </Stack>
         </Paper>
-        <Box>
+        <Box sx={{ flex: 1, minWidth: 0 }}>
             <ArenaScreen
               trialData={state.trialData}
               trialUuids={trialUuids}
