@@ -5,6 +5,8 @@ import IconButton from "@mui/material/IconButton";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
 import { Box } from "@mui/system";
 import { Result } from "../components/types.tsx";
 import { SubtrialData, TrialData } from "./MainScreen/types.tsx";
@@ -74,10 +76,13 @@ const ConclusionScreen: React.FC<Props> = ({
     }
   });
 
+  const totalTrials = successTrials.length + failureTrials.length + neutralTrials.length;
+
   return (
-    <>
-      <Box>
-        <IconButton
+    <Box>
+      <Paper>
+        <Box>
+          <IconButton
           aria-label="close"
           onClick={handleClickBackButton}
           sx={(theme) => ({
@@ -85,43 +90,84 @@ const ConclusionScreen: React.FC<Props> = ({
             right: 8,
             top: 8,
             color: theme.palette.grey[500],
-          })}
-        >
+          })}>
           <ArrowBackIcon />
-        </IconButton>
+          </IconButton>
 
-        <Typography variant="h4" gutterBottom align="center">
-          Conclusions for Arena x
-        </Typography>
-      </Box>
-      {/* Reused SX: Maybe as a variable? */}
-      <Box
-        sx={{
-          columnCount: "3",
-          display: "flex",
-          justifyContent: "Center",
-          textAlign: "center",
-        }}
-      >
-        <Box sx={trialColumnsx}>
-          <Typography variant="h6">Successes</Typography>
-          {/* Success trials go here */}
-          {successTrials}
-        </Box>
+          <Box>
+            <Typography variant="h4" gutterBottom align="center">
+            Conclusions for Arena x
+            </Typography>
+          </Box>
 
-        <Box sx={trialColumnsx}>
-          <Typography variant="h6">Failures</Typography>
-          {/* Failure trials go here */}
-          {failureTrials}
-        </Box>
 
-        <Box sx={trialColumnsx}>
-          <Typography variant="h6">Neutrals</Typography>
-          {/* Neutral trials go here */}
-          {neutralTrials}
+        <Grid container spacing={2} sx={{ mb: 2.5 }}>
+        {[
+          ["Total trials", totalTrials.toString()],
+          ["Successes", successTrials.length.toString()],
+          ["Failures", (failureTrials.length + neutralTrials.length).toString()],
+        ].map(([label, value]) => (
+          <Grid key={label} size={{ xs: 12, sm: 4 }}>
+            <Paper elevation={0} sx={{ p: 2.25, borderRadius: '24px', border: '1px solid rgba(22,48,41,0.08)', backgroundColor: 'rgba(255,255,255,0.72)' }}>
+              <Typography variant="body2">
+                {label}
+              </Typography>
+              <Typography variant="h3" sx={{ mt: 0.5 }}>
+                {value}
+              </Typography>
+            </Paper>
+          </Grid>
+        ))}
+        </Grid>
+
+          
+          {/* <Grid>
+            <Box
+              sx={{
+                columnCount: "3",
+                display: "flex",
+                justifyContent: "Center",
+                textAlign: "center",
+              }}
+            >
+              <Box sx={trialColumnsx}>
+                <Typography variant="h6">Successes</Typography>
+                {successTrials}
+              </Box>
+
+              <Box sx={trialColumnsx}>
+                <Typography variant="h6">Failures</Typography>
+                {failureTrials}
+              </Box>
+
+              <Box sx={trialColumnsx}>
+                <Typography variant="h6">Neutrals</Typography>
+                {neutralTrials}
+              </Box>
+            </Box>
+          </Grid> */}
+
+          {/* <Grid>
+            <Grid>
+              <Box>
+                <Stack>
+                  <Box>
+                  </Box>
+                </Stack>
+                <Stack>
+                  <Paper>
+                  </Paper>
+                  <Paper>
+                    <Stack>
+                    </Stack>
+                  </Paper>
+                </Stack>
+              </Box>
+          </Grid>
+         </Grid> */}
         </Box>
-      </Box>
-    </>
+      </Paper>
+    </Box>
   );
 };
 
