@@ -225,8 +225,6 @@ const MainScreen: React.FC<Props> = () => {
         >
           <Stack spacing={2}>
             <Box>
-
-              <Box className="section-kicker">Arena Navigation</Box>
               <Typography variant="h4" sx={{ mt: 1.25, mb: 0.75 }}>Arenas</Typography>
               {/* <Typography variant="body2" color="text.secondary">
                 Group trials by business theme, initiative, or decision horizon. */}
