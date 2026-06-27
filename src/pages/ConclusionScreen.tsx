@@ -34,47 +34,38 @@ const ConclusionScreen: React.FC<Props> = ({
   let failureTrials: React.ReactNode[] = [];
   let neutralTrials: React.ReactNode[] = [];
 
-  Object.keys(trialData).map((trialTitle) => {
-    let subtrialUuids = trialData[trialTitle].subtrialData;
-
-    switch (calculateTrialStatus(subtrialUuids, subtrialData)) {
-      case Result.SUCCESS:
-        successTrials = [
-          ...successTrials,
-          <Stack direction="row">
-            <styles.TrialSuccess>
-              <CheckIcon sx={styles.imgSx} />
-            </styles.TrialSuccess>
-            <Typography sx={styles.trialTitleStyle}>{trialTitle}</Typography>
-          </Stack>,
-        ];
-        break;
-
-      case Result.FAILURE:
-        failureTrials = [
-          ...failureTrials,
-          <Stack direction="row">
-            <styles.TrialFailure>
-              <CloseIcon sx={styles.imgSx} />
-            </styles.TrialFailure>
-            <Typography sx={styles.trialTitleStyle}>{trialTitle}</Typography>
-          </Stack>,
-        ];
-        break;
-
-      case Result.NEUTRAL:
-        neutralTrials = [
-          ...neutralTrials,
-          <Stack direction="row">
-            <styles.TrialNeutral>
-              <RemoveIcon sx={styles.imgSx} />
-            </styles.TrialNeutral>
-            <Typography sx={styles.trialTitleStyle}>{trialTitle}</Typography>
-          </Stack>,
-        ];
-        break;
-    }
-  });
+  const groups = [
+    {
+      title: "Successes",
+      items: successTrials,
+      empty: "No successful trials yet.",
+      renderIcon: () => (
+        <styles.TrialSuccess>
+          <CheckIcon sx={styles.imgSx} />
+        </styles.TrialSuccess>
+      ),
+    },
+    {
+      title: "Failures",
+      items: failureTrials,
+      empty: "No failed trials recorded.",
+      renderIcon: () => (
+        <styles.TrialFailure>
+          <CloseIcon sx={styles.imgSx} />
+        </styles.TrialFailure>
+      ),
+    },
+    {
+      title: "Neutrals",
+      items: neutralTrials,
+      empty: "No neutral trials at the moment.",
+      renderIcon: () => (
+        <styles.TrialNeutral>
+          <RemoveIcon sx={styles.imgSx} />
+        </styles.TrialNeutral>
+      ),
+    },
+  ];
 
   const totalTrials = successTrials.length + failureTrials.length + neutralTrials.length;
 
@@ -99,6 +90,7 @@ const ConclusionScreen: React.FC<Props> = ({
             Conclusions for Arena x
             </Typography>
           </Box>
+        </Box>
 
 
         <Grid container spacing={2} sx={{ mb: 2.5 }}>
@@ -120,52 +112,37 @@ const ConclusionScreen: React.FC<Props> = ({
         ))}
         </Grid>
 
-          
-          {/* <Grid>
-            <Box
-              sx={{
-                columnCount: "3",
-                display: "flex",
-                justifyContent: "Center",
-                textAlign: "center",
-              }}
-            >
-              <Box sx={trialColumnsx}>
-                <Typography variant="h6">Successes</Typography>
-                {successTrials}
-              </Box>
 
-              <Box sx={trialColumnsx}>
-                <Typography variant="h6">Failures</Typography>
-                {failureTrials}
-              </Box>
+      <Grid container spacing={2}>
+        {groups.map((group) => (
+          <Grid key={group.title} size={{ xs: 12, md: 4 }}>
+            <Box sx={trialColumnsx}>
+              <Stack direction="row" spacing={1.25} alignItems="center">
+                {group.renderIcon()}
+                <Box>
+                  <Typography variant="h6">{group.title}</Typography>
+                </Box>
+              </Stack>
 
-              <Box sx={trialColumnsx}>
-                <Typography variant="h6">Neutrals</Typography>
-                {neutralTrials}
-              </Box>
-            </Box>
-          </Grid> */}
-
-          {/* <Grid>
-            <Grid>
-              <Box>
-                <Stack>
-                  <Box>
-                  </Box>
-                </Stack>
-                <Stack>
-                  <Paper>
+              <Stack spacing={1.2} sx={{ mt: 2, maxHeight: '52vh', overflowY: 'auto', pr: 0.5 }}>
+                {group.items.length === 0 ? (
+                  <Paper elevation={0} sx={{ p: 2, borderRadius: '20px'}}>
+                    <Typography>{group.empty}</Typography>
                   </Paper>
-                  <Paper>
-                    <Stack>
+                ) : group.items.map((trialTitle) => (
+                  <Paper elevation={0} sx={{ p: 1.6}}>
+                    <Stack direction="row" spacing={1.2} alignItems="center">
+                      {group.renderIcon()}
+                      <Typography sx={styles.trialTitleStyle}>{trialTitle}</Typography>
                     </Stack>
                   </Paper>
-                </Stack>
-              </Box>
+                ))}
+              </Stack>
+            </Box>
           </Grid>
-         </Grid> */}
-        </Box>
+        ))}
+      </Grid>
+
       </Paper>
     </Box>
   );
