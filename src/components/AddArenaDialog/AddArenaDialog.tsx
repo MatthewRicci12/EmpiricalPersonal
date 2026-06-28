@@ -10,6 +10,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import SavePresetDialog from "./SavePresetDialog.tsx";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
 import { FactorData } from "../types.tsx";
 import { MAX_ARENA_NAME_LENGTH } from "../../pages/MainScreen/types.tsx";
 import { PresetData } from "./types.tsx";
@@ -162,12 +163,15 @@ export const AddArenaDialog: React.FC<Props> = ({
 
   return (
     <>
-      <DialogTitle>{edit ? "Edit" : "Add"} Arena</DialogTitle>
+      <DialogTitle sx={{ p: 0, mb: 3 }}>
+        <Stack spacing={1}>
+          <Typography variant="h4">{edit ? "Edit" : "Add"} Arena</Typography>
+        </Stack>
+      </DialogTitle>
 
       <Box
         sx={{
-          height: "500px",
-          width: "500px",
+          maxWidth: "680px",
         }}
         onKeyDown={handleKeyPress}
       >
@@ -177,21 +181,20 @@ export const AddArenaDialog: React.FC<Props> = ({
           variant="outlined"
           value={state.arenaTitle}
           onChange={handleInput}
-          sx={{
-            paddingBottom: "10px",
-          }}
+          sx={{ mb: 3 }}
         ></TextField>
 
-        <Typography
-          sx={{
-            fontSize: "1.5em",
-          }}
-        >
-          Factors
-        </Typography>
+        <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" spacing={1.25} alignItems={{ xs: 'stretch', sm: 'center' }} sx={{ mb: 2 }}>
+          <Box>
+            <Typography variant="h5">Arena Factors</Typography>
+          </Box>
+          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+            <Button onClick={handleOpenSavePresetDialog} variant="outlined">Save Preset</Button>
+            <Button onClick={handleOpenPresetDialog} variant="outlined">Load Preset</Button>
+          </Stack>
+        </Stack>
 
         {/* Save Preset */}
-        <Button onClick={handleOpenSavePresetDialog}>Save Preset</Button>
         <DialogSkeleton
           open={state.openSavePresetDialog}
           onClose={handleCloseSavePresetDialog}
@@ -203,7 +206,6 @@ export const AddArenaDialog: React.FC<Props> = ({
         </DialogSkeleton>
 
         {/* Load Preset */}
-        <Button onClick={handleOpenPresetDialog}>Load Preset</Button>
         <DialogSkeleton
           open={state.openViewPresetsDialog}
           onClose={handleClosePresetDialog}
@@ -218,8 +220,9 @@ export const AddArenaDialog: React.FC<Props> = ({
         </DialogSkeleton>
 
         {/* Add Factor */}
-        <Button onClick={handleOpenFactorDialog}>
-          <AddIcon />
+        <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+        <Button onClick={handleOpenFactorDialog} variant="outlined" startIcon={<AddIcon />}>
+          Add Factor
         </Button>
         <DialogSkeleton
           open={state.openFactorDialog}
@@ -235,21 +238,25 @@ export const AddArenaDialog: React.FC<Props> = ({
         </DialogSkeleton>
 
         {/* Remove Factor */}
-        <Button onClick={handleRemoveFactor}>
-          <RemoveIcon />
+        <Button onClick={handleRemoveFactor} variant="outlined" startIcon={<RemoveIcon />}>
+          Remove Factor
         </Button>
+        </Stack>
 
         {/* List of Factors */}
         <Box
           sx={{
             width: "100%",
-            height: "200px",
-            outlineStyle: "solid",
-            outlineWidth: "1px",
-            marginBottom: "2px",
+            minHeight: "180px",
+            p: 1.5,
+            mb: 3,
           }}
         >
-          {state.factorOrder.map((factorName, index) => {
+          {state.factorOrder.length === 0 ? (
+            <Typography variant="body2" color="text.secondary">
+              No factors defined yet. Add the variables that matter most to the arena.
+            </Typography>
+          ) : state.factorOrder.map((factorName, index) => {
             return (
               <Factor
                 title={factorName}
