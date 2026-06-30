@@ -4,6 +4,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slider from "@mui/material/Slider";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import Paper from "@mui/material/Paper";
 import { useState } from "react";
 
 interface Props {
@@ -66,11 +68,14 @@ export const AddFactorDialog: React.FC<Props> = ({
 
   return (
     <>
-      <DialogTitle>{edit ? "Edit" : "Add"} Factor</DialogTitle>
+      <DialogTitle sx={{ p: 0, mb: 3 }}>
+        <Stack spacing={1}>
+          <Typography variant="h4">{edit ? "Edit" : "Add"} Factor</Typography>
+        </Stack>
+      </DialogTitle>
       <Box
         sx={{
-          height: "500px",
-          width: "800px",
+          maxWidth: "800px",
         }}
         onKeyDown={handleKeyPress}
       >
@@ -83,54 +88,71 @@ export const AddFactorDialog: React.FC<Props> = ({
             variant="outlined"
             value={factorName}
             onChange={handleInput}
-            sx={{
-              paddingBottom: "20px",
-            }}
+            sx={{ mb: 3 }}
           ></TextField>
         )}
 
-        <Typography sx={{ fontSize: "2em" }}>
-          Factor Weight:
-          {sliderValueMacro + sliderValueMicro >= 100
-            ? 100
-            : sliderValueMacro + sliderValueMicro}
-        </Typography>
+        <Paper
+          elevation={0}
+          sx={{
+            p: 2.9,
+            mb: 3,
+          }}
+        >
+          <Typography variant="h3">
+            {sliderValueMacro + sliderValueMicro >= 100
+              ? 100
+              : sliderValueMacro + sliderValueMicro}
+          </Typography>
+        </Paper>
 
-        <Typography>
-          Macro-Slider: How much does this factor affect the results?
-        </Typography>
+        <Stack spacing={2.25}>
+          <Paper elevation={0} sx={{ p: 2.8 }}>
+            <Typography variant="h6" sx={{ mb: 0.75 }}>
+              Macro Weight
+            </Typography>
+            <Slider
+              sx={{ mt: 4, width: "100%" }}
+              defaultValue={0}
+              valueLabelDisplay="on"
+              shiftStep={10}
+              step={10}
+              marks
+              min={0}
+              max={100}
+              onChange={handleSliderChangeMacro}
+            ></Slider>
+          </Paper>
 
-        <Slider
-          sx={{ margin: "20px", width: "80%" }}
-          defaultValue={0}
-          valueLabelDisplay="on"
-          shiftStep={10}
-          step={10}
-          marks
-          min={0}
-          max={100}
-          onChange={handleSliderChangeMacro}
-        ></Slider>
+          <Paper elevation={0} sx={{ p: 2.8 }}>
+            <Typography variant="h6" sx={{ mb: 0.75 }}>
+              Precision Tuning
+            </Typography>
+            <Typography variant="body2">
+              Nudge the score with a smaller adjustment when the factor needs finer calibration.
+            </Typography>
+            <Slider
+              sx={{ mt: 4, width: "100%" }}
+              defaultValue={0}
+              valueLabelDisplay="on"
+              shiftStep={1}
+              step={1}
+              marks
+              min={0}
+              max={9}
+              onChange={handleSliderChangeMicro}
+            ></Slider>
+          </Paper>
 
-        <Typography>Micro-Slider: Fine-tune</Typography>
-
-        <Slider
-          sx={{ margin: "20px", width: "80%" }}
-          defaultValue={0}
-          valueLabelDisplay="on"
-          shiftStep={1}
-          step={1}
-          marks
-          min={0}
-          max={9}
-          onChange={handleSliderChangeMicro}
-        ></Slider>
-
-        <br></br>
-
-        <Button variant="contained" onClick={onButtonClick}>
-          Submit
-        </Button>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25} justifyContent="flex-end">
+            <Button variant="outlined" onClick={handleCloseFactorDialog}>
+              Cancel
+            </Button>
+            <Button variant="contained" onClick={onButtonClick} disabled={factorName.trim().length === 0}>
+              {edit ? 'Save Factor' : 'Add Factor'}
+            </Button>
+          </Stack>
+        </Stack>
       </Box>
     </>
   );
