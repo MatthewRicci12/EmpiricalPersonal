@@ -2,6 +2,7 @@ import Box from "@mui/system/Box";
 import Button from "@mui/material/Button";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
 import { useState } from "react";
 
 interface Props {
@@ -39,13 +40,8 @@ export const SavePresetDialog: React.FC<Props> = ({
     <>
       <DialogTitle>Save Preset</DialogTitle>
 
-      <Box
-        sx={{
-          height: "500px",
-          width: "800px",
-        }}
-        onKeyDown={handleKeyPress}
-      >
+      <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+        
         <TextField
           id="outlined-basic"
           label="Preset Name"
@@ -60,7 +56,7 @@ export const SavePresetDialog: React.FC<Props> = ({
         <Button variant="contained" onClick={onButtonClick}>
           Submit
         </Button>
-      </Box>
+    </Stack>
     </>
   );
 };

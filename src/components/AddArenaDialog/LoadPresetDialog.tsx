@@ -1,4 +1,4 @@
-import Box from "@mui/system/Box";
+import Stack from "@mui/material/Stack";
 import DialogTitle from "@mui/material/DialogTitle";
 import Preset from "./Preset.tsx";
 import { FactorData } from "../types.tsx";
@@ -37,26 +37,22 @@ export const LoadPresetDialog: React.FC<Props> = ({
   return (
     <>
       <DialogTitle>Presets</DialogTitle>
-      <Box
-        sx={{
-          height: "500px",
-          width: "500px",
-        }}
+      <Stack direction="column" spacing={1} sx={{ mb: 2 }}
       >
-        {presetOrder.map((presetTitle, index) => (
-          <Preset
-            title={presetTitle}
-            factorData={presetData[presetTitle].factorData}
-            factorOrder={presetData[presetTitle].factorOrder}
-            handleClickPreset={handleClickPreset(
-              presetData[presetTitle].factorData,
-              presetData[presetTitle].factorOrder
-            )}
-            handleDeletePreset={handleDeletePreset(presetTitle)}
-            key={`${presetTitle}-${index}`}
-          />
-        ))}
-      </Box>
+      {presetOrder.map((presetTitle, index) => (
+        <Preset
+          title={presetTitle}
+          factorData={presetData[presetTitle].factorData}
+          factorOrder={presetData[presetTitle].factorOrder}
+          handleClickPreset={handleClickPreset(
+            presetData[presetTitle].factorData,
+            presetData[presetTitle].factorOrder
+          )}
+          handleDeletePreset={handleDeletePreset(presetTitle)}
+          key={`${presetTitle}-${index}`}
+        />
+      ))}        
+      </Stack>
     </>
   );
 };
