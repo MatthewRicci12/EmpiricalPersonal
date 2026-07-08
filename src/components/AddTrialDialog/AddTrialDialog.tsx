@@ -7,6 +7,9 @@ import AddFactorDialog from "../AddFactorDialog";
 import RemoveIcon from "@mui/icons-material/Remove";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
 import { FactorData } from "../types";
 import Factor from "../Factor";
 import { useState } from "react";
@@ -169,48 +172,72 @@ export const AddTrialDialog: React.FC<Props> = ({
 
   return (
     <>
-      <DialogTitle>Add New Trial</DialogTitle>
+      <DialogTitle sx={{ p: 0, mb: 3 }}>
+        <Stack spacing={1}>
+          <Typography variant="h4">Add New Trial</Typography>
+        </Stack>
+      </DialogTitle>
 
-      <Box onKeyDown={handleKeyPress}>
+      <Stack spacing={2.5} onKeyDown={handleKeyPress} sx={{ minWidth: { xs: 0, md: 640 } }}>
         {/* Input for trial's name */}
-        <Typography>Trial name:</Typography>
+        <Box>
+          <Typography variant="h6" sx={{ mb: 1 }}>Trial Name</Typography>
         <TextField
           id="outlined-basic"
-          variant="outlined"
           value={valueTrialName}
           onChange={handleInputTrialName}
-          sx={{
-            paddingBottom: "10px",
-          }}
+          helperText={`${valueTrialName.length} characters entered`}
         />
+        </Box>
 
         {/* What a success looks like */}
-        <Typography>What a success looks like</Typography>
+        <Box>
+        <Typography variant="h6" sx={{ mb: 1 }}>Success Criteria</Typography>
         <TextField
           id=" outlined-multiline-flexible"
           multiline
           rows={4}
+          placeholder="Ideal measurable outcome for trial"
           value={valueSuccess}
           onChange={handleInputSuccess}
         />
+        </Box>
 
         {/* What a failure looks like */}
-        <Typography>What a failure looks like</Typography>
+        <Box>
+        <Typography variant="h6" sx={{ mb: 1 }}>Failure Criteria</Typography>
         <TextField
           id=" outlined-multiline-flexible"
           multiline
           rows={4}
+          placeholder="What would be considered a trial failure"
           value={valueFailure}
           onChange={handleInputFailure}
         />
+        </Box>
 
         {/* Individual Factors \*/}
-        <Typography>
-          Individual Factors
-          <Button onClick={handleOpenIndivFactorDialog}>
-            <AddIcon />
-          </Button>
-          <DialogSkeleton open={openAddIndivFactorDialog} onClose={handleClose}>
+        <Paper elevation={0} sx={{ p: 2.7}}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" spacing={1.5} sx={{ mb: 2 }}>
+            <Box>
+              <Typography variant="h6">Individual Factors</Typography>
+            </Box>
+            <Stack direction="row" spacing={1}>
+              <Button variant="outlined" onClick={handleOpenIndivFactorDialog} startIcon={<AddIcon />}>
+                Add Factor
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={handleRemoveFactor}
+                startIcon={<RemoveIcon />}
+                disabled={whichIndivFactorSelected.length === 0}
+              >
+                Remove
+              </Button>
+            </Stack>
+          </Stack>
+          <DialogSkeleton open={openAddIndivFactorDialog} onClose={handleCloseIndivFactorDialog}>
             {/* Re-using same factor dialog, so no need for prop names to match */}
             <AddFactorDialog
               handleCloseFactorDialog={handleCloseIndivFactorDialog}
@@ -220,21 +247,19 @@ export const AddTrialDialog: React.FC<Props> = ({
               givenFactorName={whichIndivFactorSelected}
             />
           </DialogSkeleton>
-          <Button onClick={handleRemoveFactor}>
-            <RemoveIcon />
-          </Button>
-        </Typography>
 
         <Box
           sx={{
             width: "100%",
-            height: "200px",
-            outlineStyle: "solid",
-            outlineWidth: "1px",
-            marginBottom: "2px",
+            minHeight: "140px",
+            p: 1.85,
           }}
         >
-          {indivFactorOrder.map((indivFactorName, index) => {
+          {indivFactorOrder.length === 0 ? (
+            <Typography variant="body2">
+              No factors added yet
+            </Typography>
+          ) : indivFactorOrder.map((indivFactorName, index) => {
             return (
               <Factor
                 title={indivFactorName}
@@ -247,22 +272,42 @@ export const AddTrialDialog: React.FC<Props> = ({
             );
           })}
         </Box>
+        </Paper>
+
+        <Divider />
 
         {/* Additional notes */}
-        <Typography>Additional notes</Typography>
+        <Box>
+        <Typography variant="h6" sx={{ mb: 1 }}>Additional Notes</Typography>
         <TextField
           id=" outlined-multiline-flexible"
           multiline
           rows={4}
+          placeholder="Particular notes for this trial"
           value={valueAdditionalNotes}
           onChange={handleInputAdditionalNotes}
         />
+        </Box>
 
         {/* BOTTOM SUBMIT BUTTON */}
-        <Button variant="contained" onClick={onButtonClick}>
-          Submit
-        </Button>
-      </Box>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={1.25}
+          justifyContent="flex-end"
+          sx={{
+            position: 'sticky',
+            bottom: -1,
+            py: 1,
+          }}
+        >
+          <Button variant="outlined" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={onButtonClick} disabled={valueTrialName.trim().length === 0}>
+            Create Trial
+          </Button>
+        </Stack>
+      </Stack>
     </>
   );
 };
