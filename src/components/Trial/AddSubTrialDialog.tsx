@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import dayjs, { Dayjs } from "dayjs";
+import Stack from "@mui/material/Stack";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -65,62 +66,58 @@ export const AddSubTrialDialog: React.FC<Props> = ({
   };
 
   return (
-    <Box
-      sx={{
-        height: "500px",
-        width: "500px",
-      }}
-      onKeyDown={handleKeyPress}
-    >
-      <Typography display="inline">Result: </Typography>
-      <styles.SubTrialSuccess
-        onClick={(e) => {
-          e.stopPropagation();
-          handleClickResult(Result.SUCCESS);
-        }}
-        sx={selectedResult === Result.SUCCESS ? selectedEffect : {}}
-      >
-        <CheckIcon />
-      </styles.SubTrialSuccess>
-      <styles.SubTrialFailure
-        onClick={(e) => {
-          e.stopPropagation();
-          handleClickResult(Result.FAILURE);
-        }}
-        sx={selectedResult === Result.FAILURE ? selectedEffect : {}}
-      >
-        <CloseIcon />
-      </styles.SubTrialFailure>
+    <Stack spacing={3} onKeyDown={handleKeyPress} sx={{ maxWidth: 520 }}>
 
-      <br />
+      <Box>
+        <Typography variant="h6" sx={{ mb: 1.25 }}>Result</Typography>
+        <Stack direction="row" spacing={1.5}>
+          <styles.SubTrialSuccess
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClickResult(Result.SUCCESS);
+            }}
+            sx={selectedResult === Result.SUCCESS ? selectedEffect : {}}
+          >
+            <CheckIcon />
+          </styles.SubTrialSuccess>
+          <styles.SubTrialFailure
+            onClick={(e) => {
+              e.stopPropagation();
+              handleClickResult(Result.FAILURE);
+            }}
+            sx={selectedResult === Result.FAILURE ? selectedEffect : {}}
+          >
+            <CloseIcon />
+          </styles.SubTrialFailure>
+        </Stack>
+      </Box>
 
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
-          label={"Pick date"}
+          label={"Completion date"}
           value={subtrialDate}
           onChange={(newDate) => setSubtrialDate(newDate)}
         />
       </LocalizationProvider>
 
-      <br />
-
       <TextField
         id="outlined-basic"
-        label="Data"
-        variant="outlined"
+        label="Evidence or data"
+        multiline
+        rows={5}
         value={subtrialData}
         onChange={handleInput}
-        sx={{
-          paddingBottom: "20px",
-        }}
       ></TextField>
 
-      <br />
-
-      <Button variant="contained" onClick={onButtonClick}>
-        Submit
-      </Button>
-    </Box>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25} justifyContent="flex-end">
+        <Button variant="outlined" onClick={handleCloseAddSubTrialDialog}>
+          Cancel
+        </Button>
+        <Button variant="contained" onClick={onButtonClick}>
+          Save Outcome
+        </Button>
+      </Stack>
+    </Stack>
   );
 };
 
