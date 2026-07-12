@@ -20,6 +20,14 @@ let theme = createTheme({
             },
         },
         },
+    },
+    typography: {
+        button: {
+        fontWeight: 760,
+        fontSize: "0.92rem",
+        letterSpacing: "0.008em",
+        textTransform: "none",
+        },
     }
 
 
