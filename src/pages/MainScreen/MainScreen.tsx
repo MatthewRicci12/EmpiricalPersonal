@@ -287,6 +287,8 @@ const MainScreen: React.FC<Props> = () => {
               sx={{
                 mt: 1,
                 p: 2.35,
+                borderRadius: "20px",
+                background: "linear-gradient(135deg, rgba(22,58,95,0.1) 0%, rgba(34,211,238,0.08) 100%)",                
               }}
               >
                 <Stack direction="row" spacing={1.25} alignItems="flex-start">
@@ -317,7 +319,15 @@ const MainScreen: React.FC<Props> = () => {
     <React.Suspense
       fallback={
         <Box sx={{ px: { xs: 2, md: 3 }, py: 6 }}>
-          <Paper>
+          <Paper
+            elevation={0}
+            sx={{
+              p: 4,
+              borderRadius: "28px",
+              border: '1px solid rgba(22,48,41,0.08)',
+              backgroundColor: 'rgba(255,255,255,0.72)',
+            }}          
+          >
             <Typography variant="h5">Preparing conclusions view...</Typography>
           </Paper>
         </Box>
