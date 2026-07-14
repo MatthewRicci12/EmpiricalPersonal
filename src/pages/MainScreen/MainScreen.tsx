@@ -221,6 +221,9 @@ const MainScreen: React.FC<Props> = () => {
           sx={{
             width: { xs: "100%", lg: 348, xl: 368 },
             p: 3,
+            borderRadius: "28px",
+            border: "1px solid rgba(22,48,41,0.08)",
+            background: "linear-gradient(180deg, rgba(255,255,255,0.86) 0%, rgba(250,245,236,0.9) 100%)",            
           }}
         >
           <Stack spacing={2}>
