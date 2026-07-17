@@ -56,14 +56,52 @@ let theme = createTheme({
         },
     },
     typography: {
+        fontFamily: '"Manrope Variable", "Segoe UI", sans-serif',
+        h1: {
+        fontSize: "3.3rem",
+        fontWeight: 800,
+        letterSpacing: "-0.05em",
+        },
+        h2: {
+        fontSize: "2.5rem",
+        fontWeight: 800,
+        letterSpacing: "-0.04em",
+        },
+        h3: {
+        fontSize: "1.82rem",
+        fontWeight: 780,
+        letterSpacing: "-0.03em",
+        },
+        h4: {
+        fontSize: "1.42rem",
+        fontWeight: 760,
+        letterSpacing: "-0.025em",
+        },
+        h5: {
+        fontSize: "1.08rem",
+        fontWeight: 740,
+        },
+        h6: {
+        fontSize: "0.9rem",
+        fontWeight: 720,
+        textTransform: "uppercase",
+        letterSpacing: "0.075em",
+        },
+        body1: {
+        fontSize: "0.95rem",
+        lineHeight: 1.65,
+        },
+        body2: {
+        fontSize: "0.86rem",
+        lineHeight: 1.55,
+        },
         button: {
         fontWeight: 760,
         fontSize: "0.92rem",
         letterSpacing: "0.008em",
         textTransform: "none",
         },
-    }
-
+    },
 
 
 

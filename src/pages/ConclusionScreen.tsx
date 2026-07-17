@@ -77,10 +77,9 @@ const ConclusionScreen: React.FC<Props> = ({
           aria-label="close"
           onClick={handleClickBackButton}
           sx={(theme) => ({
-            position: "left",
-            right: 8,
-            top: 8,
-            color: theme.palette.grey[500],
+            color: theme.palette.text.secondary,
+            border: '1px solid rgba(22,48,41,0.08)',
+            backgroundColor: 'rgba(255,255,255,0.8)',
           })}>
           <ArrowBackIcon />
           </IconButton>
@@ -130,7 +129,7 @@ const ConclusionScreen: React.FC<Props> = ({
                     <Typography>{group.empty}</Typography>
                   </Paper>
                 ) : group.items.map((trialTitle) => (
-                  <Paper elevation={0} sx={{ p: 1.6}}>
+                  <Paper elevation={0} sx={{ p: 1.6, borderRadius: '20px', border: '1px solid rgba(22,48,41,0.06)', backgroundColor: 'rgba(255,255,255,0.76)' }}>
                     <Stack direction="row" spacing={1.2} alignItems="center">
                       {group.renderIcon()}
                       <Typography sx={styles.trialTitleStyle}>{trialTitle}</Typography>
