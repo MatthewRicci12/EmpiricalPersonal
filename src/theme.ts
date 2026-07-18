@@ -34,27 +34,6 @@ let theme = createTheme({
         },
         divider: alpha("#21364f", 0.12),
     },
-
-    components: {
-        MuiButton: {
-        defaultProps: {
-            disableElevation: true,
-        },
-        styleOverrides: {
-            root: {
-            borderRadius: 999,
-            paddingInline: 18,
-            paddingBlock: 10,
-            },
-            containedPrimary: {
-            boxShadow: "0 18px 42px rgba(22, 58, 95, 0.22)",
-            },
-            outlined: {
-            borderColor: alpha("#21364f", 0.14),
-            },
-        },
-        },
-    },
     typography: {
         fontFamily: '"Manrope Variable", "Segoe UI", sans-serif',
         h1: {
@@ -102,9 +81,94 @@ let theme = createTheme({
         textTransform: "none",
         },
     },
-
-
-
+    components: {
+        MuiCssBaseline: {
+        styleOverrides: {
+            body: {
+            minHeight: "100vh",
+            background:
+                "radial-gradient(circle at top left, rgba(22,58,95,0.18), transparent 34%), radial-gradient(circle at right 15%, rgba(34,211,238,0.14), transparent 28%), linear-gradient(180deg, #f5fbff 0%, #eaf4fd 100%)",
+            },
+            "#root": {
+            minHeight: "100vh",
+            },
+            "*": {
+            boxSizing: "border-box",
+            },
+            "::selection": {
+            backgroundColor: alpha("#22d3ee", 0.28),
+            },
+        },
+        },
+        MuiPaper: {
+        styleOverrides: {
+            root: {
+            backgroundImage: "none",
+            },
+        },
+        },
+        MuiButton: {
+        defaultProps: {
+            disableElevation: true,
+        },
+        styleOverrides: {
+            root: {
+            borderRadius: 999,
+            paddingInline: 18,
+            paddingBlock: 10,
+            },
+            containedPrimary: {
+            boxShadow: "0 18px 42px rgba(22, 58, 95, 0.22)",
+            },
+            outlined: {
+            borderColor: alpha("#21364f", 0.14),
+            },
+        },
+        },
+        MuiTextField: {
+        defaultProps: {
+            variant: "outlined",
+            fullWidth: true,
+        },
+        },
+        MuiOutlinedInput: {
+        styleOverrides: {
+            root: {
+            borderRadius: 16,
+            backgroundColor: alpha("#ffffff", 0.92),
+            },
+        },
+        },
+        MuiDialog: {
+        styleOverrides: {
+            paper: {
+            borderRadius: 28,
+            border: `1px solid ${alpha("#21364f", 0.08)}`,
+            boxShadow: "0 26px 90px rgba(18, 34, 56, 0.16)",
+            overflow: "hidden",
+            },
+        },
+        },
+        MuiMenu: {
+        styleOverrides: {
+            paper: {
+            borderRadius: 18,
+            border: `1px solid ${alpha("#21364f", 0.08)}`,
+            boxShadow: "0 18px 48px rgba(18, 34, 56, 0.12)",
+            },
+        },
+        },
+        MuiIconButton: {
+        styleOverrides: {
+            root: {
+            borderRadius: 14,
+            },
+        },
+        },
+    },
+    shape: {
+        borderRadius: 18,
+    },
 });
 
 export default theme;
