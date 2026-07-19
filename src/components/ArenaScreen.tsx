@@ -1,4 +1,6 @@
 import Trial from "./Trial";
+import { Typography } from "@mui/material";
+import Paper from "@mui/material/Paper";
 import { Box, Stack } from "@mui/system";
 import { TrialData, SubtrialData } from "../pages/MainScreen/types";
 import { Result } from "./types";

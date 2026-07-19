@@ -248,7 +248,10 @@ export const AddArenaDialog: React.FC<Props> = ({
           sx={{
             width: "100%",
             minHeight: "180px",
+            borderRadius: "16px",
+            border: "1px dashed rgba(22,48,41,0.18)",
             p: 1.5,
+            backgroundColor: "rgba(248,246,240,0.84)",
             mb: 3,
           }}
         >
