@@ -76,20 +76,44 @@ export const ArenaScreen: React.FC<Props> = ({
   });
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
+    <Paper
+      elevation={0}
+      sx={{
+        height: "100%",
+        minHeight: { xs: 480, md: 640 },
+        p: { xs: 2.5, md: 3.5 },
+        borderRadius: "28px",
+        border: "1px solid rgba(22,48,41,0.08)",
+        background: "linear-gradient(180deg, rgba(255,255,255,0.84) 0%, rgba(252,249,243,0.96) 100%)",
+      }}
     >
-      <SortableContext
-        items={trialUuids}
-        strategy={verticalListSortingStrategy}
-      >
-        <Box sx={{ height: "80vh" }}>
-          <Stack spacing={2}>{trials}</Stack>
+      <Stack direction={{ xs: "column", md: "row" }} justifyContent="space-between" spacing={1.5} sx={{ mb: 3.25, px: 0.25 }}>
+        <Box>
+          <Typography variant="h4">Trial Pipeline</Typography>
+          <Typography variant="body2" color="text.secondary">
+            Prioritize experiments, drag to reorder, and open each card for detailed evidence.
+          </Typography>
         </Box>
-      </SortableContext>
-    </DndContext>
+        <Typography variant="h6" color="text.secondary">
+          {trialUuids.length} active {trialUuids.length === 1 ? "trial" : "trials"}
+        </Typography>
+      </Stack>
+
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={trialUuids}
+          strategy={verticalListSortingStrategy}
+        >
+          <Box className="soft-scrollbar" sx={{ maxHeight: { xs: 520, md: 620 }, overflowY: "auto", pr: 1.25, pt: 0.9, pl: 0.2 }}>
+            <Stack spacing={2}>{trials}</Stack>
+          </Box>
+        </SortableContext>
+      </DndContext>
+    </Paper>
   );
 
   function handleDragEnd(e: DragEndEvent) {
